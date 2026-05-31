@@ -42,32 +42,52 @@ const GameConnector = {
     const textFlow = document.createElement('div');
     textFlow.className = 'mushaf-text-flow';
 
-    queue.forEach((b, i) => {
-      const d = document.createElement('div');
-      d.className = 'slot';
-      d.id = 'slot-' + i;
-      d.dataset.idx = i;
-      
-      const labelText = mode === 'classic' ? `${i + 1}` : `${b.ayahIdx + 1}.${b.partIdx + 1}`;
-      d.setAttribute('data-label', labelText);
-      d.innerHTML = `<span class="st">${b.ar}</span><span class="sck">✓</span>`;
+    let absoluteSlotIdx = 0;
+    const startAyah = parseInt(document.getElementById('range-start').value) || 1;
+    const endAyah = parseInt(document.getElementById('range-end').value) || surah.ayahs.length;
 
-      // In Connector mode, tapping the slot tells them what to do
-      d.addEventListener('click', () => {
-        const inst = document.getElementById('instbar');
-        if (inst && !filledSlots.has(i)) {
-          inst.textContent = `ℹ️ Locate the bubble containing: "${b.ar}" and double-tap it.`;
+    surah.ayahs.forEach((a) => {
+      const parts = mode === 'classic' ? [a.ar]
+                  : mode === 'phrase'  ? a.phrases
+                  :                     a.words;
+      
+      parts.forEach((txt, pi) => {
+        const d = document.createElement('div');
+        d.id = 'slot-' + absoluteSlotIdx;
+        d.dataset.idx = absoluteSlotIdx;
+        
+        const labelText = mode === 'classic' ? `${a.n}` : `${a.n}.${pi + 1}`;
+        d.setAttribute('data-label', labelText);
+
+        const isInteractive = (a.n >= startAyah && a.n <= endAyah);
+
+        if (isInteractive) {
+          d.className = 'slot';
+          d.innerHTML = `<span class="st">${txt}</span><span class="sck">✓</span>`;
+          // In Connector mode, tapping the slot tells them what to do
+          d.addEventListener('click', () => {
+            const inst = document.getElementById('instbar');
+            if (inst && !filledSlots.has(absoluteSlotIdx)) {
+              inst.textContent = `ℹ️ Locate the bubble containing: "${txt}" and double-tap it.`;
+            }
+          });
+        } else {
+          // Pre-filled slot, non-interactive
+          d.className = 'slot filled';
+          d.style.cursor = 'default';
+          d.innerHTML = `<span class="st" style="color: #1C1B18; text-shadow: none;">${txt}</span>`;
+          filledSlots.add(absoluteSlotIdx);
         }
+
+        textFlow.appendChild(d);
+        absoluteSlotIdx++;
       });
 
-      textFlow.appendChild(d);
-
-      if (b.partIdx === b.parts - 1) {
-        const marker = document.createElement('span');
-        marker.className = 'mushaf-ayah-marker';
-        marker.innerHTML = b.verseNum;
-        textFlow.appendChild(marker);
-      }
+      // Place decorative ayah marker ornament at the end of each verse
+      const marker = document.createElement('span');
+      marker.className = 'mushaf-ayah-marker';
+      marker.innerHTML = a.n;
+      textFlow.appendChild(marker);
     });
 
     c.appendChild(textFlow);
@@ -162,8 +182,8 @@ const GameConnector = {
   validateSelection(block, element) {
     if (filledSlots.has(block.slotIdx)) return;
 
-    // In Connector mode, blocks must be connected in consecutive order (placed = first empty slot index)
-    const expectedSlot = placed;
+    // In Connector mode, blocks must be connected in consecutive order
+    const expectedSlot = queue[placed].slotIdx;
 
     if (block.slotIdx === expectedSlot) {
       // Correct!

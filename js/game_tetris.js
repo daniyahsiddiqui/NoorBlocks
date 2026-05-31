@@ -58,33 +58,51 @@ const GameTetris = {
     const textFlow = document.createElement('div');
     textFlow.className = 'mushaf-text-flow';
 
-    queue.forEach((b, i) => {
-      const d = document.createElement('div');
-      d.className = 'slot';
-      d.id = 'slot-' + i;
-      d.dataset.idx = i;
+    let absoluteSlotIdx = 0;
+    const startAyah = parseInt(document.getElementById('range-start').value) || 1;
+    const endAyah = parseInt(document.getElementById('range-end').value) || surah.ayahs.length;
+
+    surah.ayahs.forEach((a) => {
+      const parts = mode === 'classic' ? [a.ar]
+                  : mode === 'phrase'  ? a.phrases
+                  :                     a.words;
       
-      const labelText = mode === 'classic' ? `${i + 1}` : `${b.ayahIdx + 1}.${b.partIdx + 1}`;
-      d.setAttribute('data-label', labelText);
+      parts.forEach((txt, pi) => {
+        const d = document.createElement('div');
+        d.id = 'slot-' + absoluteSlotIdx;
+        d.dataset.idx = absoluteSlotIdx;
+        
+        const labelText = mode === 'classic' ? `${a.n}` : `${a.n}.${pi + 1}`;
+        d.setAttribute('data-label', labelText);
 
-      // Preload Arabic text in invisible container to lock the dynamic page flow dimensions
-      d.innerHTML = `<span class="st">${b.ar}</span><span class="sck">✓</span>`;
+        const isInteractive = (a.n >= startAyah && a.n <= endAyah);
 
-      d.addEventListener('click', () => {
-        if (!this.blockFrozen) {
-          this.onSlotClick(i);
+        if (isInteractive) {
+          d.className = 'slot';
+          // Preload Arabic text in invisible container to lock the dynamic page flow dimensions
+          d.innerHTML = `<span class="st">${txt}</span><span class="sck">✓</span>`;
+          d.addEventListener('click', () => {
+            if (!this.blockFrozen) {
+              this.onSlotClick(absoluteSlotIdx);
+            }
+          });
+        } else {
+          // Pre-filled slot, non-interactive
+          d.className = 'slot filled';
+          d.style.cursor = 'default';
+          d.innerHTML = `<span class="st" style="color: #1C1B18; text-shadow: none;">${txt}</span>`;
+          filledSlots.add(absoluteSlotIdx);
         }
+
+        textFlow.appendChild(d);
+        absoluteSlotIdx++;
       });
 
-      textFlow.appendChild(d);
-
       // Place decorative ayah marker ornament at the end of each verse
-      if (b.partIdx === b.parts - 1) {
-        const marker = document.createElement('span');
-        marker.className = 'mushaf-ayah-marker';
-        marker.innerHTML = b.verseNum;
-        textFlow.appendChild(marker);
-      }
+      const marker = document.createElement('span');
+      marker.className = 'mushaf-ayah-marker';
+      marker.innerHTML = a.n;
+      textFlow.appendChild(marker);
     });
 
     c.appendChild(textFlow);
@@ -128,10 +146,11 @@ const GameTetris = {
   },
 
   getFirstEmptySlot() {
-    for (let i = 0; i < slotCount; i++) {
-      if (!filledSlots.has(i)) return i;
+    for (let i = 0; i < queue.length; i++) {
+      const sIdx = queue[i].slotIdx;
+      if (!filledSlots.has(sIdx)) return sIdx;
     }
-    return 0;
+    return queue[0] ? queue[0].slotIdx : 0;
   },
 
   highlightTargetSlot(idx) {
@@ -315,7 +334,7 @@ const GameTetris = {
     lives = Math.max(0, lives - 1);
     updateLives();
 
-    const hintSlot = mode === 'classic' ? `Ayah ${correctSlot + 1}` : `Slot ${correctSlot + 1}`;
+    const hintSlot = mode === 'classic' ? `Ayah ${block.verseNum}` : `Ayah ${block.verseNum} (Part ${block.partIdx + 1})`;
     const inst = document.getElementById('instbar');
     if (inst) inst.textContent = `❌ Wrong slot! It belongs in ${hintSlot} — try again`;
 

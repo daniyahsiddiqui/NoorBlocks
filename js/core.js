@@ -173,25 +173,27 @@ function buildQueue(surahData) {
   const startAyah = parseInt(document.getElementById('range-start').value) || 1;
   const endAyah = parseInt(document.getElementById('range-end').value) || surahData.ayahs.length;
   
-  const ayahs = surahData.ayahs.filter(a => a.n >= startAyah && a.n <= endAyah);
-  
-  ayahs.forEach((a, ai) => {
+  let absoluteSlotIdx = 0;
+  surahData.ayahs.forEach((a) => {
     const parts = mode === 'classic' ? [a.ar]
                 : mode === 'phrase'  ? a.phrases
                 :                     a.words;
     parts.forEach((txt, pi) => {
-      queue.push({
-        ayahIdx: a.n - startAyah, // Offset index relative to our playing range
-        partIdx: pi,
-        parts: parts.length,
-        ar: txt,
-        tr: (mode === 'classic' ? a.tr : `[${a.n}] ` + a.tr),
-        hint: a.hint,
-        slotIdx: queue.length,
-        surahNum: surahNum,
-        verseNum: a.n,
-        wordNum: pi + 1
-      });
+      if (a.n >= startAyah && a.n <= endAyah) {
+        queue.push({
+          ayahIdx: a.n - startAyah, // Offset index relative to our playing range
+          partIdx: pi,
+          parts: parts.length,
+          ar: txt,
+          tr: (mode === 'classic' ? a.tr : `[${a.n}] ` + a.tr),
+          hint: a.hint,
+          slotIdx: absoluteSlotIdx, // Map to absolute slot index in full Surah layout
+          surahNum: surahNum,
+          verseNum: a.n,
+          wordNum: pi + 1
+        });
+      }
+      absoluteSlotIdx++;
     });
   });
   slotCount = queue.length;
