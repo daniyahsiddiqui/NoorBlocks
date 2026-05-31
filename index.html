@@ -905,6 +905,14 @@ function buildSlotsUI() {
     d.addEventListener('drop', e => { e.preventDefault(); tryPlaceInSlot(i); });
     // Touch drop zone
     d.addEventListener('pointerup', () => { if(isDragging) tryPlaceInSlot(i); });
+    // Tap-to-place event (for mobile touch screen convenience)
+    d.addEventListener('click', () => {
+      if (!blockFrozen) {
+        currentTargetSlot = i;
+        highlightTargetSlot(i);
+        tryPlaceInSlot(i);
+      }
+    });
 
     textFlow.appendChild(d);
 
@@ -1014,7 +1022,7 @@ function updateInstruction() {
   const isMobile = window.innerWidth <= 480;
   if (isMobile) {
     document.getElementById('instbar').textContent =
-      `Targeting: ${slotLabel} · Drag block to the correct slot`;
+      `Targeting: ${slotLabel} · Tap the correct slot to place the block`;
   } else {
     document.getElementById('instbar').textContent =
       `Targeting: ${slotLabel} · Use ← → to change slot · ↓ Place to confirm`;
