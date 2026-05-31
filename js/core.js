@@ -772,30 +772,35 @@ async function handleAuthSubmit(event, action) {
   const errorMsg = document.getElementById('auth-error-msg');
   errorMsg.textContent = '';
 
-  if (action === 'login') {
-    const username = document.getElementById('login-username').value;
-    const pass = document.getElementById('login-password').value;
-    const { error } = await db.login(username, pass);
-    if (error) {
-      errorMsg.textContent = error.message;
+  try {
+    if (action === 'login') {
+      const username = document.getElementById('login-username').value;
+      const pass = document.getElementById('login-password').value;
+      const { error } = await db.login(username, pass);
+      if (error) {
+        errorMsg.textContent = error.message;
+      } else {
+        closeAuthModal();
+      }
     } else {
-      closeAuthModal();
+      const username = document.getElementById('signup-username').value;
+      const displayName = document.getElementById('signup-displayname').value;
+      const pass = document.getElementById('signup-password').value;
+      
+      const { error } = await db.signUp(username, pass, displayName);
+      if (error) {
+        errorMsg.textContent = error.message;
+      } else {
+        alert("Registration successful! You can now log in.");
+        setAuthTab('login');
+        // Auto-populate login username
+        const loginUserField = document.getElementById('login-username');
+        if (loginUserField) loginUserField.value = username;
+      }
     }
-  } else {
-    const username = document.getElementById('signup-username').value;
-    const displayName = document.getElementById('signup-displayname').value;
-    const pass = document.getElementById('signup-password').value;
-    
-    const { error } = await db.signUp(username, pass, displayName);
-    if (error) {
-      errorMsg.textContent = error.message;
-    } else {
-      alert("Registration successful! You can now log in.");
-      setAuthTab('login');
-      // Auto-populate login username
-      const loginUserField = document.getElementById('login-username');
-      if (loginUserField) loginUserField.value = username;
-    }
+  } catch (err) {
+    console.error(err);
+    errorMsg.textContent = err.message || "An unexpected error occurred. Please check your connection.";
   }
 }
 
