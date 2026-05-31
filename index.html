@@ -330,6 +330,18 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 @keyframes dropin{from{transform:translateY(-60px);opacity:0}to{transform:translateY(0);opacity:1}}
 #fblock.entering{animation:dropin .35s ease-out forwards;}
 
+/* Pulsing glow when block is playing audio */
+#fblock.playing-audio {
+  border-color: var(--greenl)!important;
+  background: rgba(23,120,74,.2)!important;
+  box-shadow: 0 0 15px rgba(34,176,106,0.6);
+  animation: playpulse 1.5s ease-in-out infinite alternate;
+}
+@keyframes playpulse {
+  from { box-shadow: 0 0 8px rgba(34,176,106,0.3); border-color: rgba(34, 176, 106, 0.5); }
+  to { box-shadow: 0 0 20px rgba(34, 176, 106, 0.8); border-color: var(--greenl); }
+}
+
 /* ── INSTRUCTIONS BAR ── */
 #instbar{
   flex-shrink:0;
@@ -586,6 +598,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 const SURAHS = [
   {
     id: 0,
+    surahNum: 1,
     nameAr: "سُورَةُ الفَاتِحَةِ",
     nameEn: "Al-Fātiḥah",
     nameTr: "THE OPENING",
@@ -630,6 +643,7 @@ const SURAHS = [
   },
   {
     id: 1,
+    surahNum: 108,
     nameAr: "سُورَةُ الكَوْثَرِ",
     nameEn: "Al-Kawthar",
     nameTr: "THE ABUNDANCE",
@@ -654,6 +668,7 @@ const SURAHS = [
   },
   {
     id: 2,
+    surahNum: 112,
     nameAr: "سُورَةُ الإِخْلَاصِ",
     nameEn: "Al-Ikhlāṣ",
     nameTr: "THE SINCERITY",
@@ -683,6 +698,7 @@ const SURAHS = [
   },
   {
     id: 3,
+    surahNum: 113,
     nameAr: "سُورَةُ الفَلَقِ",
     nameEn: "Al-Falaq",
     nameTr: "THE DAYBREAK",
@@ -696,7 +712,7 @@ const SURAHS = [
       { n:2, ar:"مِن شَرِّ مَا خَلَقَ",
         tr:"From the evil of what He created",
         hint:"From the evil of what He created...",
-        phrases:["مِن شَرِّ","مَا خَلَقَ"],
+        phrases:["مِنَ شَرِّ","مَا خَلَقَ"],
         words:["مِن","شَرِّ","مَا","خَلَقَ"] },
       { n:3, ar:"وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ",
         tr:"And from the evil of darkness when it settles",
@@ -717,6 +733,7 @@ const SURAHS = [
   },
   {
     id: 4,
+    surahNum: 114,
     nameAr: "سُورَةُ النَّاسِ",
     nameEn: "An-Nās",
     nameTr: "MANKIND",
@@ -772,6 +789,7 @@ let score = 0;
 let errors = 0;
 let placed = 0;
 let startTs = 0;
+let currentPlayingAudio = null;
 
 /* Fall physics */
 let fallY = 0;          // px from top of fall-zone
@@ -807,7 +825,9 @@ function pickMode(m, el) {
 ═══════════════════════════════════════ */
 function buildQueue() {
   queue = [];
-  const ayahs = SURAHS[currentSurahIdx].ayahs;
+  const surah = SURAHS[currentSurahIdx];
+  const surahNum = surah.surahNum;
+  const ayahs = surah.ayahs;
   ayahs.forEach((a, ai) => {
     const parts = mode === 'classic' ? [a.ar]
                 : mode === 'phrase'  ? a.phrases
@@ -815,7 +835,8 @@ function buildQueue() {
     parts.forEach((txt, pi) => {
       queue.push({ ayahIdx: ai, partIdx: pi, parts: parts.length,
                    ar: txt, tr: (mode==='classic'?a.tr:`[${a.n}] `+a.tr),
-                   hint: a.hint, slotIdx: queue.length });
+                   hint: a.hint, slotIdx: queue.length,
+                   surahNum: surahNum, verseNum: a.n, wordNum: pi + 1 });
     });
   });
   slotCount = queue.length;
@@ -892,6 +913,7 @@ function buildSlotsUI() {
    START GAME
 ═══════════════════════════════════════ */
 function startGame() {
+  stopPlayingAudio();
   buildQueue();
   buildSlotsUI();
   lives = 3; score = 0; errors = 0; placed = 0;
@@ -916,6 +938,7 @@ function startGame() {
    LOAD BLOCK
 ═══════════════════════════════════════ */
 function loadNextBlock() {
+  stopPlayingAudio();
   if (curBlockQIdx >= shuffledOrder.length) { gameComplete(); return; }
   const block = queue[shuffledOrder[curBlockQIdx]];
   blockFrozen = false;
@@ -1017,6 +1040,7 @@ function fallLoop() {
 }
 
 function groundHit() {
+  stopPlayingAudio();
   blockFrozen = true;
   const fb = document.getElementById('fblock');
   // Flash red — missed
@@ -1066,6 +1090,7 @@ function tryPlaceInSlot(slotIdx) {
 }
 
 function correctPlacement(block, slotIdx) {
+  stopPlayingAudio();
   blockFrozen = true;
   if (fallRAF) cancelAnimationFrame(fallRAF);
 
@@ -1111,6 +1136,7 @@ function correctPlacement(block, slotIdx) {
 }
 
 function wrongPlacement(block, triedSlot, correctSlot) {
+  stopPlayingAudio();
   blockFrozen = true;
   if (fallRAF) cancelAnimationFrame(fallRAF);
 
@@ -1219,53 +1245,92 @@ function playTone(type) {
   } catch(e) {}
 }
 
-function hearBlock(btn) {
-  const targetBtn = btn || document.querySelector('.cbtn.chear');
-  if (targetBtn) targetBtn.innerHTML = '♪ …';
+function stopPlayingAudio() {
+  if (currentPlayingAudio) {
+    try {
+      currentPlayingAudio.pause();
+    } catch(e) {}
+    currentPlayingAudio = null;
+  }
+  const fb = document.getElementById('fblock');
+  if (fb) {
+    fb.classList.remove('playing-audio');
+  }
+}
 
+function padZero(num, size) {
+  let s = num + "";
+  while (s.length < size) s = "0" + s;
+  return s;
+}
+
+function playAudioFile(url) {
+  // Cancel any currently playing audio
+  stopPlayingAudio();
+  
+  const fb = document.getElementById('fblock');
+  if (fb) {
+    fb.classList.add('playing-audio');
+  }
+  
+  document.getElementById('instbar').textContent = '🔊 Loading recitation...';
+  
+  const audio = new Audio(url);
+  currentPlayingAudio = audio;
+  
+  audio.addEventListener('play', () => {
+    document.getElementById('instbar').textContent = '🔊 Playing recitation...';
+  });
+  
+  audio.addEventListener('ended', () => {
+    if (fb) fb.classList.remove('playing-audio');
+    if (currentPlayingAudio === audio) {
+      currentPlayingAudio = null;
+    }
+    updateInstruction();
+  });
+  
+  audio.addEventListener('error', (e) => {
+    console.error("Audio playback error:", e);
+    if (fb) fb.classList.remove('playing-audio');
+    if (currentPlayingAudio === audio) {
+      currentPlayingAudio = null;
+    }
+    document.getElementById('instbar').textContent = '⚠️ Audio unavailable. Playing chime instead.';
+    playTone('correct');
+    setTimeout(() => {
+      updateInstruction();
+    }, 1500);
+  });
+  
+  audio.play().catch(err => {
+    console.warn("Audio play rejected (interaction required?):", err);
+    if (fb) fb.classList.remove('playing-audio');
+    if (currentPlayingAudio === audio) {
+      currentPlayingAudio = null;
+    }
+    document.getElementById('instbar').textContent = '⚠️ Tap block again to play audio.';
+    setTimeout(() => {
+      updateInstruction();
+    }, 2000);
+  });
+}
+
+function hearBlock() {
   if (curBlockQIdx < shuffledOrder.length) {
     const block = queue[shuffledOrder[curBlockQIdx]];
-    const textToSpeak = block.ar;
+    const surahNumPadded = padZero(block.surahNum, 3);
+    const verseNumPadded = padZero(block.verseNum, 3);
     
-    if ('speechSynthesis' in window) {
-      try {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(textToSpeak);
-        utterance.lang = 'ar-SA';
-        utterance.rate = 0.65; // Recitative speed (slower for clear pronunciation)
-        
-        // Find an Arabic voice if available
-        const voices = window.speechSynthesis.getVoices();
-        const voice = voices.find(v => v.lang.startsWith('ar'));
-        if (voice) {
-          utterance.voice = voice;
-        }
-        
-        utterance.onend = () => {
-          if (targetBtn) targetBtn.innerHTML = '▶ Hear';
-        };
-        utterance.onerror = () => {
-          if (targetBtn) targetBtn.innerHTML = '▶ Hear';
-        };
-        
-        window.speechSynthesis.speak(utterance);
-        
-        // Safety timeout in case speech synthesis gets stuck
-        setTimeout(() => {
-          if (targetBtn && targetBtn.innerHTML === '♪ …') {
-            targetBtn.innerHTML = '▶ Hear';
-          }
-        }, 4000);
-      } catch (e) {
-        playTone('correct');
-        setTimeout(() => { if (targetBtn) targetBtn.innerHTML = '▶ Hear'; }, 1200);
-      }
+    let url = "";
+    if (mode === 'word') {
+      const wordNumPadded = padZero(block.wordNum, 3);
+      url = `https://audio.qurancdn.com/wbw/${surahNumPadded}_${verseNumPadded}_${wordNumPadded}.mp3`;
     } else {
-      playTone('correct');
-      setTimeout(() => { if (targetBtn) targetBtn.innerHTML = '▶ Hear'; }, 1200);
+      url = `https://everyayah.com/data/Alafasy_128kbps/${surahNumPadded}${verseNumPadded}.mp3`;
     }
-  } else {
-    if (targetBtn) targetBtn.innerHTML = '▶ Hear';
+    
+    playAudioFile(url);
   }
 }
 
@@ -1316,6 +1381,7 @@ function confetti() {
    END STATES
 ═══════════════════════════════════════ */
 function gameComplete() {
+  stopPlayingAudio();
   if (fallRAF) cancelAnimationFrame(fallRAF);
   const elapsed = Math.round((Date.now()-startTs)/1000);
   const acc = Math.round((placed/(placed+errors))*100);
@@ -1335,6 +1401,7 @@ function gameComplete() {
 }
 
 function gameOver() {
+  stopPlayingAudio();
   if (fallRAF) cancelAnimationFrame(fallRAF);
   const surah = SURAHS[currentSurahIdx];
   document.getElementById('r-star').textContent = '💔';
@@ -1350,7 +1417,7 @@ function gameOver() {
 }
 
 function restartGame() { startGame(); }
-function goTitle() { if(fallRAF) cancelAnimationFrame(fallRAF); showScreen('title'); }
+function goTitle() { stopPlayingAudio(); if(fallRAF) cancelAnimationFrame(fallRAF); showScreen('title'); }
 
 /* ═══════════════════════════════════════
    SCREEN
