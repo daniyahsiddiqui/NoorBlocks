@@ -299,7 +299,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 
 /* ── FALL ZONE ── */
 #fall-zone{
-  height:220px;
+  height:280px;
   flex-shrink:0;
   position:relative;
   overflow:hidden;
@@ -317,13 +317,13 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   border:1.5px solid var(--gold);
   border-radius:10px;
   padding:10px 14px;
-  cursor:grab;
+  cursor:pointer;
   z-index:10;
   touch-action:none;
   user-select:none;-webkit-user-select:none;
   transition:border-color .2s, background .2s;
 }
-#fblock:active{cursor:grabbing;}
+#fblock:active{cursor:pointer;}
 #fblock.correct-fx{border-color:var(--greenl)!important;background:rgba(23,120,74,.2)!important;animation:popfx .3s ease-out;}
 #fblock.wrong-fx{border-color:var(--red)!important;background:rgba(184,48,48,.15)!important;animation:shakefx .35s ease-out;}
 @keyframes popfx{0%{transform:scale(.95)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
@@ -354,7 +354,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 }
 
 /* ── CONTROLS ── */
-#ctrls{display:flex;gap:7px;flex-shrink:0;}
+#ctrls{display:none !important;}
 .cbtn{
   flex:1;padding:11px 0;
   background:rgba(12,24,16,.8);
@@ -375,7 +375,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 #prog-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px;}
 #prog-bar{height:4px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden;}
 #prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:4px;transition:width .5s ease;width:0%;}
-#next-box{background:rgba(5,12,8,.8);border:.5px solid var(--goldb);border-radius:9px;padding:5px 10px;text-align:center;min-width:72px;flex-shrink:0;}
+#next-box{display:none !important;}
 #next-lbl{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
 #next-ar{font-family:'Amiri',serif;font-size:13px;direction:rtl;color:var(--muted);}
 
@@ -408,9 +408,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   #game-wrap {
     padding: 6px 8px 4px;
     gap: 4px;
-  }
-  #fall-zone {
-    height: 150px !important;
   }
   #slots-wrap {
     padding: 10px 10px;
@@ -462,18 +459,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   }
   .stat .sv {
     font-size: 18px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  #ctrls {
-    display: none !important;
-  }
-  #next-box {
-    display: none !important;
-  }
-  #fall-zone {
-    height: 280px !important; /* Taller catch zone on phones */
   }
 }
 </style>
@@ -815,10 +800,7 @@ let zoneH = 100;        // fall zone height — set in startFall
 let blockFrozen = false;
 let currentTargetSlot = 0; // 0-indexed: which slot the player is targeting
 
-/* Drag state */
-let isDragging = false;
-let dragOffX = 0, dragOffY = 0;
-let dragBaseLeft = 0;
+
 
 /* ═══════════════════════════════════════
    SURAH SELECT EVENT
@@ -899,13 +881,7 @@ function buildSlotsUI() {
     // Preload Arabic text as transparent inside span.st to reserve exact visual width
     d.innerHTML = `<span class="st">${b.ar}</span><span class="sck">✓</span>`;
 
-    // Drop target events
-    d.addEventListener('dragover', e => { e.preventDefault(); highlightSlot(i); });
-    d.addEventListener('dragleave', () => unhighlightSlot(i));
-    d.addEventListener('drop', e => { e.preventDefault(); tryPlaceInSlot(i); });
-    // Touch drop zone
-    d.addEventListener('pointerup', () => { if(isDragging) tryPlaceInSlot(i); });
-    // Tap-to-place event (for mobile touch screen convenience)
+    // Click-to-place event
     d.addEventListener('click', () => {
       if (!blockFrozen) {
         currentTargetSlot = i;
@@ -929,12 +905,7 @@ function buildSlotsUI() {
   document.getElementById('g-total').textContent = slotCount;
 }
 
-function highlightSlot(i) {
-  document.getElementById('slot-'+i)?.classList.add('drag-over');
-}
-function unhighlightSlot(i) {
-  document.getElementById('slot-'+i)?.classList.remove('drag-over');
-}
+
 
 /* ═══════════════════════════════════════
    START GAME
@@ -1018,15 +989,8 @@ function updateInstruction() {
   const block = queue[shuffledOrder[curBlockQIdx]];
   const slotLabel = mode === 'classic' ? `Ayah ${currentTargetSlot+1}`
     : `Slot ${currentTargetSlot+1}`;
-  
-  const isMobile = window.innerWidth <= 480;
-  if (isMobile) {
-    document.getElementById('instbar').textContent =
-      `Targeting: ${slotLabel} · Tap the correct slot to place the block`;
-  } else {
-    document.getElementById('instbar').textContent =
-      `Targeting: ${slotLabel} · Use ← → to change slot · ↓ Place to confirm`;
-  }
+  document.getElementById('instbar').textContent =
+    `Targeting: ${slotLabel} · Click/Tap the correct slot to place the block · Click the block to hear it`;
 }
 
 /* ═══════════════════════════════════════
@@ -1099,16 +1063,10 @@ function groundHit() {
 /* ═══════════════════════════════════════
    PLACEMENT
 ═══════════════════════════════════════ */
-function placeNow() {
-  // Place current block into currentTargetSlot
-  tryPlaceInSlot(currentTargetSlot);
-}
+
 
 function tryPlaceInSlot(slotIdx) {
-  if (blockFrozen && !isDragging) return;
-  // Stop drag
-  isDragging = false;
-  clearDragOver();
+  if (blockFrozen) return;
 
   const curQueueEntry = shuffledOrder[curBlockQIdx];
   const block = queue[curQueueEntry];
@@ -1194,110 +1152,18 @@ function wrongPlacement(block, triedSlot, correctSlot) {
   }, 1000);
 }
 
-/* ═══════════════════════════════════════
-   MOVE LEFT / RIGHT (change target slot)
-═══════════════════════════════════════ */
-function moveLeft() {
-  let t = currentTargetSlot + 1;
-  while (t < slotCount && filledSlots.has(t)) t++;
-  if (t >= slotCount) t = currentTargetSlot;
-  currentTargetSlot = t;
-  highlightTargetSlot(currentTargetSlot);
-  updateInstruction();
-}
 
-function moveRight() {
-  let t = currentTargetSlot - 1;
-  while (t >= 0 && filledSlots.has(t)) t--;
-  if (t < 0) t = currentTargetSlot;
-  currentTargetSlot = t;
-  highlightTargetSlot(currentTargetSlot);
-  updateInstruction();
-}
 
 /* ═══════════════════════════════════════
-   DRAG — mouse & touch
+   CLICK BLOCK TO HEAR IT
 ═══════════════════════════════════════ */
-(function setupDrag() {
+(function setupControls() {
   const fb = document.getElementById('fblock');
-
-  function onDown(clientX, clientY) {
-    if (blockFrozen) return;
-    isDragging = true;
-    const rect = fb.getBoundingClientRect();
-    const zone = document.getElementById('fall-zone').getBoundingClientRect();
-    dragOffX = clientX - rect.left;
-    dragOffY = clientY - rect.top;
-    dragBaseLeft = rect.left - zone.left;
-    fb.style.transition = 'none';
-    fb.style.cursor = 'grabbing';
-    if (fallRAF) cancelAnimationFrame(fallRAF);
-  }
-
-  function onMove(clientX, clientY) {
-    if (!isDragging) return;
-    const zone = document.getElementById('fall-zone').getBoundingClientRect();
-    let newLeft = clientX - zone.left - dragOffX;
-    let newTop  = clientY - zone.top  - dragOffY;
-    // Clamp inside fall zone
-    newLeft = Math.max(0, Math.min(zone.width - fb.offsetWidth, newLeft));
-    newTop  = Math.max(0, Math.min(zone.height - fb.offsetHeight, newTop));
-    fb.style.left = newLeft + 'px';
-    fb.style.top  = newTop  + 'px';
-    fallY = newTop;
-
-    // Check if hovering over a slot
-    const hovered = getSlotUnderPoint(clientX, clientY);
-    clearDragOver();
-    if (hovered !== null) {
-      document.getElementById('slot-'+hovered)?.classList.add('drag-over');
-      currentTargetSlot = hovered;
-      updateInstruction();
-    }
-  }
-
-  function onUp(clientX, clientY) {
-    if (!isDragging) return;
-    isDragging = false;
-    fb.style.cursor = 'grab';
-    fb.style.transition = '';
-
-    const hovered = getSlotUnderPoint(clientX, clientY);
-    clearDragOver();
-
-    if (hovered !== null) {
-      tryPlaceInSlot(hovered);
-    } else {
-      // Dropped outside — resume fall
-      blockFrozen = false;
-      startFall();
-    }
-  }
-
-  fb.addEventListener('mousedown',  e => { e.preventDefault(); onDown(e.clientX, e.clientY); });
-  window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
-  window.addEventListener('mouseup',   e => onUp(e.clientX, e.clientY));
-
-  fb.addEventListener('touchstart', e => { e.preventDefault(); onDown(e.touches[0].clientX, e.touches[0].clientY); }, {passive:false});
-  window.addEventListener('touchmove', e => { if(isDragging) { e.preventDefault(); onMove(e.touches[0].clientX, e.touches[0].clientY); }}, {passive:false});
-  window.addEventListener('touchend',  e => { if(isDragging) onUp(e.changedTouches[0].clientX, e.changedTouches[0].clientY); });
+  fb.addEventListener('click', (e) => {
+    e.stopPropagation();
+    hearBlock();
+  });
 })();
-
-function getSlotUnderPoint(cx, cy) {
-  const slots = document.querySelectorAll('.slot');
-  for (const sl of slots) {
-    if (filledSlots.has(+sl.dataset.idx)) continue;
-    const r = sl.getBoundingClientRect();
-    if (cx >= r.left && cx <= r.right && cy >= r.top && cy <= r.bottom) {
-      return +sl.dataset.idx;
-    }
-  }
-  return null;
-}
-
-function clearDragOver() {
-  document.querySelectorAll('.slot.drag-over').forEach(s => s.classList.remove('drag-over'));
-}
 
 /* ═══════════════════════════════════════
    HUD
@@ -1505,9 +1371,6 @@ function showScreen(name) {
 ═══════════════════════════════════════ */
 document.addEventListener('keydown', e => {
   if (!document.getElementById('s-game').classList.contains('on')) return;
-  if (e.key==='ArrowLeft')  { e.preventDefault(); moveLeft(); }
-  if (e.key==='ArrowRight') { e.preventDefault(); moveRight(); }
-  if (e.key==='ArrowDown'||e.key===' ') { e.preventDefault(); placeNow(); }
   if (e.key.toLowerCase()==='h') hearBlock();
 });
 </script>
