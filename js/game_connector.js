@@ -50,6 +50,10 @@ const GameConnector = {
     const startAyah = parseInt(document.getElementById('range-start').value) || 1;
     const endAyah = parseInt(document.getElementById('range-end').value) || surah.ayahs.length;
 
+    // Find the page of the startAyah to filter slot rendering
+    const startAyahObj = surah.ayahs.find(a => a.n === startAyah);
+    const activePage = (startAyahObj && startAyahObj.words[0]) ? startAyahObj.words[0].page : 0;
+
     surah.ayahs.forEach((a) => {
       let wordIdx = 0;
       const parts = mode === 'classic' ? [a.ar]
@@ -74,19 +78,22 @@ const GameConnector = {
           wordIdx += phraseWordsCount;
         }
 
-        const key = `${pageNum}_${lineNum}`;
-        if (!linesMap[key]) {
-          linesMap[key] = [];
-          linesOrder.push(key);
-        }
+        // Only add elements to the map if they belong to the active page
+        if (pageNum === activePage) {
+          const key = `${pageNum}_${lineNum}`;
+          if (!linesMap[key]) {
+            linesMap[key] = [];
+            linesOrder.push(key);
+          }
 
-        linesMap[key].push({
-          type: 'slot',
-          idx: absoluteSlotIdx,
-          txt: txt,
-          ayahNum: a.n,
-          isInteractive: (a.n >= startAyah && a.n <= endAyah)
-        });
+          linesMap[key].push({
+            type: 'slot',
+            idx: absoluteSlotIdx,
+            txt: txt,
+            ayahNum: a.n,
+            isInteractive: (a.n >= startAyah && a.n <= endAyah)
+          });
+        }
 
         if (a.n < startAyah || a.n > endAyah) {
           filledSlots.add(absoluteSlotIdx);
@@ -101,15 +108,18 @@ const GameConnector = {
       const mLine = lastWord ? lastWord.line : 0;
       const mKey = `${mPage}_${mLine}`;
 
-      if (!linesMap[mKey]) {
-        linesMap[mKey] = [];
-        linesOrder.push(mKey);
-      }
+      // Only render markers for the active page
+      if (mPage === activePage) {
+        if (!linesMap[mKey]) {
+          linesMap[mKey] = [];
+          linesOrder.push(mKey);
+        }
 
-      linesMap[mKey].push({
-        type: 'marker',
-        ayahNum: a.n
-      });
+        linesMap[mKey].push({
+          type: 'marker',
+          ayahNum: a.n
+        });
+      }
     });
 
     const textFlow = document.createElement('div');

@@ -120,49 +120,70 @@ async function changeSurah(val) {
   // Asynchronously load the selected Surah JSON to populate the range selects
   const surahData = await Database.loadSurah(surahMeta.surahNum);
   if (surahData) {
-    populateRangeSelectors(surahData.ayahs.length);
+    populateRangeSelectors(surahData);
   }
 }
 
-function populateRangeSelectors(total) {
+function populateRangeSelectors(surahData) {
   const startSel = document.getElementById('range-start');
   const endSel = document.getElementById('range-end');
-  if (!startSel || !endSel) return;
+  if (!startSel || !endSel || !surahData) return;
   
   startSel.innerHTML = '';
   endSel.innerHTML = '';
   
+  const total = surahData.ayahs.length;
+  
+  // Populate From Ayah select
   for (let i = 1; i <= total; i++) {
     const optStart = document.createElement('option');
     optStart.value = i;
     optStart.textContent = i;
     startSel.appendChild(optStart);
-    
-    const optEnd = document.createElement('option');
-    optEnd.value = i;
-    optEnd.textContent = i;
-    endSel.appendChild(optEnd);
   }
+
+  // Helper function to update the end selections based on selected startAyah
+  const updateEndSelector = () => {
+    const startVal = parseInt(startSel.value) || 1;
+    const startAyahObj = surahData.ayahs[startVal - 1];
+    const startPage = (startAyahObj && startAyahObj.words[0]) ? startAyahObj.words[0].page : 0;
+    
+    // Save current selection of end select if valid
+    const prevEndVal = parseInt(endSel.value);
+    
+    endSel.innerHTML = '';
+    
+    // We only allow selecting end values that:
+    // 1. are >= startVal
+    // 2. belong to the same page as the startVal Ayah
+    for (let i = startVal; i <= total; i++) {
+      const currentAyahObj = surahData.ayahs[i - 1];
+      const currentPage = (currentAyahObj && currentAyahObj.words[0]) ? currentAyahObj.words[0].page : 0;
+      
+      if (currentPage === startPage) {
+        const optEnd = document.createElement('option');
+        optEnd.value = i;
+        optEnd.textContent = i;
+        endSel.appendChild(optEnd);
+      } else {
+        // If we encounter a different page, we stop since the range must be contiguous on the same page!
+        break;
+      }
+    }
+    
+    // Restore selection or default to the last option on the same page
+    if (prevEndVal >= startVal && endSel.querySelector(`option[value="${prevEndVal}"]`)) {
+      endSel.value = prevEndVal;
+    } else {
+      endSel.selectedIndex = endSel.options.length - 1;
+    }
+  };
+
+  startSel.onchange = updateEndSelector;
   
-  // Default to selecting the whole Surah
+  // Initial run to populate the end dropdown and select the whole page (first page) by default
   startSel.value = 1;
-  endSel.value = total;
-  
-  // Add change listeners to validate boundaries (start <= end)
-  startSel.onchange = () => {
-    const startVal = parseInt(startSel.value);
-    const endVal = parseInt(endSel.value);
-    if (startVal > endVal) {
-      endSel.value = startVal;
-    }
-  };
-  endSel.onchange = () => {
-    const startVal = parseInt(startSel.value);
-    const endVal = parseInt(endSel.value);
-    if (endVal < startVal) {
-      startSel.value = endVal;
-    }
-  };
+  updateEndSelector();
 }
 
 function pickMode(m, el) {
