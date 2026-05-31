@@ -1080,11 +1080,24 @@ function correctPlacement(block, slotIdx) {
   sl.classList.remove('active-target');
   filledSlots.add(slotIdx);
 
-  const pts = mode === 'classic' ? 100 : mode === 'phrase' ? 60 : 30;
+  const basePts = mode === 'classic' ? 50 : mode === 'phrase' ? 30 : 15;
+  const speedBonusMax = mode === 'classic' ? 50 : mode === 'phrase' ? 30 : 15;
+
+  const zone = document.getElementById('fall-zone');
+  const zoneHeight = zone.clientHeight;
+  const blockHeight = fb.offsetHeight || 60;
+  const maxY = zoneHeight - blockHeight - 4;
+
+  const ratio = maxY > 0 ? Math.max(0, Math.min(1, fallY / maxY)) : 1;
+  const bonus = Math.round(speedBonusMax * (1 - ratio));
+  const pts = basePts + bonus;
+
   score += pts;
   placed++;
   spawnScoreFX('+'+pts, fb);
   updateHUD();
+
+  document.getElementById('instbar').textContent = `✅ Correct! +${pts} points (Speed Bonus: +${bonus})`;
 
   setTimeout(() => {
     curBlockQIdx++;
