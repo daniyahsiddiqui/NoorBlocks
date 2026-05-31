@@ -999,7 +999,7 @@ function startFall() {
 function fallLoop() {
   if (blockFrozen) return;
   const fb = document.getElementById('fblock');
-  if (!fb || isDragging) {
+  if (!fb) {
     fallRAF = requestAnimationFrame(fallLoop);
     return;
   }
