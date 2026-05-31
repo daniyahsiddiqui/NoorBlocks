@@ -267,34 +267,25 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 
 /* Surah Banner styling */
 .mushaf-header-banner {
-  border: 1px solid var(--gold);
-  background: linear-gradient(135deg, rgba(200,150,12,0.12), rgba(11,21,14,0.8));
-  outline: 1px solid rgba(200, 150, 12, 0.25);
-  outline-offset: -3px;
-  border-radius: 6px;
-  padding: 8px 12px;
-  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(200, 150, 12, 0.25);
+  padding: 4px 0;
+  margin-bottom: 10px;
   text-align: center;
   user-select: none;
 }
-.mushaf-header-ornament {
-  font-size: 10px;
-  color: var(--gold);
-  opacity: 0.8;
-  letter-spacing: 2px;
-}
 .mushaf-header-title {
   font-family: 'Amiri', serif;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--gold);
-  margin: 2px 0;
-  text-shadow: 0 0 10px rgba(200,150,12,0.4);
+  display: inline-block;
+  text-shadow: 0 0 8px rgba(200,150,12,0.4);
 }
 .mushaf-header-info {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--muted);
-  letter-spacing: 1px;
+  display: inline-block;
+  margin-left: 8px;
 }
 
 /* ── FALL ZONE ── */
@@ -412,16 +403,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   #slots-wrap {
     padding: 10px 10px;
   }
-  .mushaf-header-banner {
-    margin-bottom: 8px !important;
-    padding: 6px 8px !important;
-  }
-  .mushaf-header-title {
-    font-size: 18px !important;
-  }
-  .mushaf-header-ornament {
-    font-size: 8px !important;
-  }
+
   .mushaf-text-flow {
     font-size: 16px !important;
     line-height: 2.1 !important;
@@ -858,9 +840,8 @@ function buildSlotsUI() {
   const header = document.createElement('div');
   header.className = 'mushaf-header-banner';
   header.innerHTML = `
-    <div class="mushaf-header-ornament">✦ 🌟 ✦</div>
-    <div class="mushaf-header-title">${surah.nameAr}</div>
-    <div class="mushaf-header-info">${surah.meta}</div>
+    <span class="mushaf-header-title">${surah.nameAr}</span>
+    <span class="mushaf-header-info">(${surah.meta})</span>
   `;
   c.appendChild(header);
 
