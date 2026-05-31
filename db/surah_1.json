@@ -1,66 +1,117 @@
 {
-  "id": 0,
+  "id": 1,
   "surahNum": 1,
-  "nameAr": "سُورَةُ الفَاتِحَةِ",
-  "nameEn": "Al-Fātiḥah",
-  "nameTr": "THE OPENING",
-  "meta": "7 ayahs · Makkiyya · Page 1",
+  "nameAr": "الفاتحة",
+  "nameEn": "Al-Fatihah",
+  "nameTr": "THE OPENER",
+  "meta": "7 ayahs · Makkah · Page 1",
   "ayahs": [
     {
       "n": 1,
-      "ar": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-      "tr": "In the name of Allah, the Most Gracious, the Most Merciful",
-      "hint": "Starts with Bismillah...",
-      "phrases": ["بِسْمِ ٱللَّهِ", "ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"],
-      "words": ["بِسْمِ", "ٱللَّهِ", "ٱلرَّحْمَٰنِ", "ٱلرَّحِيمِ"]
+      "ar": "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
+      "tr": "In the name of Allāh, the Entirely Merciful, the Especially Merciful.",
+      "hint": "Starts with: بِسْمِ",
+      "phrases": [
+        "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ"
+      ],
+      "words": [
+        "بِسْمِ",
+        "ٱللَّهِ",
+        "ٱلرَّحْمَـٰنِ",
+        "ٱلرَّحِيمِ"
+      ]
     },
     {
       "n": 2,
-      "ar": "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ",
-      "tr": "All praise is for Allah, Lord of all worlds",
-      "hint": "Begins with Al-Hamd...",
-      "phrases": ["ٱلْحَمْدُ لِلَّهِ", "رَبِّ ٱلْعَٰلَمِينَ"],
-      "words": ["ٱلْحَمْدُ", "لِلَّهِ", "رَبِّ", "ٱلْعَٰلَمِينَ"]
+      "ar": "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ",
+      "tr": "[All] praise is [due] to Allāh, Lord of the worlds -",
+      "hint": "Starts with: ٱلْحَمْدُ",
+      "phrases": [
+        "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ"
+      ],
+      "words": [
+        "ٱلْحَمْدُ",
+        "لِلَّهِ",
+        "رَبِّ",
+        "ٱلْعَـٰلَمِينَ"
+      ]
     },
     {
       "n": 3,
-      "ar": "ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-      "tr": "The Most Gracious, the Most Merciful",
-      "hint": "Two of Allah's names...",
-      "phrases": ["ٱلرَّحْمَٰنِ", "ٱلرَّحِيمِ"],
-      "words": ["ٱلرَّحْمَٰنِ", "ٱلرَّحِيمِ"]
+      "ar": "ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
+      "tr": "The Entirely Merciful, the Especially Merciful,",
+      "hint": "Starts with: ٱلرَّحْمَـٰنِ",
+      "phrases": [
+        "ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ"
+      ],
+      "words": [
+        "ٱلرَّحْمَـٰنِ",
+        "ٱلرَّحِيمِ"
+      ]
     },
     {
       "n": 4,
-      "ar": "مَٰلِكِ يَوْمِ ٱلدِّينِ",
-      "tr": "Master of the Day of Judgment",
-      "hint": "Owner of the Day...",
-      "phrases": ["مَٰلِكِ يَوْمِ", "ٱلدِّينِ"],
-      "words": ["مَٰلِكِ", "يَوْمِ", "ٱلدِّينِ"]
+      "ar": "مَـٰلِكِ يَوْمِ ٱلدِّينِ",
+      "tr": "Sovereign of the Day of Recompense.",
+      "hint": "Starts with: مَـٰلِكِ",
+      "phrases": [
+        "مَـٰلِكِ يَوْمِ ٱلدِّينِ"
+      ],
+      "words": [
+        "مَـٰلِكِ",
+        "يَوْمِ",
+        "ٱلدِّينِ"
+      ]
     },
     {
       "n": 5,
-      "ar": "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
-      "tr": "You alone we worship, and You alone we ask for help",
-      "hint": "You alone we worship...",
-      "phrases": ["إِيَّاكَ نَعْبُدُ", "وَإِيَّاكَ نَسْتَعِينُ"],
-      "words": ["إِيَّاكَ", "نَعْبُدُ", "وَإِيَّاكَ", "نَسْتَعِينُ"]
+      "ar": "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+      "tr": "It is You we worship and You we ask for help.",
+      "hint": "Starts with: إِيَّاكَ",
+      "phrases": [
+        "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ"
+      ],
+      "words": [
+        "إِيَّاكَ",
+        "نَعْبُدُ",
+        "وَإِيَّاكَ",
+        "نَسْتَعِينُ"
+      ]
     },
     {
       "n": 6,
-      "ar": "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ",
-      "tr": "Guide us on the straight path",
-      "hint": "Guide us to the path...",
-      "phrases": ["ٱهْدِنَا", "ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ"],
-      "words": ["ٱهْدِنَا", "ٱلصِّرَٰطَ", "ٱلْمُسْتَقِيمَ"]
+      "ar": "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ",
+      "tr": "Guide us to the straight path -",
+      "hint": "Starts with: ٱهْدِنَا",
+      "phrases": [
+        "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ"
+      ],
+      "words": [
+        "ٱهْدِنَا",
+        "ٱلصِّرَٰطَ",
+        "ٱلْمُسْتَقِيمَ"
+      ]
     },
     {
       "n": 7,
-      "ar": "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ",
-      "tr": "The path of those You have blessed — not those who anger You, nor those who go astray",
-      "hint": "The path of those You blessed...",
-      "phrases": ["صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ", "غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ", "وَلَا ٱلضَّآلِّينَ"],
-      "words": ["صِرَٰطَ", "ٱلَّذِينَ", "أَنْعَمْتَ", "عَلَيْهِمْ", "غَيْرِ", "ٱلْمَغْضُوبِ", "وَلَا", "ٱلضَّآلِّينَ"]
+      "ar": "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ",
+      "tr": "The path of those upon whom You have bestowed favor, not of those who have earned [Your] anger or of those who are astray.",
+      "hint": "Starts with: صِرَٰطَ",
+      "phrases": [
+        "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ",
+        "غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ"
+      ],
+      "words": [
+        "صِرَٰطَ",
+        "ٱلَّذِينَ",
+        "أَنْعَمْتَ",
+        "عَلَيْهِمْ",
+        "غَيْرِ",
+        "ٱلْمَغْضُوبِ",
+        "عَلَيْهِمْ",
+        "وَلَا",
+        "ٱلضَّآلِّينَ"
+      ]
     }
   ]
 }

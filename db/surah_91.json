@@ -1,0 +1,231 @@
+{
+  "id": 91,
+  "surahNum": 91,
+  "nameAr": "الشمس",
+  "nameEn": "Ash-Shams",
+  "nameTr": "THE SUN",
+  "meta": "15 ayahs · Makkah · Page 595",
+  "ayahs": [
+    {
+      "n": 1,
+      "ar": " وَٱلشَّمْسِ وَضُحَىٰهَا",
+      "tr": "By the sun and its brightness",
+      "hint": "Starts with: وَٱلشَّمْسِ",
+      "phrases": [
+        "وَٱلشَّمْسِ وَضُحَىٰهَا"
+      ],
+      "words": [
+        "وَٱلشَّمْسِ",
+        "وَضُحَىٰهَا"
+      ]
+    },
+    {
+      "n": 2,
+      "ar": "وَٱلْقَمَرِ إِذَا تَلَىٰهَا",
+      "tr": "And [by] the moon when it follows it",
+      "hint": "Starts with: وَٱلْقَمَرِ",
+      "phrases": [
+        "وَٱلْقَمَرِ إِذَا تَلَىٰهَا"
+      ],
+      "words": [
+        "وَٱلْقَمَرِ",
+        "إِذَا",
+        "تَلَىٰهَا"
+      ]
+    },
+    {
+      "n": 3,
+      "ar": "وَٱلنَّهَارِ إِذَا جَلَّىٰهَا",
+      "tr": "And [by] the day when it displays it",
+      "hint": "Starts with: وَٱلنَّهَارِ",
+      "phrases": [
+        "وَٱلنَّهَارِ إِذَا جَلَّىٰهَا"
+      ],
+      "words": [
+        "وَٱلنَّهَارِ",
+        "إِذَا",
+        "جَلَّىٰهَا"
+      ]
+    },
+    {
+      "n": 4,
+      "ar": "وَٱلَّيْلِ إِذَا يَغْشَىٰهَا",
+      "tr": "And [by] the night when it covers [i.e., conceals] it",
+      "hint": "Starts with: وَٱلَّيْلِ",
+      "phrases": [
+        "وَٱلَّيْلِ إِذَا يَغْشَىٰهَا"
+      ],
+      "words": [
+        "وَٱلَّيْلِ",
+        "إِذَا",
+        "يَغْشَىٰهَا"
+      ]
+    },
+    {
+      "n": 5,
+      "ar": "وَٱلسَّمَآءِ وَمَا بَنَىٰهَا",
+      "tr": "And [by] the sky and He who constructed it",
+      "hint": "Starts with: وَٱلسَّمَآءِ",
+      "phrases": [
+        "وَٱلسَّمَآءِ وَمَا بَنَىٰهَا"
+      ],
+      "words": [
+        "وَٱلسَّمَآءِ",
+        "وَمَا",
+        "بَنَىٰهَا"
+      ]
+    },
+    {
+      "n": 6,
+      "ar": "وَٱلْأَرْضِ وَمَا طَحَىٰهَا",
+      "tr": "And [by] the earth and He who spread it",
+      "hint": "Starts with: وَٱلْأَرْضِ",
+      "phrases": [
+        "وَٱلْأَرْضِ وَمَا طَحَىٰهَا"
+      ],
+      "words": [
+        "وَٱلْأَرْضِ",
+        "وَمَا",
+        "طَحَىٰهَا"
+      ]
+    },
+    {
+      "n": 7,
+      "ar": "وَنَفْسٍ وَمَا سَوَّىٰهَا",
+      "tr": "And [by] the soul and He who proportioned it",
+      "hint": "Starts with: وَنَفْسٍۢ",
+      "phrases": [
+        "وَنَفْسٍۢ وَمَا سَوَّىٰهَا"
+      ],
+      "words": [
+        "وَنَفْسٍۢ",
+        "وَمَا",
+        "سَوَّىٰهَا"
+      ]
+    },
+    {
+      "n": 8,
+      "ar": "فَأَلْهَمَهَا فُجُورَهَا وَتَقْوَىٰهَا",
+      "tr": "And inspired it [with discernment of] its wickedness and its righteousness,",
+      "hint": "Starts with: فَأَلْهَمَهَا",
+      "phrases": [
+        "فَأَلْهَمَهَا فُجُورَهَا وَتَقْوَىٰهَا"
+      ],
+      "words": [
+        "فَأَلْهَمَهَا",
+        "فُجُورَهَا",
+        "وَتَقْوَىٰهَا"
+      ]
+    },
+    {
+      "n": 9,
+      "ar": "قَدْ أَفْلَحَ مَن زَكَّىٰهَا",
+      "tr": "He has succeeded who purifies it,",
+      "hint": "Starts with: قَدْ",
+      "phrases": [
+        "قَدْ أَفْلَحَ مَن زَكَّىٰهَا"
+      ],
+      "words": [
+        "قَدْ",
+        "أَفْلَحَ",
+        "مَن",
+        "زَكَّىٰهَا"
+      ]
+    },
+    {
+      "n": 10,
+      "ar": "وَقَدْ خَابَ مَن دَسَّىٰهَا",
+      "tr": "And he has failed who instills it [with corruption].",
+      "hint": "Starts with: وَقَدْ",
+      "phrases": [
+        "وَقَدْ خَابَ مَن دَسَّىٰهَا"
+      ],
+      "words": [
+        "وَقَدْ",
+        "خَابَ",
+        "مَن",
+        "دَسَّىٰهَا"
+      ]
+    },
+    {
+      "n": 11,
+      "ar": "كَذَّبَتْ ثَمُودُ بِطَغْوَىٰهَآ",
+      "tr": "Thamūd denied [their prophet] by reason of their transgression,",
+      "hint": "Starts with: كَذَّبَتْ",
+      "phrases": [
+        "كَذَّبَتْ ثَمُودُ بِطَغْوَىٰهَآ"
+      ],
+      "words": [
+        "كَذَّبَتْ",
+        "ثَمُودُ",
+        "بِطَغْوَىٰهَآ"
+      ]
+    },
+    {
+      "n": 12,
+      "ar": "إِذِ ٱنۢبَعَثَ أَشْقَىٰهَا",
+      "tr": "When the most wretched of them was sent forth.",
+      "hint": "Starts with: إِذِ",
+      "phrases": [
+        "إِذِ ٱنۢبَعَثَ أَشْقَىٰهَا"
+      ],
+      "words": [
+        "إِذِ",
+        "ٱنۢبَعَثَ",
+        "أَشْقَىٰهَا"
+      ]
+    },
+    {
+      "n": 13,
+      "ar": "فَقَالَ لَهُمْ رَسُولُ ٱللَّهِ نَاقَةَ ٱللَّهِ وَسُقْيَـٰهَا",
+      "tr": "And the messenger of Allāh [i.e., Ṣāliḥ] said to them, \"[Do not harm] the she-camel of Allāh or [prevent her from] her drink.\"",
+      "hint": "Starts with: فَقَالَ",
+      "phrases": [
+        "فَقَالَ لَهُمْ رَسُولُ",
+        "ٱللَّهِ نَاقَةَ ٱللَّهِ وَسُقْيَـٰهَا"
+      ],
+      "words": [
+        "فَقَالَ",
+        "لَهُمْ",
+        "رَسُولُ",
+        "ٱللَّهِ",
+        "نَاقَةَ",
+        "ٱللَّهِ",
+        "وَسُقْيَـٰهَا"
+      ]
+    },
+    {
+      "n": 14,
+      "ar": "فَكَذَّبُوهُ فَعَقَرُوهَا فَدَمْدَمَ عَلَيْهِمْ رَبُّهُم بِذَنۢبِهِمْ فَسَوَّىٰهَا",
+      "tr": "But they denied him and hamstrung her. So their Lord brought down upon them destruction for their sin and made it equal [upon all of them].",
+      "hint": "Starts with: فَكَذَّبُوهُ",
+      "phrases": [
+        "فَكَذَّبُوهُ فَعَقَرُوهَا فَدَمْدَمَ",
+        "عَلَيْهِمْ رَبُّهُم بِذَنۢبِهِمْ فَسَوَّىٰهَا"
+      ],
+      "words": [
+        "فَكَذَّبُوهُ",
+        "فَعَقَرُوهَا",
+        "فَدَمْدَمَ",
+        "عَلَيْهِمْ",
+        "رَبُّهُم",
+        "بِذَنۢبِهِمْ",
+        "فَسَوَّىٰهَا"
+      ]
+    },
+    {
+      "n": 15,
+      "ar": "وَلَا يَخَافُ عُقْبَـٰهَا",
+      "tr": "And He does not fear the consequence thereof.",
+      "hint": "Starts with: وَلَا",
+      "phrases": [
+        "وَلَا يَخَافُ عُقْبَـٰهَا"
+      ],
+      "words": [
+        "وَلَا",
+        "يَخَافُ",
+        "عُقْبَـٰهَا"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "id": 101,
+  "surahNum": 101,
+  "nameAr": "القارعة",
+  "nameEn": "Al-Qari'ah",
+  "nameTr": "THE CALAMITY",
+  "meta": "11 ayahs · Makkah · Page 600",
+  "ayahs": [
+    {
+      "n": 1,
+      "ar": " ٱلْقَارِعَةُ",
+      "tr": "The Striking Calamity -",
+      "hint": "Starts with: ٱلْقَارِعَةُ",
+      "phrases": [
+        "ٱلْقَارِعَةُ"
+      ],
+      "words": [
+        "ٱلْقَارِعَةُ"
+      ]
+    },
+    {
+      "n": 2,
+      "ar": "مَا ٱلْقَارِعَةُ",
+      "tr": "What is the Striking Calamity?",
+      "hint": "Starts with: مَا",
+      "phrases": [
+        "مَا ٱلْقَارِعَةُ"
+      ],
+      "words": [
+        "مَا",
+        "ٱلْقَارِعَةُ"
+      ]
+    },
+    {
+      "n": 3,
+      "ar": "وَمَآ أَدْرَىٰكَ مَا ٱلْقَارِعَةُ",
+      "tr": "And what can make you know what is the Striking Calamity?",
+      "hint": "Starts with: وَمَآ",
+      "phrases": [
+        "وَمَآ أَدْرَىٰكَ مَا ٱلْقَارِعَةُ"
+      ],
+      "words": [
+        "وَمَآ",
+        "أَدْرَىٰكَ",
+        "مَا",
+        "ٱلْقَارِعَةُ"
+      ]
+    },
+    {
+      "n": 4,
+      "ar": "يَوْمَ يَكُونُ ٱلنَّاسُ كَٱلْفَرَاشِ ٱلْمَبْثُوثِ",
+      "tr": "It is the Day when people will be like moths, dispersed,",
+      "hint": "Starts with: يَوْمَ",
+      "phrases": [
+        "يَوْمَ يَكُونُ ٱلنَّاسُ كَٱلْفَرَاشِ ٱلْمَبْثُوثِ"
+      ],
+      "words": [
+        "يَوْمَ",
+        "يَكُونُ",
+        "ٱلنَّاسُ",
+        "كَٱلْفَرَاشِ",
+        "ٱلْمَبْثُوثِ"
+      ]
+    },
+    {
+      "n": 5,
+      "ar": "وَتَكُونُ ٱلْجِبَالُ كَٱلْعِهْنِ ٱلْمَنفُوشِ",
+      "tr": "And the mountains will be like wool, fluffed up.",
+      "hint": "Starts with: وَتَكُونُ",
+      "phrases": [
+        "وَتَكُونُ ٱلْجِبَالُ كَٱلْعِهْنِ ٱلْمَنفُوشِ"
+      ],
+      "words": [
+        "وَتَكُونُ",
+        "ٱلْجِبَالُ",
+        "كَٱلْعِهْنِ",
+        "ٱلْمَنفُوشِ"
+      ]
+    },
+    {
+      "n": 6,
+      "ar": "فَأَمَّا مَن ثَقُلَتْ مَوَٰزِينُهُۥ",
+      "tr": "Then as for one whose scales are heavy [with good deeds],",
+      "hint": "Starts with: فَأَمَّا",
+      "phrases": [
+        "فَأَمَّا مَن ثَقُلَتْ مَوَٰزِينُهُۥ"
+      ],
+      "words": [
+        "فَأَمَّا",
+        "مَن",
+        "ثَقُلَتْ",
+        "مَوَٰزِينُهُۥ"
+      ]
+    },
+    {
+      "n": 7,
+      "ar": "فَهُوَ فِى عِيشَةٍ رَّاضِيَةٍ",
+      "tr": "He will be in a pleasant life.",
+      "hint": "Starts with: فَهُوَ",
+      "phrases": [
+        "فَهُوَ فِى عِيشَةٍۢ رَّاضِيَةٍۢ"
+      ],
+      "words": [
+        "فَهُوَ",
+        "فِى",
+        "عِيشَةٍۢ",
+        "رَّاضِيَةٍۢ"
+      ]
+    },
+    {
+      "n": 8,
+      "ar": "وَأَمَّا مَنْ خَفَّتْ مَوَٰزِينُهُۥ",
+      "tr": "But as for one whose scales are light,",
+      "hint": "Starts with: وَأَمَّا",
+      "phrases": [
+        "وَأَمَّا مَنْ خَفَّتْ مَوَٰزِينُهُۥ"
+      ],
+      "words": [
+        "وَأَمَّا",
+        "مَنْ",
+        "خَفَّتْ",
+        "مَوَٰزِينُهُۥ"
+      ]
+    },
+    {
+      "n": 9,
+      "ar": "فَأُمُّهُۥ هَاوِيَةٌ",
+      "tr": "His refuge will be an abyss.",
+      "hint": "Starts with: فَأُمُّهُۥ",
+      "phrases": [
+        "فَأُمُّهُۥ هَاوِيَةٌۭ"
+      ],
+      "words": [
+        "فَأُمُّهُۥ",
+        "هَاوِيَةٌۭ"
+      ]
+    },
+    {
+      "n": 10,
+      "ar": "وَمَآ أَدْرَىٰكَ مَا هِيَهْ",
+      "tr": "And what can make you know what that is?",
+      "hint": "Starts with: وَمَآ",
+      "phrases": [
+        "وَمَآ أَدْرَىٰكَ مَا هِيَهْ"
+      ],
+      "words": [
+        "وَمَآ",
+        "أَدْرَىٰكَ",
+        "مَا",
+        "هِيَهْ"
+      ]
+    },
+    {
+      "n": 11,
+      "ar": "نَارٌ حَامِيَةٌۢ",
+      "tr": "It is a Fire, intensely hot.",
+      "hint": "Starts with: نَارٌ",
+      "phrases": [
+        "نَارٌ حَامِيَةٌۢ"
+      ],
+      "words": [
+        "نَارٌ",
+        "حَامِيَةٌۢ"
+      ]
+    }
+  ]
+}

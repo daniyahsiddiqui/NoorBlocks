@@ -1,0 +1,89 @@
+{
+  "id": 111,
+  "surahNum": 111,
+  "nameAr": "المسد",
+  "nameEn": "Al-Masad",
+  "nameTr": "THE PALM FIBER",
+  "meta": "5 ayahs · Makkah · Page 603",
+  "ayahs": [
+    {
+      "n": 1,
+      "ar": " تَبَّتْ يَدَآ أَبِى لَهَبٍ وَتَبَّ",
+      "tr": "May the hands of Abū Lahab be ruined, and ruined is he.",
+      "hint": "Starts with: تَبَّتْ",
+      "phrases": [
+        "تَبَّتْ يَدَآ أَبِى لَهَبٍۢ وَتَبَّ"
+      ],
+      "words": [
+        "تَبَّتْ",
+        "يَدَآ",
+        "أَبِى",
+        "لَهَبٍۢ",
+        "وَتَبَّ"
+      ]
+    },
+    {
+      "n": 2,
+      "ar": "مَآ أَغْنَىٰ عَنْهُ مَالُهُۥ وَمَا كَسَبَ",
+      "tr": "His wealth will not avail him or that which he gained.",
+      "hint": "Starts with: مَآ",
+      "phrases": [
+        "مَآ أَغْنَىٰ عَنْهُ",
+        "مَالُهُۥ وَمَا كَسَبَ"
+      ],
+      "words": [
+        "مَآ",
+        "أَغْنَىٰ",
+        "عَنْهُ",
+        "مَالُهُۥ",
+        "وَمَا",
+        "كَسَبَ"
+      ]
+    },
+    {
+      "n": 3,
+      "ar": "سَيَصْلَىٰ نَارًا ذَاتَ لَهَبٍ",
+      "tr": "He will [enter to] burn in a Fire of [blazing] flame",
+      "hint": "Starts with: سَيَصْلَىٰ",
+      "phrases": [
+        "سَيَصْلَىٰ نَارًۭا ذَاتَ لَهَبٍۢ"
+      ],
+      "words": [
+        "سَيَصْلَىٰ",
+        "نَارًۭا",
+        "ذَاتَ",
+        "لَهَبٍۢ"
+      ]
+    },
+    {
+      "n": 4,
+      "ar": "وَٱمْرَأَتُهُۥ حَمَّالَةَ ٱلْحَطَبِ",
+      "tr": "And his wife [as well] - the carrier of firewood.",
+      "hint": "Starts with: وَٱمْرَأَتُهُۥ",
+      "phrases": [
+        "وَٱمْرَأَتُهُۥ حَمَّالَةَ ٱلْحَطَبِ"
+      ],
+      "words": [
+        "وَٱمْرَأَتُهُۥ",
+        "حَمَّالَةَ",
+        "ٱلْحَطَبِ"
+      ]
+    },
+    {
+      "n": 5,
+      "ar": "فِى جِيدِهَا حَبْلٌ مِّن مَّسَدٍۭ",
+      "tr": "Around her neck is a rope of [twisted] fiber.",
+      "hint": "Starts with: فِى",
+      "phrases": [
+        "فِى جِيدِهَا حَبْلٌۭ مِّن مَّسَدٍۭ"
+      ],
+      "words": [
+        "فِى",
+        "جِيدِهَا",
+        "حَبْلٌۭ",
+        "مِّن",
+        "مَّسَدٍۭ"
+      ]
+    }
+  ]
+}

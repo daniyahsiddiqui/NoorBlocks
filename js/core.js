@@ -35,13 +35,60 @@ function populateSurahSelector() {
   changeSurah(0);
 }
 
-function changeSurah(val) {
+async function changeSurah(val) {
   currentSurahIdx = parseInt(val);
-  const surah = Database.surahIndex[currentSurahIdx];
+  const surahMeta = Database.surahIndex[currentSurahIdx];
   const metaLbl = document.getElementById('surah-meta');
-  if (metaLbl && surah) {
-    metaLbl.textContent = surah.meta;
+  if (metaLbl && surahMeta) {
+    metaLbl.textContent = surahMeta.meta;
   }
+  
+  // Asynchronously load the selected Surah JSON to populate the range selects
+  const surahData = await Database.loadSurah(surahMeta.surahNum);
+  if (surahData) {
+    populateRangeSelectors(surahData.ayahs.length);
+  }
+}
+
+function populateRangeSelectors(total) {
+  const startSel = document.getElementById('range-start');
+  const endSel = document.getElementById('range-end');
+  if (!startSel || !endSel) return;
+  
+  startSel.innerHTML = '';
+  endSel.innerHTML = '';
+  
+  for (let i = 1; i <= total; i++) {
+    const optStart = document.createElement('option');
+    optStart.value = i;
+    optStart.textContent = i;
+    startSel.appendChild(optStart);
+    
+    const optEnd = document.createElement('option');
+    optEnd.value = i;
+    optEnd.textContent = i;
+    endSel.appendChild(optEnd);
+  }
+  
+  // Default to selecting the whole Surah
+  startSel.value = 1;
+  endSel.value = total;
+  
+  // Add change listeners to validate boundaries (start <= end)
+  startSel.onchange = () => {
+    const startVal = parseInt(startSel.value);
+    const endVal = parseInt(endSel.value);
+    if (startVal > endVal) {
+      endSel.value = startVal;
+    }
+  };
+  endSel.onchange = () => {
+    const startVal = parseInt(startSel.value);
+    const endVal = parseInt(endSel.value);
+    if (endVal < startVal) {
+      startSel.value = endVal;
+    }
+  };
 }
 
 function pickMode(m, el) {
@@ -102,11 +149,8 @@ async function startGame() {
   // Show screen and launch appropriate engine
   showScreen('game');
 
-  const fallZone = document.getElementById('fall-zone');
   const fbBlock = document.getElementById('fblock');
   const spdBadge = document.getElementById('speed-badge');
-  
-  if (fallZone) fallZone.style.display = 'block';
 
   if (currentGameMode === 'tetris') {
     if (fbBlock) fbBlock.style.display = 'block';
@@ -125,14 +169,19 @@ async function startGame() {
 function buildQueue(surahData) {
   queue = [];
   const surahNum = surahData.surahNum;
-  const ayahs = surahData.ayahs;
+  
+  const startAyah = parseInt(document.getElementById('range-start').value) || 1;
+  const endAyah = parseInt(document.getElementById('range-end').value) || surahData.ayahs.length;
+  
+  const ayahs = surahData.ayahs.filter(a => a.n >= startAyah && a.n <= endAyah);
+  
   ayahs.forEach((a, ai) => {
     const parts = mode === 'classic' ? [a.ar]
                 : mode === 'phrase'  ? a.phrases
                 :                     a.words;
     parts.forEach((txt, pi) => {
       queue.push({
-        ayahIdx: ai,
+        ayahIdx: a.n - startAyah, // Offset index relative to our playing range
         partIdx: pi,
         parts: parts.length,
         ar: txt,
@@ -294,19 +343,24 @@ function gameComplete() {
   confetti();
 
   const surah = Database.surahIndex[currentSurahIdx];
-  document.getElementById('r-sub').textContent = `${surah.nameEn} Complete`;
+  
+  const startAyah = parseInt(document.getElementById('range-start').value) || 1;
+  const endAyah = parseInt(document.getElementById('range-end').value) || Database.currentSurah.ayahs.length;
+  
+  document.getElementById('r-sub').textContent = `${surah.nameEn} (Ayahs ${startAyah}-${endAyah}) Complete`;
   document.getElementById('r-score').textContent = score;
   document.getElementById('r-acc').textContent = acc + '%';
   document.getElementById('r-time').textContent = elapsed + 's';
   document.getElementById('r-star').textContent = acc >= 90 ? '🌟🌟🌟' : acc >= 70 ? '⭐⭐' : '⭐';
   document.getElementById('r-title').textContent = acc >= 90 ? "Masha'Allah! Perfect!" : acc >= 70 ? "Well Done!" : "Keep Practicing!";
   
-  document.getElementById('r-surah-box-t').textContent = `✦ Complete Surah ${surah.nameEn} ✦`;
+  document.getElementById('r-surah-box-t').textContent = `✦ Complete Ayahs ${startAyah}-${endAyah} ✦`;
   
-  // Render completed surah list
+  // Render completed surah list (only of the active range)
   const fullSurahDiv = document.getElementById('full-surah');
   if (fullSurahDiv && Database.currentSurah) {
-    fullSurahDiv.innerHTML = Database.currentSurah.ayahs.map(a => `${a.ar} <span class="an">${a.n}</span> `).join('');
+    const activeAyahs = Database.currentSurah.ayahs.filter(a => a.n >= startAyah && a.n <= endAyah);
+    fullSurahDiv.innerHTML = activeAyahs.map(a => `${a.ar} <span class="an">${a.n}</span> `).join('');
   }
 
   // Reset leaderboard input form
@@ -330,6 +384,10 @@ function gameOver() {
   else GameConnector.stop();
 
   const surah = Database.surahIndex[currentSurahIdx];
+  
+  const startAyah = parseInt(document.getElementById('range-start').value) || 1;
+  const endAyah = parseInt(document.getElementById('range-end').value) || Database.currentSurah.ayahs.length;
+
   document.getElementById('r-star').textContent = '💔';
   document.getElementById('r-title').textContent = 'Keep Practicing!';
   document.getElementById('r-sub').textContent = "You ran out of hearts — you've got this!";
@@ -337,11 +395,12 @@ function gameOver() {
   document.getElementById('r-acc').textContent = '—';
   document.getElementById('r-time').textContent = Math.round((Date.now() - startTs) / 1000) + 's';
   
-  document.getElementById('r-surah-box-t').textContent = `✦ Complete Surah ${surah.nameEn} ✦`;
+  document.getElementById('r-surah-box-t').textContent = `✦ Complete Ayahs ${startAyah}-${endAyah} ✦`;
   
   const fullSurahDiv = document.getElementById('full-surah');
   if (fullSurahDiv && Database.currentSurah) {
-    fullSurahDiv.innerHTML = Database.currentSurah.ayahs.map(a => `${a.ar} <span class="an">${a.n}</span> `).join('');
+    const activeAyahs = Database.currentSurah.ayahs.filter(a => a.n >= startAyah && a.n <= endAyah);
+    fullSurahDiv.innerHTML = activeAyahs.map(a => `${a.ar} <span class="an">${a.n}</span> `).join('');
   }
 
   // Hide high score submission on loss

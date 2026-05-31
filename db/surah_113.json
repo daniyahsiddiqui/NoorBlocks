@@ -1,50 +1,88 @@
 {
-  "id": 3,
+  "id": 113,
   "surahNum": 113,
-  "nameAr": "سُورَةُ الفَلَقِ",
+  "nameAr": "الفلق",
   "nameEn": "Al-Falaq",
   "nameTr": "THE DAYBREAK",
-  "meta": "5 ayahs · Madaniyya · Page 604",
+  "meta": "5 ayahs · Makkah · Page 604",
   "ayahs": [
     {
       "n": 1,
-      "ar": "قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ",
-      "tr": "Say, \"I seek refuge in the Lord of the daybreak\"",
-      "hint": "Say, I seek refuge in the Lord of the dawn...",
-      "phrases": ["قُلْ أَعُوذُ", "بِرَبِّ ٱلْفَلَقِ"],
-      "words": ["قُلْ", "أَعُوذُ", "بِرَبِّ", "ٱلْفَلَقِ"]
+      "ar": " قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ",
+      "tr": "Say, \"I seek refuge in the Lord of daybreak",
+      "hint": "Starts with: قُلْ",
+      "phrases": [
+        "قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ"
+      ],
+      "words": [
+        "قُلْ",
+        "أَعُوذُ",
+        "بِرَبِّ",
+        "ٱلْفَلَقِ"
+      ]
     },
     {
       "n": 2,
-      "ar": "مِن شَرِّ مَا خَلَقَ",
-      "tr": "From the evil of what He created",
-      "hint": "From the evil of what He created...",
-      "phrases": ["مِنَ شَرِّ", "مَا خَلَقَ"],
-      "words": ["مِن", "شَرِّ", "مَا", "خَلَقَ"]
+      "ar": "مِن شَرِّ مَا خَلَقَ",
+      "tr": "From the evil of that which He created",
+      "hint": "Starts with: مِن",
+      "phrases": [
+        "مِن شَرِّ مَا خَلَقَ"
+      ],
+      "words": [
+        "مِن",
+        "شَرِّ",
+        "مَا",
+        "خَلَقَ"
+      ]
     },
     {
       "n": 3,
-      "ar": "وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ",
+      "ar": "وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ",
       "tr": "And from the evil of darkness when it settles",
-      "hint": "And from the evil of darkness...",
-      "phrases": ["وَمِن شَرِّ غَاسِقٍ", "إِذَا وَقَبَ"],
-      "words": ["وَمِن", "شَرِّ", "غَاسِقٍ", "إِذَا", "وَقَبَ"]
+      "hint": "Starts with: وَمِن",
+      "phrases": [
+        "وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ"
+      ],
+      "words": [
+        "وَمِن",
+        "شَرِّ",
+        "غَاسِقٍ",
+        "إِذَا",
+        "وَقَبَ"
+      ]
     },
     {
       "n": 4,
-      "ar": "وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ",
+      "ar": "وَمِن شَرِّ ٱلنَّفَّـٰثَـٰتِ فِى ٱلْعُقَدِ",
       "tr": "And from the evil of the blowers in knots",
-      "hint": "And from the evil of blowers...",
-      "phrases": ["وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ", "فِى ٱلْعُقَدِ"],
-      "words": ["وَمِن", "شَرِّ", "ٱلنَّفَّٰثَٰتِ", "فِى", "ٱلْعُقَدِ"]
+      "hint": "Starts with: وَمِن",
+      "phrases": [
+        "وَمِن شَرِّ ٱلنَّفَّـٰثَـٰتِ فِى ٱلْعُقَدِ"
+      ],
+      "words": [
+        "وَمِن",
+        "شَرِّ",
+        "ٱلنَّفَّـٰثَـٰتِ",
+        "فِى",
+        "ٱلْعُقَدِ"
+      ]
     },
     {
       "n": 5,
-      "ar": "وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ",
-      "tr": "And from the evil of an envier when he envies",
-      "hint": "And from the evil of an envier...",
-      "phrases": ["وَمِن شَرِّ حَاسِدٍ", "إِذَا حَسَدَ"],
-      "words": ["وَمِن", "شَرِّ", "حَاسِدٍ", "إِذَا", "حَسَدَ"]
+      "ar": "وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ",
+      "tr": "And from the evil of an envier when he envies.\"",
+      "hint": "Starts with: وَمِن",
+      "phrases": [
+        "وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ"
+      ],
+      "words": [
+        "وَمِن",
+        "شَرِّ",
+        "حَاسِدٍ",
+        "إِذَا",
+        "حَسَدَ"
+      ]
     }
   ]
 }

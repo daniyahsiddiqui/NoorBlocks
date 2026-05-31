@@ -1,0 +1,126 @@
+{
+  "id": 102,
+  "surahNum": 102,
+  "nameAr": "التكاثر",
+  "nameEn": "At-Takathur",
+  "nameTr": "THE RIVALRY IN WORLD INCREASE",
+  "meta": "8 ayahs · Makkah · Page 600",
+  "ayahs": [
+    {
+      "n": 1,
+      "ar": " أَلْهَىٰكُمُ ٱلتَّكَاثُرُ",
+      "tr": "Competition in [worldly] increase diverts you",
+      "hint": "Starts with: أَلْهَىٰكُمُ",
+      "phrases": [
+        "أَلْهَىٰكُمُ ٱلتَّكَاثُرُ"
+      ],
+      "words": [
+        "أَلْهَىٰكُمُ",
+        "ٱلتَّكَاثُرُ"
+      ]
+    },
+    {
+      "n": 2,
+      "ar": "حَتَّىٰ زُرْتُمُ ٱلْمَقَابِرَ",
+      "tr": "Until you visit the graveyards.",
+      "hint": "Starts with: حَتَّىٰ",
+      "phrases": [
+        "حَتَّىٰ زُرْتُمُ ٱلْمَقَابِرَ"
+      ],
+      "words": [
+        "حَتَّىٰ",
+        "زُرْتُمُ",
+        "ٱلْمَقَابِرَ"
+      ]
+    },
+    {
+      "n": 3,
+      "ar": "كَلَّا سَوْفَ تَعْلَمُونَ",
+      "tr": "No! You are going to know.",
+      "hint": "Starts with: كَلَّا",
+      "phrases": [
+        "كَلَّا سَوْفَ تَعْلَمُونَ"
+      ],
+      "words": [
+        "كَلَّا",
+        "سَوْفَ",
+        "تَعْلَمُونَ"
+      ]
+    },
+    {
+      "n": 4,
+      "ar": "ثُمَّ كَلَّا سَوْفَ تَعْلَمُونَ",
+      "tr": "Then, no! You are going to know.",
+      "hint": "Starts with: ثُمَّ",
+      "phrases": [
+        "ثُمَّ كَلَّا سَوْفَ تَعْلَمُونَ"
+      ],
+      "words": [
+        "ثُمَّ",
+        "كَلَّا",
+        "سَوْفَ",
+        "تَعْلَمُونَ"
+      ]
+    },
+    {
+      "n": 5,
+      "ar": "كَلَّا لَوْ تَعْلَمُونَ عِلْمَ ٱلْيَقِينِ",
+      "tr": "No! If you only knew with knowledge of certainty...",
+      "hint": "Starts with: كَلَّا",
+      "phrases": [
+        "كَلَّا لَوْ تَعْلَمُونَ عِلْمَ ٱلْيَقِينِ"
+      ],
+      "words": [
+        "كَلَّا",
+        "لَوْ",
+        "تَعْلَمُونَ",
+        "عِلْمَ",
+        "ٱلْيَقِينِ"
+      ]
+    },
+    {
+      "n": 6,
+      "ar": "لَتَرَوُنَّ ٱلْجَحِيمَ",
+      "tr": "You will surely see the Hellfire.",
+      "hint": "Starts with: لَتَرَوُنَّ",
+      "phrases": [
+        "لَتَرَوُنَّ ٱلْجَحِيمَ"
+      ],
+      "words": [
+        "لَتَرَوُنَّ",
+        "ٱلْجَحِيمَ"
+      ]
+    },
+    {
+      "n": 7,
+      "ar": "ثُمَّ لَتَرَوُنَّهَا عَيْنَ ٱلْيَقِينِ",
+      "tr": "Then you will surely see it with the eye of certainty.",
+      "hint": "Starts with: ثُمَّ",
+      "phrases": [
+        "ثُمَّ لَتَرَوُنَّهَا عَيْنَ ٱلْيَقِينِ"
+      ],
+      "words": [
+        "ثُمَّ",
+        "لَتَرَوُنَّهَا",
+        "عَيْنَ",
+        "ٱلْيَقِينِ"
+      ]
+    },
+    {
+      "n": 8,
+      "ar": "ثُمَّ لَتُسْـَٔلُنَّ يَوْمَئِذٍ عَنِ ٱلنَّعِيمِ",
+      "tr": "Then you will surely be asked that Day about pleasure.",
+      "hint": "Starts with: ثُمَّ",
+      "phrases": [
+        "ثُمَّ لَتُسْـَٔلُنَّ يَوْمَئِذٍ عَنِ ٱلنَّعِيمِ"
+      ],
+      "words": [
+        "ثُمَّ",
+        "لَتُسْـَٔلُنَّ",
+        "يَوْمَئِذٍ",
+        "عَنِ",
+        "ٱلنَّعِيمِ"
+      ]
+    }
+  ]
+}

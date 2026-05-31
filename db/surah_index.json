@@ -1,42 +1,306 @@
 [
   {
-    "id": 0,
+    "id": 1,
     "surahNum": 1,
-    "nameAr": "سُورَةُ الفَاتِحَةِ",
-    "nameEn": "Al-Fātiḥah",
-    "nameTr": "THE OPENING",
-    "meta": "7 ayahs · Makkiyya · Page 1"
+    "nameAr": "الفاتحة",
+    "nameEn": "Al-Fatihah",
+    "nameTr": "THE OPENER",
+    "meta": "7 ayahs · Makkah · Page 1"
   },
   {
-    "id": 1,
+    "id": 78,
+    "surahNum": 78,
+    "nameAr": "النبإ",
+    "nameEn": "An-Naba",
+    "nameTr": "THE TIDINGS",
+    "meta": "40 ayahs · Makkah · Page 582"
+  },
+  {
+    "id": 79,
+    "surahNum": 79,
+    "nameAr": "النازعات",
+    "nameEn": "An-Nazi'at",
+    "nameTr": "THOSE WHO DRAG FORTH",
+    "meta": "46 ayahs · Makkah · Page 583"
+  },
+  {
+    "id": 80,
+    "surahNum": 80,
+    "nameAr": "عبس",
+    "nameEn": "'Abasa",
+    "nameTr": "HE FROWNED",
+    "meta": "42 ayahs · Makkah · Page 585"
+  },
+  {
+    "id": 81,
+    "surahNum": 81,
+    "nameAr": "التكوير",
+    "nameEn": "At-Takwir",
+    "nameTr": "THE OVERTHROWING",
+    "meta": "29 ayahs · Makkah · Page 586"
+  },
+  {
+    "id": 82,
+    "surahNum": 82,
+    "nameAr": "الإنفطار",
+    "nameEn": "Al-Infitar",
+    "nameTr": "THE CLEAVING",
+    "meta": "19 ayahs · Makkah · Page 587"
+  },
+  {
+    "id": 83,
+    "surahNum": 83,
+    "nameAr": "المطففين",
+    "nameEn": "Al-Mutaffifin",
+    "nameTr": "THE DEFRAUDING",
+    "meta": "36 ayahs · Makkah · Page 587"
+  },
+  {
+    "id": 84,
+    "surahNum": 84,
+    "nameAr": "الإنشقاق",
+    "nameEn": "Al-Inshiqaq",
+    "nameTr": "THE SUNDERING",
+    "meta": "25 ayahs · Makkah · Page 589"
+  },
+  {
+    "id": 85,
+    "surahNum": 85,
+    "nameAr": "البروج",
+    "nameEn": "Al-Buruj",
+    "nameTr": "THE MANSIONS OF THE STARS",
+    "meta": "22 ayahs · Makkah · Page 590"
+  },
+  {
+    "id": 86,
+    "surahNum": 86,
+    "nameAr": "الطارق",
+    "nameEn": "At-Tariq",
+    "nameTr": "THE NIGHTCOMMER",
+    "meta": "17 ayahs · Makkah · Page 591"
+  },
+  {
+    "id": 87,
+    "surahNum": 87,
+    "nameAr": "الأعلى",
+    "nameEn": "Al-A'la",
+    "nameTr": "THE MOST HIGH",
+    "meta": "19 ayahs · Makkah · Page 591"
+  },
+  {
+    "id": 88,
+    "surahNum": 88,
+    "nameAr": "الغاشية",
+    "nameEn": "Al-Ghashiyah",
+    "nameTr": "THE OVERWHELMING",
+    "meta": "26 ayahs · Makkah · Page 592"
+  },
+  {
+    "id": 89,
+    "surahNum": 89,
+    "nameAr": "الفجر",
+    "nameEn": "Al-Fajr",
+    "nameTr": "THE DAWN",
+    "meta": "30 ayahs · Makkah · Page 593"
+  },
+  {
+    "id": 90,
+    "surahNum": 90,
+    "nameAr": "البلد",
+    "nameEn": "Al-Balad",
+    "nameTr": "THE CITY",
+    "meta": "20 ayahs · Makkah · Page 594"
+  },
+  {
+    "id": 91,
+    "surahNum": 91,
+    "nameAr": "الشمس",
+    "nameEn": "Ash-Shams",
+    "nameTr": "THE SUN",
+    "meta": "15 ayahs · Makkah · Page 595"
+  },
+  {
+    "id": 92,
+    "surahNum": 92,
+    "nameAr": "الليل",
+    "nameEn": "Al-Layl",
+    "nameTr": "THE NIGHT",
+    "meta": "21 ayahs · Makkah · Page 595"
+  },
+  {
+    "id": 93,
+    "surahNum": 93,
+    "nameAr": "الضحى",
+    "nameEn": "Ad-Duhaa",
+    "nameTr": "THE MORNING HOURS",
+    "meta": "11 ayahs · Makkah · Page 596"
+  },
+  {
+    "id": 94,
+    "surahNum": 94,
+    "nameAr": "الشرح",
+    "nameEn": "Ash-Sharh",
+    "nameTr": "THE RELIEF",
+    "meta": "8 ayahs · Makkah · Page 596"
+  },
+  {
+    "id": 95,
+    "surahNum": 95,
+    "nameAr": "التين",
+    "nameEn": "At-Tin",
+    "nameTr": "THE FIG",
+    "meta": "8 ayahs · Makkah · Page 597"
+  },
+  {
+    "id": 96,
+    "surahNum": 96,
+    "nameAr": "العلق",
+    "nameEn": "Al-'Alaq",
+    "nameTr": "THE CLOT",
+    "meta": "19 ayahs · Makkah · Page 597"
+  },
+  {
+    "id": 97,
+    "surahNum": 97,
+    "nameAr": "القدر",
+    "nameEn": "Al-Qadr",
+    "nameTr": "THE POWER",
+    "meta": "5 ayahs · Makkah · Page 598"
+  },
+  {
+    "id": 98,
+    "surahNum": 98,
+    "nameAr": "البينة",
+    "nameEn": "Al-Bayyinah",
+    "nameTr": "THE CLEAR PROOF",
+    "meta": "8 ayahs · Madinah · Page 598"
+  },
+  {
+    "id": 99,
+    "surahNum": 99,
+    "nameAr": "الزلزلة",
+    "nameEn": "Az-Zalzalah",
+    "nameTr": "THE EARTHQUAKE",
+    "meta": "8 ayahs · Madinah · Page 599"
+  },
+  {
+    "id": 100,
+    "surahNum": 100,
+    "nameAr": "العاديات",
+    "nameEn": "Al-'Adiyat",
+    "nameTr": "THE COURSER",
+    "meta": "11 ayahs · Makkah · Page 599"
+  },
+  {
+    "id": 101,
+    "surahNum": 101,
+    "nameAr": "القارعة",
+    "nameEn": "Al-Qari'ah",
+    "nameTr": "THE CALAMITY",
+    "meta": "11 ayahs · Makkah · Page 600"
+  },
+  {
+    "id": 102,
+    "surahNum": 102,
+    "nameAr": "التكاثر",
+    "nameEn": "At-Takathur",
+    "nameTr": "THE RIVALRY IN WORLD INCREASE",
+    "meta": "8 ayahs · Makkah · Page 600"
+  },
+  {
+    "id": 103,
+    "surahNum": 103,
+    "nameAr": "العصر",
+    "nameEn": "Al-'Asr",
+    "nameTr": "THE DECLINING DAY",
+    "meta": "3 ayahs · Makkah · Page 601"
+  },
+  {
+    "id": 104,
+    "surahNum": 104,
+    "nameAr": "الهمزة",
+    "nameEn": "Al-Humazah",
+    "nameTr": "THE TRADUCER",
+    "meta": "9 ayahs · Makkah · Page 601"
+  },
+  {
+    "id": 105,
+    "surahNum": 105,
+    "nameAr": "الفيل",
+    "nameEn": "Al-Fil",
+    "nameTr": "THE ELEPHANT",
+    "meta": "5 ayahs · Makkah · Page 601"
+  },
+  {
+    "id": 106,
+    "surahNum": 106,
+    "nameAr": "قريش",
+    "nameEn": "Quraysh",
+    "nameTr": "QURAYSH",
+    "meta": "4 ayahs · Makkah · Page 602"
+  },
+  {
+    "id": 107,
+    "surahNum": 107,
+    "nameAr": "الماعون",
+    "nameEn": "Al-Ma'un",
+    "nameTr": "THE SMALL KINDNESSES",
+    "meta": "7 ayahs · Makkah · Page 602"
+  },
+  {
+    "id": 108,
     "surahNum": 108,
-    "nameAr": "سُورَةُ الكَوْثَرِ",
+    "nameAr": "الكوثر",
     "nameEn": "Al-Kawthar",
     "nameTr": "THE ABUNDANCE",
-    "meta": "3 ayahs · Makkiyya · Page 600"
+    "meta": "3 ayahs · Makkah · Page 602"
   },
   {
-    "id": 2,
+    "id": 109,
+    "surahNum": 109,
+    "nameAr": "الكافرون",
+    "nameEn": "Al-Kafirun",
+    "nameTr": "THE DISBELIEVERS",
+    "meta": "6 ayahs · Makkah · Page 603"
+  },
+  {
+    "id": 110,
+    "surahNum": 110,
+    "nameAr": "النصر",
+    "nameEn": "An-Nasr",
+    "nameTr": "THE DIVINE SUPPORT",
+    "meta": "3 ayahs · Madinah · Page 603"
+  },
+  {
+    "id": 111,
+    "surahNum": 111,
+    "nameAr": "المسد",
+    "nameEn": "Al-Masad",
+    "nameTr": "THE PALM FIBER",
+    "meta": "5 ayahs · Makkah · Page 603"
+  },
+  {
+    "id": 112,
     "surahNum": 112,
-    "nameAr": "سُورَةُ الإِخْلَاصِ",
-    "nameEn": "Al-Ikhlāṣ",
+    "nameAr": "الإخلاص",
+    "nameEn": "Al-Ikhlas",
     "nameTr": "THE SINCERITY",
-    "meta": "4 ayahs · Makkiyya · Page 604"
+    "meta": "4 ayahs · Makkah · Page 604"
   },
   {
-    "id": 3,
+    "id": 113,
     "surahNum": 113,
-    "nameAr": "سُورَةُ الفَلَقِ",
+    "nameAr": "الفلق",
     "nameEn": "Al-Falaq",
     "nameTr": "THE DAYBREAK",
-    "meta": "5 ayahs · Madaniyya · Page 604"
+    "meta": "5 ayahs · Makkah · Page 604"
   },
   {
-    "id": 4,
+    "id": 114,
     "surahNum": 114,
-    "nameAr": "سُورَةُ النَّاسِ",
-    "nameEn": "An-Nās",
+    "nameAr": "الناس",
+    "nameEn": "An-Nas",
     "nameTr": "MANKIND",
-    "meta": "6 ayahs · Madaniyya · Page 604"
+    "meta": "6 ayahs · Makkah · Page 604"
   }
 ]

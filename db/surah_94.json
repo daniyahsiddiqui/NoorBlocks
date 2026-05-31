@@ -1,0 +1,125 @@
+{
+  "id": 94,
+  "surahNum": 94,
+  "nameAr": "الشرح",
+  "nameEn": "Ash-Sharh",
+  "nameTr": "THE RELIEF",
+  "meta": "8 ayahs · Makkah · Page 596",
+  "ayahs": [
+    {
+      "n": 1,
+      "ar": " أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ",
+      "tr": "Did We not expand for you, [O Muḥammad], your breast?",
+      "hint": "Starts with: أَلَمْ",
+      "phrases": [
+        "أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ"
+      ],
+      "words": [
+        "أَلَمْ",
+        "نَشْرَحْ",
+        "لَكَ",
+        "صَدْرَكَ"
+      ]
+    },
+    {
+      "n": 2,
+      "ar": "وَوَضَعْنَا عَنكَ وِزْرَكَ",
+      "tr": "And We removed from you your burden",
+      "hint": "Starts with: وَوَضَعْنَا",
+      "phrases": [
+        "وَوَضَعْنَا عَنكَ وِزْرَكَ"
+      ],
+      "words": [
+        "وَوَضَعْنَا",
+        "عَنكَ",
+        "وِزْرَكَ"
+      ]
+    },
+    {
+      "n": 3,
+      "ar": "ٱلَّذِىٓ أَنقَضَ ظَهْرَكَ",
+      "tr": "Which had weighed upon your back",
+      "hint": "Starts with: ٱلَّذِىٓ",
+      "phrases": [
+        "ٱلَّذِىٓ أَنقَضَ ظَهْرَكَ"
+      ],
+      "words": [
+        "ٱلَّذِىٓ",
+        "أَنقَضَ",
+        "ظَهْرَكَ"
+      ]
+    },
+    {
+      "n": 4,
+      "ar": "وَرَفَعْنَا لَكَ ذِكْرَكَ",
+      "tr": "And raised high for you your repute.",
+      "hint": "Starts with: وَرَفَعْنَا",
+      "phrases": [
+        "وَرَفَعْنَا لَكَ ذِكْرَكَ"
+      ],
+      "words": [
+        "وَرَفَعْنَا",
+        "لَكَ",
+        "ذِكْرَكَ"
+      ]
+    },
+    {
+      "n": 5,
+      "ar": "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
+      "tr": "For indeed, with hardship [will be] ease [i.e., relief].",
+      "hint": "Starts with: فَإِنَّ",
+      "phrases": [
+        "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا"
+      ],
+      "words": [
+        "فَإِنَّ",
+        "مَعَ",
+        "ٱلْعُسْرِ",
+        "يُسْرًا"
+      ]
+    },
+    {
+      "n": 6,
+      "ar": "إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
+      "tr": "Indeed, with hardship [will be] ease.",
+      "hint": "Starts with: إِنَّ",
+      "phrases": [
+        "إِنَّ مَعَ ٱلْعُسْرِ يُسْرًۭا"
+      ],
+      "words": [
+        "إِنَّ",
+        "مَعَ",
+        "ٱلْعُسْرِ",
+        "يُسْرًۭا"
+      ]
+    },
+    {
+      "n": 7,
+      "ar": "فَإِذَا فَرَغْتَ فَٱنصَبْ",
+      "tr": "So when you have finished [your duties], then stand up [for worship].",
+      "hint": "Starts with: فَإِذَا",
+      "phrases": [
+        "فَإِذَا فَرَغْتَ فَٱنصَبْ"
+      ],
+      "words": [
+        "فَإِذَا",
+        "فَرَغْتَ",
+        "فَٱنصَبْ"
+      ]
+    },
+    {
+      "n": 8,
+      "ar": "وَإِلَىٰ رَبِّكَ فَٱرْغَب",
+      "tr": "And to your Lord direct [your] longing.",
+      "hint": "Starts with: وَإِلَىٰ",
+      "phrases": [
+        "وَإِلَىٰ رَبِّكَ فَٱرْغَب"
+      ],
+      "words": [
+        "وَإِلَىٰ",
+        "رَبِّكَ",
+        "فَٱرْغَب"
+      ]
+    }
+  ]
+}
