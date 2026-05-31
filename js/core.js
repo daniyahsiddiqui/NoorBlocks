@@ -17,15 +17,74 @@ let startTs = 0;
 let currentTheme = 'classic';   // 'classic' or 'kids'
 let streak = 0;                 // correct streak counter
 
+let currentUser = null;
+let currentUserProfile = null;
+let currentLeaderboardTab = 'local'; // 'local', 'global', 'friends'
+let activeRoom = null;
+let activeRoomChannel = null;
+let lobbyParticipants = [];
+
 // On page load
 window.addEventListener('DOMContentLoaded', async () => {
   await Database.init();
   populateSurahSelector();
-  renderLeaderboard();
   
   // Load saved theme
   const savedTheme = localStorage.getItem('noorblocks_theme') || 'classic';
   setTheme(savedTheme);
+
+  // Initialize Online status and Auth
+  if (typeof db !== 'undefined' && db.isOnline()) {
+    document.getElementById('auth-btn-login').style.display = 'inline-block';
+    document.getElementById('leaderboard-tabs').style.display = 'flex';
+    
+    db.onAuthChange((user, profile) => {
+      currentUser = user;
+      currentUserProfile = profile;
+      if (user) {
+        document.getElementById('auth-btn-login').style.display = 'none';
+        document.getElementById('auth-user-badge').style.display = 'flex';
+        document.getElementById('auth-user-name').textContent = profile ? (profile.display_name || profile.username) : user.email.split('@')[0];
+        document.getElementById('multiplayer-card').style.display = 'block';
+        
+        // Auto pre-fill player name for results leaderboard input
+        const nameInput = document.getElementById('player-name-input');
+        if (nameInput) nameInput.value = profile ? profile.username : '';
+
+        // If there was a pending room join code, auto-join now
+        if (window.pendingRoomJoinCode) {
+          const code = window.pendingRoomJoinCode;
+          window.pendingRoomJoinCode = null;
+          handleJoinRoom(code);
+        } else {
+          setLeaderboardTab('global');
+        }
+      } else {
+        document.getElementById('auth-btn-login').style.display = 'inline-block';
+        document.getElementById('auth-user-badge').style.display = 'none';
+        document.getElementById('multiplayer-card').style.display = 'none';
+        setLeaderboardTab('local');
+      }
+    });
+
+    // Check if routed directly with room code in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomCode = urlParams.get('room');
+    if (roomCode) {
+      setTimeout(() => {
+        if (!currentUser) {
+          alert("To join lobby room " + roomCode + ", please log in or sign up first!");
+          openAuthModal();
+          window.pendingRoomJoinCode = roomCode;
+        } else {
+          handleJoinRoom(roomCode);
+        }
+      }, 800);
+    }
+  } else {
+    // Offline mode
+    setLeaderboardTab('local');
+  }
 });
 
 function setTheme(name) {
@@ -327,6 +386,10 @@ function updateHUD() {
   const pct = slotCount > 0 ? Math.round((placed / slotCount) * 100) : 0;
   if (progPct) progPct.textContent = pct + '%';
   if (progFill) progFill.style.width = pct + '%';
+
+  if (activeRoom) {
+    broadcastProgress(pct, score, lives, 'playing');
+  }
 }
 
 function updateLives() {
@@ -338,6 +401,11 @@ function updateLives() {
       h.classList.add('gone');
     }
   });
+
+  if (activeRoom) {
+    const pct = slotCount > 0 ? Math.round((placed / slotCount) * 100) : 0;
+    broadcastProgress(pct, score, lives, 'playing');
+  }
 }
 
 function updateInstruction() {
@@ -394,36 +462,76 @@ function saveScore(name, scoreVal, accuracyVal) {
   renderLeaderboard();
 }
 
-function renderLeaderboard() {
+async function renderLeaderboard() {
   const container = document.getElementById('leaderboard-entries');
   if (!container) return;
   
-  const board = getLeaderboard();
-  if (board.length === 0) {
-    container.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:15px;font-size:12px;">No high scores yet. Be the first!</td></tr>`;
-    return;
+  const surah = Database.surahIndex[currentSurahIdx];
+  const surahNum = surah ? surah.surahNum : null;
+
+  if (currentLeaderboardTab === 'local' || !db.isOnline()) {
+    document.getElementById('leaderboard-title-text').textContent = "🏆 Local Scores";
+    const board = getLeaderboard();
+    if (board.length === 0) {
+      container.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:15px;font-size:12px;">No local high scores yet. Be the first!</td></tr>`;
+      return;
+    }
+    container.innerHTML = board.map((item, idx) => {
+      const crown = idx === 0 ? '👑' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : (idx + 1);
+      return `
+        <tr>
+          <td style="color:var(--gold);font-weight:bold;text-align:center">${crown}</td>
+          <td>${escapeHtml(item.name)}</td>
+          <td style="font-size:11px;color:var(--muted)">${item.game} (${item.surah})</td>
+          <td style="text-align:right;color:#EAB020;font-weight:bold;">${item.score}</td>
+          <td style="text-align:right;font-size:11px;color:var(--greenl)">${item.accuracy}</td>
+        </tr>
+      `;
+    }).join('');
+  } else {
+    document.getElementById('leaderboard-title-text').textContent = currentLeaderboardTab === 'global' ? "🌍 Global Scores" : "👥 Friends Scores";
+    container.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:15px;font-size:12px;">Loading scores...</td></tr>`;
+
+    let board = [];
+    if (currentLeaderboardTab === 'global') {
+      board = await db.fetchGlobalLeaderboard(surahNum, mode, currentGameMode);
+    } else {
+      board = await db.fetchFriendsLeaderboard(surahNum, mode, currentGameMode);
+    }
+
+    if (board.length === 0) {
+      container.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:15px;font-size:12px;">No scores found for this Surah/Mode.</td></tr>`;
+      return;
+    }
+
+    container.innerHTML = board.map((item, idx) => {
+      const crown = idx === 0 ? '👑' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : (idx + 1);
+      const name = item.profiles ? (item.profiles.display_name || item.profiles.username) : 'Player';
+      return `
+        <tr>
+          <td style="color:var(--gold);font-weight:bold;text-align:center">${crown}</td>
+          <td>${escapeHtml(name)}</td>
+          <td style="font-size:11px;color:var(--muted)">${currentGameMode === 'tetris' ? 'NoorBlocks' : 'Connector'} (${surah ? surah.nameEn : 'Surah'})</td>
+          <td style="text-align:right;color:#EAB020;font-weight:bold;">${item.score}</td>
+          <td style="text-align:right;font-size:11px;color:var(--greenl)">${Math.round(item.accuracy)}%</td>
+        </tr>
+      `;
+    }).join('');
   }
-  
-  container.innerHTML = board.map((item, idx) => {
-    const crown = idx === 0 ? '👑' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : (idx + 1);
-    return `
-      <tr>
-        <td style="color:var(--gold);font-weight:bold;text-align:center">${crown}</td>
-        <td>${escapeHtml(item.name)}</td>
-        <td style="font-size:11px;color:var(--muted)">${item.game} (${item.surah})</td>
-        <td style="text-align:right;color:#EAB020;font-weight:bold;">${item.score}</td>
-        <td style="text-align:right;font-size:11px;color:var(--greenl)">${item.accuracy}</td>
-      </tr>
-    `;
-  }).join('');
 }
 
-function submitLeaderboard() {
+async function submitLeaderboard() {
   const nameInput = document.getElementById('player-name-input');
   if (!nameInput) return;
   const name = nameInput.value;
   const acc = slotCount + errors > 0 ? Math.round((placed / (placed + errors)) * 100) : 100;
+  
   saveScore(name, score, acc + '%');
+
+  if (db.isOnline() && currentUser) {
+    const surah = Database.surahIndex[currentSurahIdx];
+    await db.uploadScore(surah.surahNum, mode, currentGameMode, score, acc);
+  }
   
   // Disable button and input to prevent duplicate submission
   nameInput.disabled = true;
@@ -457,7 +565,7 @@ function gameComplete() {
   const startAyah = parseInt(document.getElementById('range-start').value) || 1;
   const endAyah = parseInt(document.getElementById('range-end').value) || Database.currentSurah.ayahs.length;
   
-  document.getElementById('r-sub').textContent = `${surah.nameEn} (Ayahs ${startAyah}-${endAyah}) Complete`;
+  document.getElementById('r-sub').textContent = `${surah ? surah.nameEn : 'Surah'} (Ayahs ${startAyah}-${endAyah}) Complete`;
   document.getElementById('r-score').textContent = score;
   document.getElementById('r-acc').textContent = acc + '%';
   document.getElementById('r-time').textContent = elapsed + 's';
@@ -473,17 +581,39 @@ function gameComplete() {
     fullSurahDiv.innerHTML = activeAyahs.map(a => `${a.ar} <span class="an">${a.n}</span> `).join('');
   }
 
-  // Reset leaderboard input form
+  // Reset leaderboard input form & Hide/Show options based on online mode
   const nameInput = document.getElementById('player-name-input');
-  if (nameInput) {
-    nameInput.value = '';
-    nameInput.disabled = false;
-  }
   const subBtn = document.getElementById('leaderboard-sub-btn');
-  if (subBtn) {
-    subBtn.disabled = false;
-    subBtn.textContent = 'Submit';
+  const resultsBox = document.getElementById('lobby-results-box');
+
+  if (activeRoom) {
+    // Hide standard leaderboard input and show lobby results
+    document.querySelector('.leaderboard-input-row').style.display = 'none';
+    resultsBox.style.display = 'block';
+    
+    // Update participant status in DB and broadcast completion
+    db.updateParticipantStatus(activeRoom.id, 'finished', score, acc);
+    broadcastProgress(100, score, lives, 'finished');
+    renderLobbyResultsRankings();
+
+    // Query periodically to show final rankings
+    window.lobbyResultsInterval = setInterval(renderLobbyResultsRankings, 3000);
+  } else {
+    document.querySelector('.leaderboard-input-row').style.display = 'flex';
+    resultsBox.style.display = 'none';
+
+    if (nameInput) {
+      nameInput.value = currentUserProfile ? currentUserProfile.username : '';
+      nameInput.disabled = false;
+    }
+    if (subBtn) {
+      subBtn.disabled = false;
+      subBtn.textContent = 'Submit';
+    }
   }
+
+  // Hide multiplayer HUD overlay
+  document.getElementById('multiplayer-hud').style.display = 'none';
 
   showScreen('result');
 }
@@ -515,25 +645,64 @@ function gameOver() {
 
   // Hide high score submission on loss
   const nameInput = document.getElementById('player-name-input');
-  if (nameInput) nameInput.disabled = true;
   const subBtn = document.getElementById('leaderboard-sub-btn');
-  if (subBtn) {
-    subBtn.disabled = true;
-    subBtn.textContent = 'Locked';
+  const resultsBox = document.getElementById('lobby-results-box');
+
+  if (activeRoom) {
+    document.querySelector('.leaderboard-input-row').style.display = 'none';
+    resultsBox.style.display = 'block';
+
+    const progressPct = slotCount > 0 ? Math.round((placed / slotCount) * 100) : 0;
+    db.updateParticipantStatus(activeRoom.id, 'failed', score, 0);
+    broadcastProgress(progressPct, score, 0, 'failed');
+    renderLobbyResultsRankings();
+
+    window.lobbyResultsInterval = setInterval(renderLobbyResultsRankings, 3000);
+  } else {
+    document.querySelector('.leaderboard-input-row').style.display = 'flex';
+    resultsBox.style.display = 'none';
+
+    if (nameInput) nameInput.disabled = true;
+    if (subBtn) {
+      subBtn.disabled = true;
+      subBtn.textContent = 'Locked';
+    }
   }
+
+  document.getElementById('multiplayer-hud').style.display = 'none';
 
   showScreen('result');
 }
 
 function restartGame() {
-  startGame();
+  if (window.lobbyResultsInterval) {
+    clearInterval(window.lobbyResultsInterval);
+    window.lobbyResultsInterval = null;
+  }
+
+  if (activeRoom) {
+    // If in multiplayer room, returning goes back to lobby, not straight to gameplay
+    enterLobbyView();
+  } else {
+    startGame();
+  }
 }
 
 function goTitle() {
+  if (window.lobbyResultsInterval) {
+    clearInterval(window.lobbyResultsInterval);
+    window.lobbyResultsInterval = null;
+  }
+
   AudioManager.stopPlayingAudio();
   if (currentGameMode === 'tetris') GameTetris.stop();
   else GameConnector.stop();
-  showScreen('title');
+
+  if (activeRoom) {
+    handleLeaveRoom();
+  } else {
+    showScreen('title');
+  }
 }
 
 // Keyboard shortcuts
@@ -574,4 +743,440 @@ function confetti() {
     if (f < 220) requestAnimationFrame(draw);
     else ctx.clearRect(0, 0, cv.width, cv.height);
   })();
+}
+
+// ═══════════════════════════════════════
+//    AUTH & SOCIAL MODALS HELPERS
+// ═══════════════════════════════════════
+function openAuthModal() {
+  const modal = document.getElementById('modal-auth');
+  if (modal) modal.style.display = 'flex';
+  document.getElementById('auth-error-msg').textContent = '';
+}
+
+function closeAuthModal() {
+  const modal = document.getElementById('modal-auth');
+  if (modal) modal.style.display = 'none';
+}
+
+function setAuthTab(tab) {
+  document.getElementById('auth-tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('auth-tab-signup').classList.toggle('active', tab === 'signup');
+  document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('form-signup').style.display = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('auth-error-msg').textContent = '';
+}
+
+async function handleAuthSubmit(event, action) {
+  event.preventDefault();
+  const errorMsg = document.getElementById('auth-error-msg');
+  errorMsg.textContent = '';
+
+  if (action === 'login') {
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-password').value;
+    const { error } = await db.login(email, pass);
+    if (error) {
+      errorMsg.textContent = error.message;
+    } else {
+      closeAuthModal();
+    }
+  } else {
+    const username = document.getElementById('signup-username').value;
+    const displayName = document.getElementById('signup-displayname').value;
+    const email = document.getElementById('signup-email').value;
+    const pass = document.getElementById('signup-password').value;
+    
+    const { error } = await db.signUp(email, pass, username, displayName);
+    if (error) {
+      errorMsg.textContent = error.message;
+    } else {
+      alert("Registration successful! You can now log in.");
+      setAuthTab('login');
+    }
+  }
+}
+
+async function handleLogout() {
+  await db.logout();
+  activeRoom = null;
+  if (activeRoomChannel) {
+    activeRoomChannel.unsubscribe();
+    activeRoomChannel = null;
+  }
+  showScreen('title');
+}
+
+function openSocialModal() {
+  const modal = document.getElementById('modal-social');
+  if (modal) modal.style.display = 'flex';
+  document.getElementById('social-search-input').value = '';
+  document.getElementById('social-search-results').style.display = 'none';
+  loadSocialData();
+}
+
+function closeSocialModal() {
+  const modal = document.getElementById('modal-social');
+  if (modal) modal.style.display = 'none';
+}
+
+async function handleSocialSearch() {
+  const searchStr = document.getElementById('social-search-input').value;
+  const container = document.getElementById('social-search-results');
+  if (!searchStr.trim()) {
+    container.style.display = 'none';
+    return;
+  }
+
+  container.style.display = 'block';
+  container.innerHTML = `<div style="font-size: 11px; color: var(--muted); text-align: center; padding: 4px;">Searching...</div>`;
+
+  const results = await db.searchProfiles(searchStr.trim());
+  if (results.length === 0) {
+    container.innerHTML = `<div style="font-size: 11px; color: var(--muted); text-align: center; padding: 4px;">No users found matching "${escapeHtml(searchStr)}".</div>`;
+    return;
+  }
+
+  const friendships = await db.getFriendships();
+  
+  container.innerHTML = results.map(p => {
+    if (p.id === currentUser.id) return '';
+    
+    const statusObj = friendships.find(f => f.sender_id === p.id || f.receiver_id === p.id);
+    let buttonHtml = `<button class="mrow" onclick="handleSendFriendRequest('${p.id}', this)" style="margin: 0; padding: 4px 8px; font-size: 9px; cursor: pointer; box-shadow: none; border-radius: 6px;">➕ Add</button>`;
+    if (statusObj) {
+      if (statusObj.status === 'accepted') {
+        buttonHtml = `<span style="font-size: 9px; color: var(--greenl);">✓ Friends</span>`;
+      } else {
+        buttonHtml = `<span style="font-size: 9px; color: var(--gold);">⏳ Pending</span>`;
+      }
+    }
+
+    return `
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(200,150,12,0.1);">
+        <span style="font-size: 11px; font-weight: 500; color: #1c1b18;">${escapeHtml(p.display_name || p.username)} (@${escapeHtml(p.username)})</span>
+        ${buttonHtml}
+      </div>
+    `;
+  }).join('');
+}
+
+async function handleSendFriendRequest(targetId, btnElement) {
+  btnElement.disabled = true;
+  btnElement.textContent = "Sending...";
+  const { error } = await db.sendFriendRequest(targetId);
+  if (error) {
+    alert(error.message);
+    btnElement.disabled = false;
+    btnElement.textContent = "Add";
+  } else {
+    btnElement.parentElement.innerHTML = `<span style="font-size: 9px; color: var(--gold);">⏳ Pending</span>`;
+    loadSocialData();
+  }
+}
+
+async function loadSocialData() {
+  if (!db.isOnline() || !currentUser) return;
+  const friendships = await db.getFriendships();
+  
+  const pendingContainer = document.getElementById('social-pending-list');
+  const friendsContainer = document.getElementById('social-friends-list');
+
+  let pendingHtml = '';
+  let friendsHtml = '';
+
+  friendships.forEach(f => {
+    const isSender = f.sender_id === currentUser.id;
+    const friendProfile = isSender ? f.receiver : f.sender;
+    if (!friendProfile) return;
+
+    if (f.status === 'pending') {
+      if (!isSender) {
+        pendingHtml += `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: rgba(200,150,12,0.04); border: 1.5px solid rgba(200,150,12,0.2); border-radius: 8px;">
+            <span style="font-size: 11px; font-weight: 600; color: #1c1b18;">@${escapeHtml(friendProfile.username)}</span>
+            <button class="mrow" onclick="handleAcceptFriend('${f.id}', this)" style="margin: 0; padding: 4px 8px; font-size: 9px; font-weight: 600; cursor: pointer; box-shadow: none; border-radius: 6px;">Accept</button>
+          </div>
+        `;
+      }
+    } else if (f.status === 'accepted') {
+      friendsHtml += `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: rgba(200,150,12,0.02); border: 1px solid rgba(200,150,12,0.1); border-radius: 8px;">
+          <span style="font-size: 11px; font-weight: 600; color: #1c1b18;">${escapeHtml(friendProfile.display_name || friendProfile.username)} (@${escapeHtml(friendProfile.username)})</span>
+          <span style="font-size: 9px; color: var(--greenl);">✓ Friends</span>
+        </div>
+      `;
+    }
+  });
+
+  if (pendingHtml) {
+    document.getElementById('social-pending-section').style.display = 'block';
+    pendingContainer.innerHTML = pendingHtml;
+  } else {
+    document.getElementById('social-pending-section').style.display = 'none';
+  }
+
+  friendsContainer.innerHTML = friendsHtml || `<div style="font-size: 11px; color: var(--muted); text-align: center; padding: 10px;">Add some friends to compete against!</div>`;
+}
+
+async function handleAcceptFriend(friendshipId, btnElement) {
+  btnElement.disabled = true;
+  btnElement.textContent = "Accepting...";
+  await db.acceptFriendRequest(friendshipId);
+  loadSocialData();
+}
+
+// ═══════════════════════════════════════
+//    MULTIPLAYER LOBBY ROOMS HELPERS
+// ═══════════════════════════════════════
+async function handleCreateRoom() {
+  const surah = Database.surahIndex[currentSurahIdx];
+  const startAyah = parseInt(document.getElementById('range-start').value) || 1;
+  const endAyah = parseInt(document.getElementById('range-end').value) || surah.ayahs.length;
+
+  const { room, error } = await db.createRoom(surah.surahNum, startAyah, endAyah, mode, currentGameMode);
+  if (error) {
+    alert("Error creating room: " + error);
+    return;
+  }
+
+  activeRoom = room;
+  enterLobbyView();
+}
+
+async function handleJoinRoom(codeParam = null) {
+  const code = codeParam || document.getElementById('room-code-input').value;
+  if (!code || code.trim().length !== 6) {
+    alert("Please enter a valid 6-character room code.");
+    return;
+  }
+
+  const { room, error } = await db.joinRoom(code);
+  if (error) {
+    alert("Error joining room: " + error);
+    return;
+  }
+
+  activeRoom = room;
+  enterLobbyView();
+}
+
+function enterLobbyView() {
+  // Clear any past lobby results interval
+  if (window.lobbyResultsInterval) {
+    clearInterval(window.lobbyResultsInterval);
+    window.lobbyResultsInterval = null;
+  }
+
+  showScreen('s-lobby');
+  document.getElementById('lobby-code').textContent = activeRoom.invite_code;
+  
+  // Set Surah info
+  const surah = Database.surahIndex.find(s => s.surahNum === activeRoom.surah_num);
+  document.getElementById('lobby-surah-info').textContent = `${surah ? surah.nameEn : 'Surah'} · Ayahs ${activeRoom.range_start}-${activeRoom.range_end} · ${activeRoom.difficulty.toUpperCase()} · ${activeRoom.game_mode.toUpperCase()}`;
+
+  setupRoomRealtime();
+}
+
+function setupRoomRealtime() {
+  if (activeRoomChannel) {
+    activeRoomChannel.unsubscribe();
+  }
+
+  activeRoomChannel = db.setupRoomChannel(
+    activeRoom.id,
+    refreshLobbyParticipants,
+    onGameStartBroadcastReceived,
+    onPlayerProgressBroadcastReceived
+  );
+
+  refreshLobbyParticipants();
+}
+
+async function refreshLobbyParticipants() {
+  if (!activeRoom) return;
+
+  const list = await db.getRoomParticipants(activeRoom.id);
+  lobbyParticipants = list;
+
+  const container = document.getElementById('lobby-participants-list');
+  const countSpan = document.getElementById('lobby-count');
+  countSpan.textContent = list.length;
+
+  // Host buttons check
+  const startBtn = document.getElementById('lobby-start-btn');
+  if (activeRoom.host_id === currentUser.id) {
+    startBtn.style.display = 'block';
+  } else {
+    startBtn.style.display = 'none';
+  }
+
+  // Draw 8 slots
+  let slotsHtml = '';
+  for (let i = 0; i < 8; i++) {
+    const p = list[i];
+    if (p) {
+      const isHost = p.profiles.id === activeRoom.host_id;
+      const statusLabel = isHost ? 'HOST' : p.status === 'ready' ? 'READY' : 'JOINED';
+      const statusClass = isHost ? 'joined' : p.status === 'ready' ? 'ready' : 'joined';
+      
+      slotsHtml += `
+        <div class="lobby-slot">
+          <span style="font-size: 12px; font-weight: 600; color: #1c1b18;">${escapeHtml(p.profiles.display_name || p.profiles.username)}</span>
+          <span class="status-badge ${statusClass}">${statusLabel}</span>
+        </div>
+      `;
+    } else {
+      slotsHtml += `
+        <div class="lobby-slot empty">
+          <span>Open Slot</span>
+        </div>
+      `;
+    }
+  }
+  container.innerHTML = slotsHtml;
+}
+
+function copyInviteLink() {
+  if (!activeRoom) return;
+  const link = `${window.location.origin}${window.location.pathname}?room=${activeRoom.invite_code}`;
+  navigator.clipboard.writeText(link).then(() => {
+    alert("Invite link copied to clipboard: " + link);
+  });
+}
+
+async function handleLeaveRoom() {
+  if (activeRoom) {
+    await db.updateParticipantStatus(activeRoom.id, 'invited');
+    if (activeRoom.host_id === currentUser.id) {
+      await db.setRoomStatus(activeRoom.id, 'finished');
+    }
+  }
+  if (activeRoomChannel) {
+    activeRoomChannel.unsubscribe();
+    activeRoomChannel = null;
+  }
+  activeRoom = null;
+  showScreen('title');
+}
+
+// Host triggers game start
+async function handleStartRoomGame() {
+  if (!activeRoom || !activeRoomChannel) return;
+  
+  await db.setRoomStatus(activeRoom.id, 'playing');
+  await db.updateParticipantStatus(activeRoom.id, 'playing');
+
+  activeRoomChannel.channel.send({
+    type: 'broadcast',
+    event: 'start_game',
+    payload: { start: true }
+  });
+
+  launchRoomGame();
+}
+
+function onGameStartBroadcastReceived(payload) {
+  launchRoomGame();
+}
+
+function launchRoomGame() {
+  document.getElementById('range-start').value = activeRoom.range_start;
+  document.getElementById('range-end').value = activeRoom.range_end;
+  
+  currentGameMode = activeRoom.game_mode;
+  mode = activeRoom.difficulty;
+  
+  const surahIdx = Database.surahIndex.findIndex(s => s.surahNum === activeRoom.surah_num);
+  changeSurah(surahIdx);
+
+  // Clear opponent HUD and show it
+  document.getElementById('multiplayer-hud').style.display = 'flex';
+  document.getElementById('multiplayer-hud').innerHTML = '';
+  opponentStates = {};
+
+  // Start game
+  startGame();
+}
+
+let opponentStates = {};
+
+function onPlayerProgressBroadcastReceived(payload) {
+  const { userId, username, progress, scoreVal, heartsVal, status } = payload;
+  opponentStates[userId] = { username, progress, scoreVal, heartsVal, status };
+  updateMultiplayerHUD();
+}
+
+function broadcastProgress(progressPct, scoreVal, heartsVal, statusStr = 'playing') {
+  if (!activeRoom || !activeRoomChannel) return;
+  
+  activeRoomChannel.channel.send({
+    type: 'broadcast',
+    event: 'player_progress',
+    payload: {
+      userId: currentUser.id,
+      username: currentUserProfile.display_name || currentUserProfile.username,
+      progress: progressPct,
+      scoreVal: scoreVal,
+      heartsVal: heartsVal,
+      status: statusStr
+    }
+  });
+}
+
+function updateMultiplayerHUD() {
+  const container = document.getElementById('multiplayer-hud');
+  if (!container) return;
+
+  let html = '';
+  Object.keys(opponentStates).forEach(uid => {
+    const opp = opponentStates[uid];
+    const livesLabel = opp.status === 'failed' ? '💀 OUT' : opp.status === 'finished' ? '✓ DONE' : '❤️ ' + opp.heartsVal;
+    
+    html += `
+      <div class="hud-opponent-row">
+        <div class="hud-opponent-name">${escapeHtml(opp.username)}</div>
+        <div class="hud-opponent-stats">
+          <span>${opp.scoreVal} pts</span>
+          <span>${livesLabel}</span>
+        </div>
+        <div class="hud-opponent-bar-wrap">
+          <div class="hud-opponent-bar-fill" style="width: ${opp.progress}%;"></div>
+        </div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+async function renderLobbyResultsRankings() {
+  if (!activeRoom) return;
+  const list = await db.getRoomParticipants(activeRoom.id);
+  
+  const sorted = [...list].sort((a, b) => {
+    const scoreA = a.final_score || 0;
+    const scoreB = b.final_score || 0;
+    return scoreB - scoreA;
+  });
+
+  const container = document.getElementById('lobby-results-list');
+  container.innerHTML = sorted.map((p, idx) => {
+    const crown = idx === 0 ? '👑' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '';
+    const name = p.profiles.display_name || p.profiles.username;
+    let scoreText = 'Playing...';
+    if (p.status === 'finished') {
+      scoreText = `${p.final_score} pts (${Math.round(p.final_accuracy)}% Acc)`;
+    } else if (p.status === 'failed') {
+      scoreText = `Failed (${p.final_score} pts)`;
+    } else if (p.status === 'joined') {
+      scoreText = 'Lobby';
+    }
+    
+    return `
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px; background: rgba(200,150,12,0.03); border: 1px solid rgba(200,150,12,0.1); border-radius: 6px; font-size: 11px;">
+        <span style="font-weight: 600; color: #1c1b18;">${crown} ${escapeHtml(name)}</span>
+        <span style="color: var(--gold); font-weight: 700;">${scoreText}</span>
+      </div>
+    `;
+  }).join('');
 }
