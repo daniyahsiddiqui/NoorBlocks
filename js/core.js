@@ -177,7 +177,7 @@ function buildQueue(surahData) {
   surahData.ayahs.forEach((a) => {
     const parts = mode === 'classic' ? [a.ar]
                 : mode === 'phrase'  ? a.phrases
-                :                     a.words;
+                :                     a.words.map(w => w.ar);
     parts.forEach((txt, pi) => {
       if (a.n >= startAyah && a.n <= endAyah) {
         queue.push({

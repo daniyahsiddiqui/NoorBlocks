@@ -141,9 +141,20 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   font-family: 'KFGQPC Uthman Taha Naskh', 'Amiri', serif;
   font-size: 22px;
   line-height: 2.7;
-  text-align: justify;
-  text-align-last: center;
   padding: 0 5px;
+}
+.mushaf-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  direction: rtl;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.mushaf-line.last-line {
+  justify-content: center;
+  gap: 12px;
 }
 .slot {
   display: inline-block;

@@ -39,55 +39,120 @@ const GameConnector = {
     `;
     c.appendChild(header);
 
-    const textFlow = document.createElement('div');
-    textFlow.className = 'mushaf-text-flow';
+    // Group the text flow by lines
+    const linesMap = {};
+    const linesOrder = [];
 
     let absoluteSlotIdx = 0;
     const startAyah = parseInt(document.getElementById('range-start').value) || 1;
     const endAyah = parseInt(document.getElementById('range-end').value) || surah.ayahs.length;
 
     surah.ayahs.forEach((a) => {
+      let wordIdx = 0;
       const parts = mode === 'classic' ? [a.ar]
                   : mode === 'phrase'  ? a.phrases
-                  :                     a.words;
+                  :                     a.words.map(w => w.ar);
       
       parts.forEach((txt, pi) => {
-        const d = document.createElement('div');
-        d.id = 'slot-' + absoluteSlotIdx;
-        d.dataset.idx = absoluteSlotIdx;
-        
-        const labelText = mode === 'classic' ? `${a.n}` : `${a.n}.${pi + 1}`;
-        d.setAttribute('data-label', labelText);
+        let pageNum = 0;
+        let lineNum = 0;
 
-        const isInteractive = (a.n >= startAyah && a.n <= endAyah);
+        if (mode === 'classic') {
+          pageNum = a.words[0] ? a.words[0].page : 0;
+          lineNum = a.words[0] ? a.words[0].line : 0;
+        } else if (mode === 'word') {
+          pageNum = a.words[pi] ? a.words[pi].page : 0;
+          lineNum = a.words[pi] ? a.words[pi].line : 0;
+        } else { // phrase mode
+          const phraseWordsCount = txt.split(/\s+/).filter(Boolean).length;
+          const firstWord = a.words[wordIdx] || a.words[0];
+          pageNum = firstWord ? firstWord.page : 0;
+          lineNum = firstWord ? firstWord.line : 0;
+          wordIdx += phraseWordsCount;
+        }
 
-        if (isInteractive) {
-          d.className = 'slot';
-          d.innerHTML = `<span class="st">${txt}</span><span class="sck">✓</span>`;
-          // In Connector mode, tapping the slot tells them what to do
-          d.addEventListener('click', () => {
-            const inst = document.getElementById('instbar');
-            if (inst && !filledSlots.has(absoluteSlotIdx)) {
-              inst.textContent = `ℹ️ Locate the bubble containing: "${txt}" and double-tap it.`;
-            }
-          });
-        } else {
-          // Pre-filled slot, non-interactive
-          d.className = 'slot filled';
-          d.style.cursor = 'default';
-          d.innerHTML = `<span class="st" style="color: #1C1B18; text-shadow: none;">${txt}</span>`;
+        const key = `${pageNum}_${lineNum}`;
+        if (!linesMap[key]) {
+          linesMap[key] = [];
+          linesOrder.push(key);
+        }
+
+        linesMap[key].push({
+          type: 'slot',
+          idx: absoluteSlotIdx,
+          txt: txt,
+          ayahNum: a.n,
+          isInteractive: (a.n >= startAyah && a.n <= endAyah)
+        });
+
+        if (a.n < startAyah || a.n > endAyah) {
           filledSlots.add(absoluteSlotIdx);
         }
 
-        textFlow.appendChild(d);
         absoluteSlotIdx++;
       });
 
-      // Place decorative ayah marker ornament at the end of each verse
-      const marker = document.createElement('span');
-      marker.className = 'mushaf-ayah-marker';
-      marker.innerHTML = a.n;
-      textFlow.appendChild(marker);
+      // Place decorative ayah marker ornament at the end of the last part of each verse
+      const lastWord = a.words[a.words.length - 1];
+      const mPage = lastWord ? lastWord.page : 0;
+      const mLine = lastWord ? lastWord.line : 0;
+      const mKey = `${mPage}_${mLine}`;
+
+      if (!linesMap[mKey]) {
+        linesMap[mKey] = [];
+        linesOrder.push(mKey);
+      }
+
+      linesMap[mKey].push({
+        type: 'marker',
+        ayahNum: a.n
+      });
+    });
+
+    const textFlow = document.createElement('div');
+    textFlow.className = 'mushaf-text-flow';
+
+    linesOrder.forEach((key, lIdx) => {
+      const lineDiv = document.createElement('div');
+      lineDiv.className = 'mushaf-line';
+      if (lIdx === linesOrder.length - 1) {
+        lineDiv.classList.add('last-line');
+      }
+      
+      const elements = linesMap[key];
+      elements.forEach((el) => {
+        if (el.type === 'slot') {
+          const d = document.createElement('div');
+          d.id = 'slot-' + el.idx;
+          d.dataset.idx = el.idx;
+          
+          const labelText = mode === 'classic' ? `${el.ayahNum}` : `${el.ayahNum}.${el.idx + 1}`;
+          d.setAttribute('data-label', labelText);
+
+          if (el.isInteractive) {
+            d.className = 'slot';
+            d.innerHTML = `<span class="st">${el.txt}</span><span class="sck">✓</span>`;
+            d.addEventListener('click', () => {
+              const inst = document.getElementById('instbar');
+              if (inst && !filledSlots.has(el.idx)) {
+                inst.textContent = `ℹ️ Locate the bubble containing: "${el.txt}" and double-tap it.`;
+              }
+            });
+          } else {
+            d.className = 'slot filled';
+            d.style.cursor = 'default';
+            d.innerHTML = `<span class="st" style="color: #1C1B18; text-shadow: none;">${el.txt}</span>`;
+          }
+          lineDiv.appendChild(d);
+        } else { // marker
+          const marker = document.createElement('span');
+          marker.className = 'mushaf-ayah-marker';
+          marker.innerHTML = el.ayahNum;
+          lineDiv.appendChild(marker);
+        }
+      });
+
+      textFlow.appendChild(lineDiv);
     });
 
     c.appendChild(textFlow);
