@@ -773,9 +773,9 @@ async function handleAuthSubmit(event, action) {
   errorMsg.textContent = '';
 
   if (action === 'login') {
-    const email = document.getElementById('login-email').value;
+    const username = document.getElementById('login-username').value;
     const pass = document.getElementById('login-password').value;
-    const { error } = await db.login(email, pass);
+    const { error } = await db.login(username, pass);
     if (error) {
       errorMsg.textContent = error.message;
     } else {
@@ -784,15 +784,17 @@ async function handleAuthSubmit(event, action) {
   } else {
     const username = document.getElementById('signup-username').value;
     const displayName = document.getElementById('signup-displayname').value;
-    const email = document.getElementById('signup-email').value;
     const pass = document.getElementById('signup-password').value;
     
-    const { error } = await db.signUp(email, pass, username, displayName);
+    const { error } = await db.signUp(username, pass, displayName);
     if (error) {
       errorMsg.textContent = error.message;
     } else {
       alert("Registration successful! You can now log in.");
       setAuthTab('login');
+      // Auto-populate login username
+      const loginUserField = document.getElementById('login-username');
+      if (loginUserField) loginUserField.value = username;
     }
   }
 }

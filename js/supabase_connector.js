@@ -15,7 +15,7 @@ const db = {
   },
 
   // ════════════ AUTH API ════════════
-  async signUp(email, password, username, displayName) {
+  async signUp(username, password, displayName) {
     if (!this.isOnline()) return { error: { message: "Offline Mode active" } };
     
     // Check if username is already taken
@@ -28,6 +28,8 @@ const db = {
     if (existing) {
       return { error: { message: "Username is already taken." } };
     }
+
+    const email = username.trim().toLowerCase() + "@noorblocks.local";
 
     const { data, error } = await supabaseClient.auth.signUp({
       email: email,
@@ -52,8 +54,9 @@ const db = {
     return { data };
   },
 
-  async login(email, password) {
+  async login(username, password) {
     if (!this.isOnline()) return { error: { message: "Offline Mode active" } };
+    const email = username.trim().toLowerCase() + "@noorblocks.local";
     return await supabaseClient.auth.signInWithPassword({ email, password });
   },
 

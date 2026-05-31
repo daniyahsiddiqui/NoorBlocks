@@ -326,8 +326,8 @@
       <!-- Log In Form -->
       <form id="form-login" onsubmit="handleAuthSubmit(event, 'login')">
         <div class="form-group">
-          <label>Email Address</label>
-          <input type="email" id="login-email" required placeholder="name@example.com">
+          <label>Username</label>
+          <input type="text" id="login-username" required placeholder="e.g. daniyah" pattern="^[a-zA-Z0-9_]{3,15}$">
         </div>
         <div class="form-group">
           <label>Password</label>
@@ -345,10 +345,6 @@
         <div class="form-group">
           <label>Display Name</label>
           <input type="text" id="signup-displayname" placeholder="e.g. Daniyah Siddiqui">
-        </div>
-        <div class="form-group">
-          <label>Email Address</label>
-          <input type="email" id="signup-email" required placeholder="name@example.com">
         </div>
         <div class="form-group">
           <label>Password</label>
