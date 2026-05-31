@@ -1,0 +1,72 @@
+{
+  "id": 106,
+  "surahNum": 106,
+  "nameAr": "قريش",
+  "nameEn": "Quraysh",
+  "nameTr": "QURAYSH",
+  "meta": "4 ayahs · Makkah · Page 602",
+  "ayahs": [
+    {
+      "n": 1,
+      "ar": " لِإِيلَـٰفِ قُرَيْشٍ",
+      "tr": "For the accustomed security of the Quraysh -",
+      "hint": "Starts with: لِإِيلَـٰفِ",
+      "phrases": [
+        "لِإِيلَـٰفِ قُرَيْشٍ"
+      ],
+      "words": [
+        "لِإِيلَـٰفِ",
+        "قُرَيْشٍ"
+      ]
+    },
+    {
+      "n": 2,
+      "ar": "إِۦلَـٰفِهِمْ رِحْلَةَ ٱلشِّتَآءِ وَٱلصَّيْفِ",
+      "tr": "Their accustomed security [in] the caravan of winter and summer -",
+      "hint": "Starts with: إِۦلَـٰفِهِمْ",
+      "phrases": [
+        "إِۦلَـٰفِهِمْ رِحْلَةَ ٱلشِّتَآءِ وَٱلصَّيْفِ"
+      ],
+      "words": [
+        "إِۦلَـٰفِهِمْ",
+        "رِحْلَةَ",
+        "ٱلشِّتَآءِ",
+        "وَٱلصَّيْفِ"
+      ]
+    },
+    {
+      "n": 3,
+      "ar": "فَلْيَعْبُدُوا۟ رَبَّ هَـٰذَا ٱلْبَيْتِ",
+      "tr": "Let them worship the Lord of this House,",
+      "hint": "Starts with: فَلْيَعْبُدُوا۟",
+      "phrases": [
+        "فَلْيَعْبُدُوا۟ رَبَّ هَـٰذَا ٱلْبَيْتِ"
+      ],
+      "words": [
+        "فَلْيَعْبُدُوا۟",
+        "رَبَّ",
+        "هَـٰذَا",
+        "ٱلْبَيْتِ"
+      ]
+    },
+    {
+      "n": 4,
+      "ar": "ٱلَّذِىٓ أَطْعَمَهُم مِّن جُوعٍ وَءَامَنَهُم مِّنْ خَوْفٍۭ",
+      "tr": "Who has fed them, [saving them] from hunger and made them safe, [saving them] from fear.",
+      "hint": "Starts with: ٱلَّذِىٓ",
+      "phrases": [
+        "ٱلَّذِىٓ أَطْعَمَهُم مِّن",
+        "جُوعٍۢ وَءَامَنَهُم مِّنْ خَوْفٍۭ"
+      ],
+      "words": [
+        "ٱلَّذِىٓ",
+        "أَطْعَمَهُم",
+        "مِّن",
+        "جُوعٍۢ",
+        "وَءَامَنَهُم",
+        "مِّنْ",
+        "خَوْفٍۭ"
+      ]
+    }
+  ]
+}

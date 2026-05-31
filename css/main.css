@@ -1,6 +1,11 @@
 /* ═══════════════════════════════════════
    NOORBLOCKS CENTRAL CSS DESIGN SYSTEM
 ═══════════════════════════════════════ */
+@font-face {
+  font-family: 'KFGQPC Uthman Taha Naskh';
+  src: url('https://cdn.jsdelivr.net/gh/quran/quran.com-frontend@master/public/fonts/quran/hafs/v1/w01.woff2') format('woff2');
+}
+
 :root {
   --bg:        #080E09;
   --panel:     #0C1810;
@@ -26,7 +31,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 .screen.on{display:flex;}
 
 /* ── HUB / TITLE SCREEN ── */
-#s-title{justify-content:center;padding:28px 20px;gap:18px;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(200,150,12,.07),transparent 70%);}
+#s-title{justify-content:center;padding:28px 20px;gap:15px;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(200,150,12,.07),transparent 70%);}
 .logo-ar{font-family:'Amiri',serif;font-size:44px;color:var(--gold);text-shadow:0 0 40px rgba(200,150,12,.3);text-align:center;line-height:1.2;}
 .logo-en{font-family:'Cinzel',serif;font-size:24px;letter-spacing:5px;text-align:center;}
 .logo-tag{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;text-align:center;}
@@ -48,7 +53,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 .br{background:rgba(184,48,48,.15);color:#E06A6A;border:.5px solid var(--red);}
 
 .select-wrapper {position: relative;width: 100%;}
-#surah-select {
+#surah-select, #range-start, #range-end {
   width: 100%;
   padding: 11px;
   background: rgba(12, 24, 16, 0.85);
@@ -67,7 +72,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   transition: .18s;
   outline: none;
 }
-#surah-select:focus, #surah-select:hover {border-color: var(--gold);background-color: rgba(200, 150, 12, 0.08);}
+#surah-select:focus, #surah-select:hover, #range-start:hover, #range-end:hover {border-color: var(--gold);background-color: rgba(200, 150, 12, 0.08);}
 
 .pbtn{width:100%;max-width:380px;padding:13px;background:linear-gradient(135deg,#17603A,#0C7A6A);border:none;border-radius:12px;color:var(--text);font-family:'Cinzel',serif;font-size:14px;font-weight:600;letter-spacing:2px;cursor:pointer;transition:.2s;}
 .pbtn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(23,120,74,.4);}
@@ -107,18 +112,19 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 #hearts{display:flex;gap:3px;font-size:17px;}
 .h{transition:opacity .3s;}.h.gone{opacity:.18;filter:grayscale(1);}
 
-/* ── MUSHAF LAYOUT ── */
+/* ── MUSHAF PAGE LAYOUT (MADANI SCHEME) ── */
 #slots-wrap {
   flex: 1;
   min-height: 0;
-  background: #09100a;
-  border: 1.5px solid var(--gold);
-  outline: 1.5px solid rgba(200, 150, 12, 0.35);
-  outline-offset: -5px;
-  border-radius: 14px;
-  padding: 16px 14px;
+  background: #FAF7F0; /* Cream paper background */
+  color: #1C1B18; /* Rich charcoal text color */
+  border: 4px double var(--gold);
+  outline: 1.5px solid rgba(200, 150, 12, 0.3);
+  outline-offset: -6px;
+  border-radius: 4px; /* Straight corners like printed mushaf */
+  padding: 18px 16px;
   overflow-y: auto;
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.95), 0 10px 30px rgba(0,0,0,0.6);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
   position: relative;
 }
 #slots-lbl {
@@ -132,16 +138,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 }
 .mushaf-text-flow {
   direction: rtl;
-  font-family: 'Amiri', serif;
-  font-size: 20px;
-  line-height: 2.6;
+  font-family: 'KFGQPC Uthman Taha Naskh', 'Amiri', serif;
+  font-size: 22px;
+  line-height: 2.7;
   text-align: justify;
   text-align-last: center;
   padding: 0 5px;
 }
 .slot {
   display: inline-block;
-  border: 1.5px dashed rgba(200,150,12,.3);
+  border: 1.5px dashed rgba(200,150,12,.4);
   border-radius: 6px;
   margin: 6px 4px;
   padding: 2px 10px;
@@ -163,16 +169,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   font-size: 7.5px;
   color: var(--muted);
   font-family: 'Inter', sans-serif;
-  opacity: 0.65;
+  opacity: 0.75;
   pointer-events: none;
-  background: #09100a;
+  background: #FAF7F0; /* Match cream background */
   padding: 0 3px;
   line-height: 1;
 }
 .slot.filled::before {display: none;}
 .slot .st {
-  font-family: 'Amiri', serif;
-  font-size: 20px;
+  font-family: 'KFGQPC Uthman Taha Naskh', 'Amiri', serif;
+  font-size: 22px;
   direction: rtl;
   color: transparent;
   user-select: none;
@@ -200,30 +206,30 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 }
 .slot.filled {
   border: 1.5px solid var(--green);
-  background: rgba(23,120,74,.15);
-  box-shadow: 0 0 10px rgba(34,176,106,0.15);
+  background: rgba(23,120,74,.05);
+  box-shadow: 0 0 8px rgba(34,176,106,0.1);
 }
 .slot.filled .st {
-  color: var(--text);
-  text-shadow: 0 0 4px rgba(240,232,208,0.3);
+  color: #1C1B18; /* Continuous text flow matches paper */
+  text-shadow: none;
 }
 .slot.filled .sck {opacity: 1;}
 
 .slot.drag-over, .slot.active-target {
   border-color: var(--gold);
-  background: rgba(200,150,12,.12);
-  box-shadow: 0 0 10px rgba(200,150,12,0.4);
+  background: rgba(200,150,12,.08);
+  box-shadow: 0 0 8px rgba(200,150,12,0.3);
 }
 .slot.active-target {
   animation: targetpulse 1.5s ease-in-out infinite alternate;
 }
 @keyframes targetpulse {
-  from { box-shadow: 0 0 4px rgba(200,150,12,.2); border-color: rgba(200,150,12,.5); }
-  to { box-shadow: 0 0 12px rgba(200,150,12,.6); border-color: var(--gold); }
+  from { box-shadow: 0 0 3px rgba(200,150,12,.2); border-color: rgba(200,150,12,.4); }
+  to { box-shadow: 0 0 10px rgba(200,150,12,.5); border-color: var(--gold); }
 }
 .slot.wrong-flash {
   border-color: var(--red);
-  background: rgba(184,48,48,.15);
+  background: rgba(184,48,48,.1);
   animation: wrongpulse .4s ease-out;
 }
 @keyframes wrongpulse {
@@ -231,30 +237,50 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   25% { transform: translateX(-4px); }
   75% { transform: translateX(4px); }
 }
+
+/* ── MADANI AYAH MARKER ROUNDEL ── */
 .mushaf-ayah-marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
   color: var(--gold);
-  font-family: 'Amiri', serif;
-  font-size: 22px;
-  margin: 0 6px;
-  user-select: none;
-  display: inline-block;
-  text-shadow: 0 0 6px rgba(200,150,12,0.4);
+  font-family: 'Inter', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  margin: 0 8px;
+  background: rgba(200, 150, 12, 0.05);
+  box-shadow: 0 0 4px rgba(200, 150, 12, 0.15);
   vertical-align: middle;
+  position: relative;
+  text-shadow: none;
 }
+.mushaf-ayah-marker::before {
+  content: "✦";
+  position: absolute;
+  font-size: 16px;
+  color: rgba(200, 150, 12, 0.12);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .mushaf-header-banner {
-  border-bottom: 1px solid rgba(200, 150, 12, 0.25);
+  border-bottom: 1px solid rgba(200, 150, 12, 0.2);
   padding: 4px 0;
   margin-bottom: 10px;
   text-align: center;
   user-select: none;
 }
 .mushaf-header-title {
-  font-family: 'Amiri', serif;
+  font-family: 'KFGQPC Uthman Taha Naskh', 'Amiri', serif;
   font-size: 18px;
   font-weight: 700;
   color: var(--gold);
   display: inline-block;
-  text-shadow: 0 0 8px rgba(200,150,12,0.4);
+  text-shadow: none;
 }
 .mushaf-header-info {
   font-size: 10px;
@@ -263,7 +289,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   margin-left: 8px;
 }
 
-/* ── FALL ZONE (USED FOR TETRIS & CONNECTOR CANVAS) ── */
+/* ── FALL ZONE (INTERACTION ZONE) ── */
 #fall-zone{
   height:280px;
   flex-shrink:0;
@@ -293,7 +319,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 #fblock.wrong-fx{border-color:var(--red)!important;background:rgba(184,48,48,.15)!important;animation:shakefx .35s ease-out;}
 @keyframes popfx{0%{transform:scale(.95)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
 @keyframes shakefx{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
-.fb-ar{font-family:'Amiri',serif;font-size:22px;direction:rtl;text-align:center;line-height:1.5;color:var(--text);}
+.fb-ar{font-family:'KFGQPC Uthman Taha Naskh', 'Amiri',serif;font-size:22px;direction:rtl;text-align:center;line-height:1.5;color:var(--text);}
 .fb-tr{font-size:11px;color:var(--muted);text-align:center;margin-top:3px;font-style:italic;}
 .fb-hint{font-size:10px;color:var(--gold);text-align:center;margin-top:2px;opacity:0;transition:.2s;}
 #fblock.wrong-fx .fb-hint{opacity:1;}
@@ -347,7 +373,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 .scard .sl2{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
 .surah-box{width:100%;max-width:380px;background:rgba(5,12,8,.8);border:.5px solid var(--goldb);border-radius:14px;padding:18px;}
 .surah-box-t{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:center;margin-bottom:12px;}
-#full-surah{direction:rtl;font-family:'Amiri',serif;font-size:19px;line-height:2;color:var(--text);text-align:justify;}
+#full-surah{direction:rtl;font-family:'KFGQPC Uthman Taha Naskh', 'Amiri',serif;font-size:19px;line-height:2;color:var(--text);text-align:justify;}
 .an{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border:.5px solid var(--gold);border-radius:50%;font-size:11px;color:var(--gold);font-family:'Inter',sans-serif;vertical-align:middle;margin:0 3px;}
 
 /* ── SCORE FX & CONFETTI ── */
@@ -435,7 +461,51 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   cursor: not-allowed;
 }
 
-/* ── RESPONSIVE MOBILE STYLES ── */
+/* ── SIDE-BY-SIDE LANDSCAPE ADAPTIVE GRID ── */
+@media (orientation: landscape) {
+  #game-wrap {
+    display: grid !important;
+    grid-template-columns: 4fr 6fr !important;
+    grid-template-rows: auto 1fr auto auto !important;
+    max-width: 960px !important;
+    height: 100dvh !important;
+    padding: 10px 15px 6px !important;
+    gap: 8px !important;
+  }
+  #ghdr {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+  }
+  #fall-zone {
+    grid-column: 1;
+    grid-row: 2;
+    height: 100% !important;
+    min-height: 0;
+  }
+  #slots-wrap {
+    grid-column: 2;
+    grid-row: 2;
+    height: 100% !important;
+    min-height: 0;
+  }
+  #instbar {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+    padding: 4px 8px !important;
+    min-height: auto !important;
+    font-size: 10px !important;
+  }
+  #progrow {
+    grid-column: 1 / span 2;
+    grid-row: 4;
+  }
+  .mushaf-text-flow {
+    font-size: 20px !important;
+    line-height: 2.4 !important;
+  }
+}
+
+/* ── RESPONSIVE MOBILE STYLES (PORTRAIT) ── */
 @media (max-width: 480px), (max-height: 760px) {
   #game-wrap {
     padding: 6px 8px 4px;
@@ -459,6 +529,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   .slot::before {
     top: -9px !important;
     font-size: 6.5px !important;
+    background: #FAF7F0; /* Sync with cream background */
   }
   .mushaf-ayah-marker {
     font-size: 18px !important;

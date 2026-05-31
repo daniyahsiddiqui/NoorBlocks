@@ -1,34 +1,53 @@
 {
-  "id": 1,
+  "id": 108,
   "surahNum": 108,
-  "nameAr": "سُورَةُ الكَوْثَرِ",
+  "nameAr": "الكوثر",
   "nameEn": "Al-Kawthar",
   "nameTr": "THE ABUNDANCE",
-  "meta": "3 ayahs · Makkiyya · Page 600",
+  "meta": "3 ayahs · Makkah · Page 602",
   "ayahs": [
     {
       "n": 1,
-      "ar": "إِنَّآ أَعْطَيْنَٰكَ ٱلْكَوْثَرَ",
-      "tr": "Indeed, We have granted you, [O Muhammad], al-Kawthar",
-      "hint": "Indeed, We granted you...",
-      "phrases": ["إِنَّآ أَعْطَيْنَٰكَ", "ٱلْكَوْثَرَ"],
-      "words": ["إِنَّآ", "أَعْطَيْنَٰكَ", "ٱلْكَوْثَرَ"]
+      "ar": " إِنَّآ أَعْطَيْنَـٰكَ ٱلْكَوْثَرَ",
+      "tr": "Indeed, We have granted you, [O Muḥammad], al-Kawthar.",
+      "hint": "Starts with: إِنَّآ",
+      "phrases": [
+        "إِنَّآ أَعْطَيْنَـٰكَ ٱلْكَوْثَرَ"
+      ],
+      "words": [
+        "إِنَّآ",
+        "أَعْطَيْنَـٰكَ",
+        "ٱلْكَوْثَرَ"
+      ]
     },
     {
       "n": 2,
-      "ar": "فَصَلِّ لِرَبِّكَ وَٱنْحَرْ",
-      "tr": "So pray to your Lord and sacrifice [to Him alone]",
-      "hint": "So pray to your Lord...",
-      "phrases": ["فَصَلِّ لِرَبِّكَ", "وَٱنْحَرْ"],
-      "words": ["فَصَلِّ", "لِرَبِّكَ", "وَٱنْحَرْ"]
+      "ar": "فَصَلِّ لِرَبِّكَ وَٱنْحَرْ",
+      "tr": "So pray to your Lord and offer sacrifice [to Him alone].",
+      "hint": "Starts with: فَصَلِّ",
+      "phrases": [
+        "فَصَلِّ لِرَبِّكَ وَٱنْحَرْ"
+      ],
+      "words": [
+        "فَصَلِّ",
+        "لِرَبِّكَ",
+        "وَٱنْحَرْ"
+      ]
     },
     {
       "n": 3,
-      "ar": "إِنَّ شَانِئَكَ هُوَ ٱلْأَبْتَرُ",
-      "tr": "Indeed, your enemy is the one cut off",
-      "hint": "Indeed, your enemy...",
-      "phrases": ["إِنَّ شَانِئَكَ", "هُوَ ٱلْأَبْتَرُ"],
-      "words": ["إِنَّ", "شَانِئَكَ", "هُوَ", "ٱلْأَبْتَرُ"]
+      "ar": "إِنَّ شَانِئَكَ هُوَ ٱلْأَبْتَرُ",
+      "tr": "Indeed, your enemy is the one cut off.",
+      "hint": "Starts with: إِنَّ",
+      "phrases": [
+        "إِنَّ شَانِئَكَ هُوَ ٱلْأَبْتَرُ"
+      ],
+      "words": [
+        "إِنَّ",
+        "شَانِئَكَ",
+        "هُوَ",
+        "ٱلْأَبْتَرُ"
+      ]
     }
   ]
 }

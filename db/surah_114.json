@@ -1,58 +1,96 @@
 {
-  "id": 4,
+  "id": 114,
   "surahNum": 114,
-  "nameAr": "سُورَةُ النَّاسِ",
-  "nameEn": "An-Nās",
+  "nameAr": "الناس",
+  "nameEn": "An-Nas",
   "nameTr": "MANKIND",
-  "meta": "6 ayahs · Madaniyya · Page 604",
+  "meta": "6 ayahs · Makkah · Page 604",
   "ayahs": [
     {
       "n": 1,
-      "ar": "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ",
-      "tr": "Say, \"I seek refuge in the Lord of mankind\"",
-      "hint": "Say, I seek refuge in the Lord of people...",
-      "phrases": ["قُلْ أَعُوذُ", "بِرَبِّ ٱلنَّاسِ"],
-      "words": ["قُلْ", "أَعُوذُ", "بِرَبِّ", "ٱلنَّاسِ"]
+      "ar": " قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ",
+      "tr": "Say, \"I seek refuge in the Lord of mankind,",
+      "hint": "Starts with: قُلْ",
+      "phrases": [
+        "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"
+      ],
+      "words": [
+        "قُلْ",
+        "أَعُوذُ",
+        "بِرَبِّ",
+        "ٱلنَّاسِ"
+      ]
     },
     {
       "n": 2,
-      "ar": "مَلِكِ ٱلنَّاسِ",
-      "tr": "The Sovereign of mankind",
-      "hint": "The King of mankind...",
-      "phrases": ["مَلِكِ ٱلنَّاسِ"],
-      "words": ["مَلِكِ", "ٱلنَّاسِ"]
+      "ar": "مَلِكِ ٱلنَّاسِ",
+      "tr": "The Sovereign of mankind,",
+      "hint": "Starts with: مَلِكِ",
+      "phrases": [
+        "مَلِكِ ٱلنَّاسِ"
+      ],
+      "words": [
+        "مَلِكِ",
+        "ٱلنَّاسِ"
+      ]
     },
     {
       "n": 3,
-      "ar": "إِلَٰهِ ٱلنَّاسِ",
-      "tr": "The God of mankind",
-      "hint": "The God of mankind...",
-      "phrases": ["إِلَٰهِ ٱلنَّاسِ"],
-      "words": ["إِلَٰهِ", "ٱلنَّاسِ"]
+      "ar": "إِلَـٰهِ ٱلنَّاسِ",
+      "tr": "The God of mankind,",
+      "hint": "Starts with: إِلَـٰهِ",
+      "phrases": [
+        "إِلَـٰهِ ٱلنَّاسِ"
+      ],
+      "words": [
+        "إِلَـٰهِ",
+        "ٱلنَّاسِ"
+      ]
     },
     {
       "n": 4,
-      "ar": "مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ",
-      "tr": "From the evil of the retreating whisperer",
-      "hint": "From the evil of the whisperer...",
-      "phrases": ["مِن شَرِّ ٱلْوَسْوَاسِ", "ٱلْخَنَّاسِ"],
-      "words": ["مِن", "شَرِّ", "ٱلْوَسْوَاسِ", "ٱلْخَنَّاسِ"]
+      "ar": "مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ",
+      "tr": "From the evil of the retreating whisperer -",
+      "hint": "Starts with: مِن",
+      "phrases": [
+        "مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ"
+      ],
+      "words": [
+        "مِن",
+        "شَرِّ",
+        "ٱلْوَسْوَاسِ",
+        "ٱلْخَنَّاسِ"
+      ]
     },
     {
       "n": 5,
-      "ar": "ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ",
-      "tr": "Who whispers [evil] into the breasts of mankind",
-      "hint": "Who whispers in people's chests...",
-      "phrases": ["ٱلَّذِى يُوَسْوِسُ", "فِى صُدُورِ ٱلنَّاسِ"],
-      "words": ["ٱلَّذِى", "يُوَسْوِسُ", "فِى", "صُدُورِ", "ٱلنَّاسِ"]
+      "ar": "ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ",
+      "tr": "Who whispers [evil] into the breasts of mankind -",
+      "hint": "Starts with: ٱلَّذِى",
+      "phrases": [
+        "ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ"
+      ],
+      "words": [
+        "ٱلَّذِى",
+        "يُوَسْوِسُ",
+        "فِى",
+        "صُدُورِ",
+        "ٱلنَّاسِ"
+      ]
     },
     {
       "n": 6,
-      "ar": "مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ",
-      "tr": "From among jinn and mankind",
-      "hint": "From among jinn and mankind...",
-      "phrases": ["مِنَ ٱلْجِنَّةِ", "وَٱلنَّاسِ"],
-      "words": ["مِنَ", "ٱلْجِنَّةِ", "وَٱلنَّاسِ"]
+      "ar": "مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ",
+      "tr": "From among the jinn and mankind\".",
+      "hint": "Starts with: مِنَ",
+      "phrases": [
+        "مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ"
+      ],
+      "words": [
+        "مِنَ",
+        "ٱلْجِنَّةِ",
+        "وَٱلنَّاسِ"
+      ]
     }
   ]
 }

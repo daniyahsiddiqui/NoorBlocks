@@ -65,7 +65,7 @@ const GameConnector = {
       if (b.partIdx === b.parts - 1) {
         const marker = document.createElement('span');
         marker.className = 'mushaf-ayah-marker';
-        marker.innerHTML = `﴿${b.ayahIdx + 1}﴾`;
+        marker.innerHTML = b.verseNum;
         textFlow.appendChild(marker);
       }
     });
