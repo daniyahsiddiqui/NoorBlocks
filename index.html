@@ -464,6 +464,18 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
     font-size: 18px !important;
   }
 }
+
+@media (max-width: 480px) {
+  #ctrls {
+    display: none !important;
+  }
+  #next-box {
+    display: none !important;
+  }
+  #fall-zone {
+    height: 280px !important; /* Taller catch zone on phones */
+  }
+}
 </style>
 </head>
 <body>
@@ -998,8 +1010,15 @@ function updateInstruction() {
   const block = queue[shuffledOrder[curBlockQIdx]];
   const slotLabel = mode === 'classic' ? `Ayah ${currentTargetSlot+1}`
     : `Slot ${currentTargetSlot+1}`;
-  document.getElementById('instbar').textContent =
-    `Targeting: ${slotLabel} · Use ← → to change slot · ↓ Place to confirm`;
+  
+  const isMobile = window.innerWidth <= 480;
+  if (isMobile) {
+    document.getElementById('instbar').textContent =
+      `Targeting: ${slotLabel} · Drag block to the correct slot`;
+  } else {
+    document.getElementById('instbar').textContent =
+      `Targeting: ${slotLabel} · Use ← → to change slot · ↓ Place to confirm`;
+  }
 }
 
 /* ═══════════════════════════════════════
