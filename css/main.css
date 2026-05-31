@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+
 /* ═══════════════════════════════════════
    NOORBLOCKS CENTRAL CSS DESIGN SYSTEM
 ═══════════════════════════════════════ */
@@ -545,4 +547,304 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   .stat .sv {
     font-size: 18px !important;
   }
+}
+
+/* ═══════════════════════════════════════
+   NOORKIDS PLAYGROUND THEME & BONUSES
+═══════════════════════════════════════ */
+.theme-kids {
+  --bg:        #E8F4FD; /* Soft sky blue */
+  --panel:     #FFFFFF; /* White cards with high-contrast shadows */
+  --gold:      #FF9F43; /* Soft friendly orange */
+  --goldb:     rgba(255, 159, 67, 0.3);
+  --green:     #2EE59D; /* Mint green */
+  --greenl:    #4AF3B4;
+  --teal:      #33C2FF; /* Bright sky teal */
+  --red:       #FF5E7E; /* Soft red/pink */
+  --text:      #2D3748; /* Slate blue for readable text */
+  --muted:     #718096; /* Slate gray */
+  --dim:       #D9EAFD;
+  --accent:    #9B5DE5; /* Playful purple */
+  font-family: 'Fredoka', 'Inter', sans-serif !important;
+}
+
+/* Clouds background decoration in kids mode */
+.theme-kids::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 80px, transparent 80px),
+    radial-gradient(circle at 15% 24%, rgba(255, 255, 255, 0.8) 100px, transparent 100px),
+    radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.6) 70px, transparent 70px),
+    radial-gradient(circle at 84% 63%, rgba(255, 255, 255, 0.6) 90px, transparent 90px);
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.theme-kids #geo {
+  opacity: 0.12 !important;
+}
+.theme-kids #geo pattern polygon {
+  stroke: var(--accent) !important;
+}
+
+/* Bouncy bubbly layout overrides */
+.theme-kids .logo-ar {
+  color: var(--accent) !important;
+  text-shadow: 0 4px 0 rgba(155, 93, 229, 0.15);
+}
+.theme-kids .logo-en {
+  font-family: 'Fredoka', sans-serif;
+  color: var(--teal) !important;
+  letter-spacing: 2px;
+}
+.theme-kids .logo-tag {
+  color: var(--muted) !important;
+}
+
+.theme-kids .card {
+  background: #FFFFFF !important;
+  border: 3px solid #E2E8F0 !important;
+  box-shadow: 0 6px 0 #CBD5E0 !important;
+  border-radius: 18px !important;
+  color: #2D3748 !important;
+}
+.theme-kids .card-t {
+  color: var(--accent) !important;
+  font-weight: 700 !important;
+}
+
+.theme-kids .mrow {
+  border: 2px solid #E2E8F0 !important;
+  box-shadow: 0 4px 0 #CBD5E0 !important;
+  background: #F8FAFC !important;
+  border-radius: 14px !important;
+  color: #2D3748 !important;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.theme-kids .mrow:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #CBD5E0 !important;
+}
+.theme-kids .mrow.sel {
+  border-color: var(--accent) !important;
+  background: #FAF5FF !important;
+  box-shadow: 0 4px 0 #D6BCFA !important;
+  color: var(--accent) !important;
+}
+
+.theme-kids #surah-select,
+.theme-kids #range-start,
+.theme-kids #range-end {
+  background-color: #FFFFFF !important;
+  border: 2px solid #E2E8F0 !important;
+  border-radius: 12px !important;
+  color: #2D3748 !important;
+  box-shadow: 0 3px 0 #E2E8F0 !important;
+}
+.theme-kids #surah-select:hover,
+.theme-kids #range-start:hover,
+.theme-kids #range-end:hover {
+  border-color: var(--accent) !important;
+}
+
+.theme-kids .leaderboard-card {
+  background: #FFFFFF !important;
+  border: 3px solid #E2E8F0 !important;
+  box-shadow: 0 6px 0 #CBD5E0 !important;
+  border-radius: 18px !important;
+  color: #2D3748 !important;
+}
+
+.theme-kids .pbtn {
+  background: linear-gradient(135deg, #FF9F43, #FF5E7E) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 6px 0 #D6761A !important;
+  font-family: 'Fredoka', sans-serif !important;
+  font-weight: 700 !important;
+  border: none !important;
+  transition: transform 0.1s ease, box-shadow 0.1s ease !important;
+}
+.theme-kids .pbtn:hover {
+  transform: translateY(2px) !important;
+  box-shadow: 0 4px 0 #D6761A !important;
+}
+
+.theme-kids #game-wrap {
+  gap: 12px !important;
+}
+
+/* Kids Game Screen HUD Styling */
+.theme-kids #ghdr {
+  background: #FFFFFF !important;
+  border: 3px solid #E2E8F0 !important;
+  box-shadow: 0 5px 0 #CBD5E0 !important;
+  border-radius: 16px !important;
+  padding: 10px 15px !important;
+  color: #2D3748 !important;
+}
+.theme-kids .surah-lbl {
+  color: var(--accent) !important;
+}
+
+/* Kids Slots Board Styling */
+.theme-kids #slots-wrap {
+  background: #FFFDF0 !important;
+  color: #2D3748 !important;
+  border: 3px solid var(--accent) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 6px 0 rgba(155, 93, 229, 0.25) !important;
+  outline: none !important;
+}
+.theme-kids #slots-lbl {
+  color: var(--accent) !important;
+  font-weight: 700 !important;
+}
+
+.theme-kids .slot {
+  border-bottom: 3px dashed var(--accent) !important;
+  background: rgba(155, 93, 229, 0.04) !important;
+  border-radius: 0 !important;
+}
+.theme-kids .slot.filled {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.theme-kids .slot.filled .st {
+  color: #2D3748 !important;
+}
+
+.theme-kids .slot.drag-over, .theme-kids .slot.active-target {
+  border-bottom: 3px solid var(--accent) !important;
+  background: rgba(155, 93, 229, 0.12) !important;
+  box-shadow: 0 3px 8px rgba(155, 93, 229, 0.2) !important;
+}
+
+/* Balloon Verse Roundels */
+.theme-kids .mushaf-ayah-marker {
+  border: 2.5px solid var(--accent) !important;
+  background: #E8F4FD !important;
+  color: var(--accent) !important;
+  box-shadow: 0 3px 0 rgba(155, 93, 229, 0.2) !important;
+  font-family: 'Fredoka', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 9px !important;
+  width: 26px !important;
+  height: 26px !important;
+}
+.theme-kids .mushaf-ayah-marker::before {
+  content: "🎈" !important;
+  font-size: 16px !important;
+  opacity: 0.3 !important;
+}
+
+/* Interaction zone in Kids Mode */
+.theme-kids #fall-zone {
+  background: #EDF2F7 !important;
+  border: 3px solid #E2E8F0 !important;
+  border-radius: 18px !important;
+  box-shadow: inset 0 4px 10px rgba(0,0,0,0.05) !important;
+}
+.theme-kids #fall-lbl {
+  color: var(--muted) !important;
+}
+
+/* Falling block kids styling */
+.theme-kids #fblock {
+  background: #FFFFFF !important;
+  border: 3px solid var(--accent) !important;
+  box-shadow: 0 5px 0 rgba(155, 93, 229, 0.2) !important;
+  border-radius: 16px !important;
+}
+.theme-kids .fb-ar {
+  color: #2D3748 !important;
+}
+
+/* Kids Mode Connector Bubbles */
+.theme-kids .bubble {
+  background: #FFFFFF !important;
+  border: 3px solid var(--accent) !important;
+  box-shadow: 0 4px 0 rgba(155, 93, 229, 0.2) !important;
+  border-radius: 20px !important;
+  font-family: 'Fredoka', sans-serif !important;
+  font-weight: 700 !important;
+  color: #2D3748 !important;
+}
+.theme-kids .bubble:hover {
+  background: #FAF5FF !important;
+  border-color: var(--teal) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Instruction Bar kids styling */
+.theme-kids #instbar {
+  background: #FFFFFF !important;
+  border: 2px solid #E2E8F0 !important;
+  box-shadow: 0 3px 0 #CBD5E0 !important;
+  border-radius: 12px !important;
+  color: #2D3748 !important;
+  font-family: 'Fredoka', sans-serif !important;
+  font-weight: 600 !important;
+}
+
+/* Result screen kids styling */
+.theme-kids #s-result {
+  background: radial-gradient(circle, #FAF5FF, #E8F4FD) !important;
+}
+.theme-kids .scard {
+  background: #FFFFFF !important;
+  border: 3px solid #E2E8F0 !important;
+  box-shadow: 0 4px 0 #CBD5E0 !important;
+  border-radius: 16px !important;
+}
+
+/* Floating Combo Indicator Popups */
+.combo-popup {
+  position: fixed;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #FF5E7E;
+  text-shadow: 0 2px 0 #FFFFFF, 0 3px 6px rgba(0,0,0,0.15);
+  z-index: 1000;
+  pointer-events: none;
+  animation: combo-up 1s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+  direction: rtl;
+}
+@keyframes combo-up {
+  0% { transform: scale(0.4) translateY(0); opacity: 0; }
+  25% { transform: scale(1.3) translateY(-30px); opacity: 1; }
+  45% { transform: scale(1.0) translateY(-40px); }
+  100% { transform: scale(0.9) translateY(-90px); opacity: 0; }
+}
+
+/* Powerups indicators and styling overrides */
+.powerup-heart {
+  border-color: #FF5E7E !important;
+  background: rgba(255, 94, 126, 0.12) !important;
+  box-shadow: 0 0 15px rgba(255, 94, 126, 0.4) !important;
+}
+.powerup-clock {
+  border-color: #33C2FF !important;
+  background: rgba(51, 194, 255, 0.12) !important;
+  box-shadow: 0 0 15px rgba(51, 194, 255, 0.4) !important;
+}
+.powerup-hint {
+  border-color: #FFD43F !important;
+  background: rgba(255, 212, 63, 0.12) !important;
+  box-shadow: 0 0 15px rgba(255, 212, 63, 0.4) !important;
+}
+
+@keyframes rainbow-pulse {
+  0% { box-shadow: 0 0 5px #FF5E7E, 0 0 10px #FF5E7E; border-color: #FF5E7E !important; }
+  33% { box-shadow: 0 0 10px #33C2FF, 0 0 20px #33C2FF; border-color: #33C2FF !important; }
+  66% { box-shadow: 0 0 10px #FFD43F, 0 0 20px #FFD43F; border-color: #FFD43F !important; }
+  100% { box-shadow: 0 0 5px #FF5E7E, 0 0 10px #FF5E7E; border-color: #FF5E7E !important; }
+}
+.rainbow-pulse {
+  animation: rainbow-pulse 1.5s infinite !important;
+  border: 3px solid #FF5E7E !important;
 }

@@ -14,12 +14,86 @@ let errors = 0;
 let placed = 0;
 let startTs = 0;
 
+let currentTheme = 'classic';   // 'classic' or 'kids'
+let streak = 0;                 // correct streak counter
+
 // On page load
 window.addEventListener('DOMContentLoaded', async () => {
   await Database.init();
   populateSurahSelector();
   renderLeaderboard();
+  
+  // Load saved theme
+  const savedTheme = localStorage.getItem('noorblocks_theme') || 'classic';
+  setTheme(savedTheme);
 });
+
+function setTheme(name) {
+  currentTheme = name;
+  localStorage.setItem('noorblocks_theme', name);
+  
+  const body = document.body;
+  const btnClassic = document.getElementById('theme-btn-classic');
+  const btnKids = document.getElementById('theme-btn-kids');
+  
+  if (name === 'kids') {
+    body.classList.add('theme-kids');
+    if (btnKids) btnKids.classList.add('sel');
+    if (btnClassic) btnClassic.classList.remove('sel');
+  } else {
+    body.classList.remove('theme-kids');
+    if (btnClassic) btnClassic.classList.add('sel');
+    if (btnKids) btnKids.classList.remove('sel');
+  }
+}
+
+function registerCorrectPlacement(basePoints, element) {
+  streak++;
+  let multiplier = 1;
+  let bonusText = "";
+  
+  if (streak >= 5) {
+    multiplier = 3;
+    bonusText = `Super Combo x3! 🔥 (+${basePoints * 2} Bonus)`;
+  } else if (streak >= 3) {
+    multiplier = 2;
+    bonusText = `Combo x2! 🌟 (+${basePoints} Bonus)`;
+  }
+  
+  const finalPoints = basePoints * multiplier;
+  
+  if (bonusText && currentTheme === 'kids') {
+    spawnComboPopup(bonusText, element);
+  }
+  
+  return finalPoints;
+}
+
+function registerWrongPlacement() {
+  streak = 0;
+}
+
+function spawnComboPopup(text, element) {
+  const popup = document.createElement('div');
+  popup.className = 'combo-popup';
+  popup.textContent = text;
+  
+  let x = window.innerWidth / 2 - 80;
+  let y = window.innerHeight / 3;
+  
+  if (element) {
+    const rect = element.getBoundingClientRect();
+    x = rect.left + rect.width / 2 - 60;
+    y = rect.top - 35;
+  }
+  
+  popup.style.left = x + 'px';
+  popup.style.top = y + 'px';
+  
+  document.body.appendChild(popup);
+  
+  setTimeout(() => popup.remove(), 1000);
+}
 
 function populateSurahSelector() {
   const sel = document.getElementById('surah-select');
@@ -129,7 +203,7 @@ async function startGame() {
   }
 
   // Common resets
-  lives = 3; score = 0; errors = 0; placed = 0;
+  lives = 3; score = 0; errors = 0; placed = 0; streak = 0;
   filledSlots = new Set();
   curBlockQIdx = 0;
   startTs = Date.now();
@@ -180,6 +254,18 @@ function buildQueue(surahData) {
                 :                     a.words.map(w => w.ar);
     parts.forEach((txt, pi) => {
       if (a.n >= startAyah && a.n <= endAyah) {
+        let powerup = null;
+        if (Math.random() < 0.15) {
+          const rand = Math.random();
+          if (currentGameMode === 'tetris') {
+            if (rand < 0.33) powerup = 'heart';
+            else if (rand < 0.66) powerup = 'clock';
+            else powerup = 'hint';
+          } else {
+            if (rand < 0.5) powerup = 'heart';
+            else powerup = 'hint';
+          }
+        }
         queue.push({
           ayahIdx: a.n - startAyah, // Offset index relative to our playing range
           partIdx: pi,
@@ -190,7 +276,8 @@ function buildQueue(surahData) {
           slotIdx: absoluteSlotIdx, // Map to absolute slot index in full Surah layout
           surahNum: surahNum,
           verseNum: a.n,
-          wordNum: pi + 1
+          wordNum: pi + 1,
+          powerup: powerup
         });
       }
       absoluteSlotIdx++;

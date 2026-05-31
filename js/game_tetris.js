@@ -7,11 +7,20 @@ const GameTetris = {
   zoneH: 220,
   blockFrozen: false,
   currentTargetSlot: 0,
+  slowMoActive: false,
+  slowMoTimer: null,
+  rainbowHintActive: false,
 
   start() {
     this.stop();
     this.blockFrozen = false;
     this.currentTargetSlot = 0;
+    this.slowMoActive = false;
+    this.rainbowHintActive = false;
+    if (this.slowMoTimer) {
+      clearTimeout(this.slowMoTimer);
+      this.slowMoTimer = null;
+    }
     this.buildSlotsUI();
     this.loadNextBlock();
     
@@ -34,6 +43,12 @@ const GameTetris = {
     if (this.fallRAF) {
       cancelAnimationFrame(this.fallRAF);
       this.fallRAF = null;
+    }
+    this.slowMoActive = false;
+    this.rainbowHintActive = false;
+    if (this.slowMoTimer) {
+      clearTimeout(this.slowMoTimer);
+      this.slowMoTimer = null;
     }
   },
 
@@ -183,13 +198,21 @@ const GameTetris = {
     this.blockFrozen = false;
     this.currentTargetSlot = this.getFirstEmptySlot();
 
+    let trText = block.tr;
+    if (block.powerup === 'heart') trText = '❤️ [HEART RECOVERY] ' + trText;
+    else if (block.powerup === 'clock') trText = '⏰ [SLOW-MOTION] ' + trText;
+    else if (block.powerup === 'hint') trText = '💡 [AUTO-HINT] ' + trText;
+
     document.getElementById('fb-ar').textContent = block.ar;
-    document.getElementById('fb-tr').textContent = block.tr;
+    document.getElementById('fb-tr').textContent = trText;
     document.getElementById('fb-hint').textContent = '💡 ' + block.hint;
 
     const fb = document.getElementById('fblock');
     if (fb) {
       fb.className = 'entering alive';
+      if (block.powerup) {
+        fb.classList.add('powerup-' + block.powerup);
+      }
       fb.style.top = '0px';
       fb.style.left = '10%';
       fb.style.width = '80%';
@@ -219,11 +242,14 @@ const GameTetris = {
 
   highlightTargetSlot(idx) {
     document.querySelectorAll('.slot').forEach(s => {
-      s.classList.remove('active-target');
+      s.classList.remove('active-target', 'rainbow-pulse');
     });
     const sl = document.getElementById('slot-' + idx);
     if (sl && !filledSlots.has(idx)) {
       sl.classList.add('active-target');
+      if (this.rainbowHintActive) {
+        sl.classList.add('rainbow-pulse');
+      }
       sl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     }
   },
@@ -246,11 +272,22 @@ const GameTetris = {
 
     this.fallY = 0;
     const speedMap = { classic: 0.15, phrase: 0.2, word: 0.25 };
-    this.fallSpeed = speedMap[mode] || 0.15;
+    let currentSpeed = speedMap[mode] || 0.15;
 
-    const spd = mode === 'classic' ? '●○○' : mode === 'phrase' ? '●●○' : '●●●';
+    const block = queue[shuffledOrder[curBlockQIdx]];
+    if (this.slowMoActive || (block && block.powerup === 'clock')) {
+      currentSpeed *= 0.5;
+    }
+    this.fallSpeed = currentSpeed;
+
     const spdLbl = document.getElementById('spd-lbl');
-    if (spdLbl) spdLbl.textContent = spd;
+    if (spdLbl) {
+      if (this.slowMoActive || (block && block.powerup === 'clock')) {
+        spdLbl.textContent = '⏰ SLOW';
+      } else {
+        spdLbl.textContent = mode === 'classic' ? '●○○' : mode === 'phrase' ? '●●○' : '●●●';
+      }
+    }
 
     if (this.fallRAF) cancelAnimationFrame(this.fallRAF);
     this.fallLoop();
@@ -286,6 +323,7 @@ const GameTetris = {
     if (hint) hint.style.opacity = '1';
     
     AudioManager.playTone('wrong');
+    registerWrongPlacement();
     errors++;
     lives = Math.max(0, lives - 1);
     updateLives();
@@ -345,7 +383,7 @@ const GameTetris = {
     if (sl) {
       sl.querySelector('.st').textContent = block.ar;
       sl.classList.add('filled');
-      sl.classList.remove('active-target');
+      sl.classList.remove('active-target', 'rainbow-pulse');
     }
     filledSlots.add(slotIdx);
 
@@ -357,19 +395,47 @@ const GameTetris = {
     const bonus = Math.round(speedBonusMax * (1 - ratio));
     const pts = basePts + bonus;
 
-    score += pts;
+    const finalPts = registerCorrectPlacement(pts, fb);
+    score += finalPts;
     placed++;
-    spawnScoreFX('+' + pts, fb);
+    spawnScoreFX('+' + finalPts, fb);
     updateHUD();
 
+    if (block.powerup === 'heart') {
+      if (lives < 3) {
+        lives++;
+        updateLives();
+      }
+    } else if (block.powerup === 'clock') {
+      this.slowMoActive = true;
+      if (this.slowMoTimer) clearTimeout(this.slowMoTimer);
+      this.slowMoTimer = setTimeout(() => {
+        this.slowMoActive = false;
+        const spdLbl = document.getElementById('spd-lbl');
+        if (spdLbl) {
+          spdLbl.textContent = mode === 'classic' ? '●○○' : mode === 'phrase' ? '●●○' : '●●●';
+        }
+      }, 10000);
+    } else if (block.powerup === 'hint') {
+      this.rainbowHintActive = true;
+    }
+
     const inst = document.getElementById('instbar');
-    if (inst) inst.textContent = `✅ Correct! +${pts} points (Speed Bonus: +${bonus})`;
+    let feedback = `✅ Correct! +${finalPts} points (Speed Bonus: +${bonus})`;
+    if (block.powerup === 'heart') feedback += ` (❤️ Extra Heart Recovery!)`;
+    else if (block.powerup === 'clock') feedback += ` (⏰ 10s Slow-Motion Active!)`;
+    else if (block.powerup === 'hint') feedback += ` (💡 Auto-Hint Rainbow Active!)`;
+    if (inst) inst.textContent = feedback;
 
     setTimeout(() => {
+      if (block.powerup !== 'hint') {
+        this.rainbowHintActive = false;
+      }
+
       curBlockQIdx++;
       if (fb) fb.style.top = '0px';
       document.querySelectorAll('.slot').forEach(s => {
-        s.classList.remove('drag-over', 'active-target');
+        s.classList.remove('drag-over', 'active-target', 'rainbow-pulse');
       });
       this.loadNextBlock();
     }, 500);
@@ -387,6 +453,7 @@ const GameTetris = {
     if (hint) hint.style.opacity = '1';
     
     AudioManager.playTone('wrong');
+    registerWrongPlacement();
 
     const tried = document.getElementById('slot-' + triedSlot);
     if (tried) tried.classList.add('wrong-flash');

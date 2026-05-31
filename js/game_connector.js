@@ -4,12 +4,14 @@ const GameConnector = {
   bubbles: [],
   lastTapTime: 0,
   lastTapBubbleId: null,
+  rainbowHintActive: false,
 
   start(surahData) {
     this.active = true;
     this.bubbles = [];
     this.lastTapTime = 0;
     this.lastTapBubbleId = null;
+    this.rainbowHintActive = false;
 
     this.buildSlotsUI();
     this.setupConnectorCanvas();
@@ -18,6 +20,7 @@ const GameConnector = {
 
   stop() {
     this.active = false;
+    this.rainbowHintActive = false;
     const canvas = document.getElementById('connector-canvas');
     if (canvas) canvas.remove();
   },
@@ -192,9 +195,16 @@ const GameConnector = {
     scrambled.forEach((block, index) => {
       const b = document.createElement('div');
       b.className = 'bubble';
+      if (block.powerup) {
+        b.classList.add('powerup-' + block.powerup);
+      }
       b.id = 'bubble-' + block.slotIdx;
       b.dataset.idx = block.slotIdx;
-      b.textContent = block.ar;
+      
+      let text = block.ar;
+      if (block.powerup === 'heart') text = '❤️ ' + text;
+      else if (block.powerup === 'hint') text = '💡 ' + text;
+      b.textContent = text;
 
       // Position inside grid cell with random offset
       const r = Math.floor(index / cols);
@@ -271,18 +281,32 @@ const GameConnector = {
     if (sl) {
       sl.querySelector('.st').textContent = block.ar;
       sl.classList.add('filled');
+      sl.classList.remove('rainbow-pulse');
     }
     filledSlots.add(block.slotIdx);
 
     // Scoring
     const basePts = mode === 'classic' ? 50 : mode === 'phrase' ? 30 : 15;
-    score += basePts;
+    const finalPts = registerCorrectPlacement(basePts, element);
+    score += finalPts;
     placed++;
-    spawnScoreFX('+' + basePts, element);
+    spawnScoreFX('+' + finalPts, element);
     updateHUD();
 
+    if (block.powerup === 'heart') {
+      if (lives < 3) {
+        lives++;
+        updateLives();
+      }
+    } else if (block.powerup === 'hint') {
+      this.rainbowHintActive = true;
+    }
+
     const inst = document.getElementById('instbar');
-    if (inst) inst.textContent = `✅ Connected! +${basePts} points.`;
+    let feedback = `✅ Connected! +${finalPts} points.`;
+    if (block.powerup === 'heart') feedback += ` (❤️ Extra Heart Recovery!)`;
+    else if (block.powerup === 'hint') feedback += ` (💡 Next Bubble Auto-Hint Active!)`;
+    if (inst) inst.textContent = feedback;
 
     // Move bubble animation and fade out
     element.style.transition = 'all 0.5s ease-out';
@@ -293,6 +317,10 @@ const GameConnector = {
     if (placed >= slotCount) {
       setTimeout(() => gameComplete(), 600);
     } else {
+      if (block.powerup !== 'hint') {
+        this.rainbowHintActive = false;
+      }
+      this.applyRainbowHint();
       this.updateInstruction();
     }
   },
@@ -300,6 +328,7 @@ const GameConnector = {
   wrongSelection(block, element) {
     AudioManager.stopPlayingAudio();
     AudioManager.playTone('wrong');
+    registerWrongPlacement();
     
     element.classList.add('wrong');
     setTimeout(() => element.classList.remove('wrong'), 600);
@@ -315,6 +344,24 @@ const GameConnector = {
       if (inst) {
         const correctAr = queue[placed].ar;
         inst.textContent = `❌ Wrong bubble! Find: "${correctAr}" · -1 life`;
+      }
+    }
+  },
+
+  applyRainbowHint() {
+    document.querySelectorAll('.slot').forEach(s => s.classList.remove('rainbow-pulse'));
+    document.querySelectorAll('.bubble').forEach(b => b.classList.remove('rainbow-pulse'));
+    
+    if (this.rainbowHintActive && placed < slotCount) {
+      const nextBlock = queue[placed];
+      const sl = document.getElementById('slot-' + nextBlock.slotIdx);
+      if (sl) {
+        sl.classList.add('rainbow-pulse');
+        sl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+      const bub = document.getElementById('bubble-' + nextBlock.slotIdx);
+      if (bub) {
+        bub.classList.add('rainbow-pulse');
       }
     }
   },
