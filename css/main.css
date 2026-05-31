@@ -147,16 +147,18 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 }
 .mushaf-line {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
   direction: rtl;
   width: 100%;
-  margin: 0;
+  margin: 4px 0;
   padding: 0;
 }
 .mushaf-line.last-line {
   justify-content: center;
-  gap: 12px;
+  gap: 6px 12px;
 }
 .slot {
   display: inline-block;
@@ -723,22 +725,33 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   box-shadow: 0 3px 8px rgba(155, 93, 229, 0.2) !important;
 }
 
-/* Balloon Verse Roundels */
+/* Star Verse Roundels */
 .theme-kids .mushaf-ayah-marker {
-  border: 2.5px solid var(--accent) !important;
-  background: #E8F4FD !important;
-  color: var(--accent) !important;
-  box-shadow: 0 3px 0 rgba(155, 93, 229, 0.2) !important;
+  border: 2px solid var(--gold) !important;
+  background: #FFFDF0 !important;
+  color: #2D3748 !important;
+  box-shadow: 0 3px 0 rgba(255, 159, 67, 0.25) !important;
   font-family: 'Fredoka', sans-serif !important;
   font-weight: 700 !important;
-  font-size: 9px !important;
-  width: 26px !important;
-  height: 26px !important;
+  font-size: 10px !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  z-index: 1 !important;
 }
 .theme-kids .mushaf-ayah-marker::before {
-  content: "🎈" !important;
-  font-size: 16px !important;
-  opacity: 0.3 !important;
+  content: "⭐" !important;
+  position: absolute !important;
+  font-size: 18px !important;
+  opacity: 0.35 !important;
+  z-index: -1 !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
 }
 
 /* Interaction zone in Kids Mode */
@@ -847,4 +860,50 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
 .rainbow-pulse {
   animation: rainbow-pulse 1.5s infinite !important;
   border: 3px solid #FF5E7E !important;
+}
+
+/* ── KIDS THEME RESULT SCREEN OVERRIDES ── */
+.theme-kids .surah-box {
+  background: #FFFFFF !important;
+  border: 3px solid var(--accent) !important;
+  box-shadow: 0 6px 0 rgba(155, 93, 229, 0.15) !important;
+  border-radius: 18px !important;
+}
+.theme-kids .surah-box-t {
+  color: var(--accent) !important;
+  font-weight: 700 !important;
+}
+.theme-kids #full-surah {
+  color: #2D3748 !important;
+}
+.theme-kids .an {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  background: #FAF5FF !important;
+  font-family: 'Fredoka', sans-serif !important;
+  font-weight: 700 !important;
+}
+.theme-kids .scard .sv2 {
+  color: var(--accent) !important;
+  font-family: 'Fredoka', sans-serif !important;
+  font-weight: 700 !important;
+}
+.theme-kids .scard .sl2 {
+  color: var(--muted) !important;
+  font-family: 'Fredoka', sans-serif !important;
+  font-weight: 600 !important;
+}
+.theme-kids .leaderboard-input {
+  background: #FFFFFF !important;
+  border: 2px solid var(--accent) !important;
+  color: #2D3748 !important;
+  border-radius: 12px !important;
+}
+.theme-kids .leaderboard-sub-btn {
+  background: var(--accent) !important;
+  color: #FFFFFF !important;
+  border-radius: 12px !important;
+  box-shadow: 0 3px 0 rgba(155, 93, 229, 0.2) !important;
+  font-family: 'Fredoka', sans-serif !important;
+  font-weight: 700 !important;
 }
