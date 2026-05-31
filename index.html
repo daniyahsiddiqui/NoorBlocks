@@ -1335,8 +1335,51 @@ function playTone(type) {
 function hearBlock(btn) {
   const targetBtn = btn || document.querySelector('.cbtn.chear');
   if (targetBtn) targetBtn.innerHTML = '♪ …';
-  playTone('correct');
-  setTimeout(()=>{ if (targetBtn) targetBtn.innerHTML='▶ Hear'; }, 1200);
+
+  if (curBlockQIdx < shuffledOrder.length) {
+    const block = queue[shuffledOrder[curBlockQIdx]];
+    const textToSpeak = block.ar;
+    
+    if ('speechSynthesis' in window) {
+      try {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.65; // Recitative speed (slower for clear pronunciation)
+        
+        // Find an Arabic voice if available
+        const voices = window.speechSynthesis.getVoices();
+        const voice = voices.find(v => v.lang.startsWith('ar'));
+        if (voice) {
+          utterance.voice = voice;
+        }
+        
+        utterance.onend = () => {
+          if (targetBtn) targetBtn.innerHTML = '▶ Hear';
+        };
+        utterance.onerror = () => {
+          if (targetBtn) targetBtn.innerHTML = '▶ Hear';
+        };
+        
+        window.speechSynthesis.speak(utterance);
+        
+        // Safety timeout in case speech synthesis gets stuck
+        setTimeout(() => {
+          if (targetBtn && targetBtn.innerHTML === '♪ …') {
+            targetBtn.innerHTML = '▶ Hear';
+          }
+        }, 4000);
+      } catch (e) {
+        playTone('correct');
+        setTimeout(() => { if (targetBtn) targetBtn.innerHTML = '▶ Hear'; }, 1200);
+      }
+    } else {
+      playTone('correct');
+      setTimeout(() => { if (targetBtn) targetBtn.innerHTML = '▶ Hear'; }, 1200);
+    }
+  } else {
+    if (targetBtn) targetBtn.innerHTML = '▶ Hear';
+  }
 }
 
 /* ═══════════════════════════════════════
