@@ -462,6 +462,19 @@ function saveScore(name, scoreVal, accuracyVal) {
   renderLeaderboard();
 }
 
+function setLeaderboardTab(tab) {
+  currentLeaderboardTab = tab;
+  const localBtn = document.getElementById('tab-leaderboard-local');
+  const globalBtn = document.getElementById('tab-leaderboard-global');
+  const friendsBtn = document.getElementById('tab-leaderboard-friends');
+  
+  if (localBtn) localBtn.classList.toggle('sel', tab === 'local');
+  if (globalBtn) globalBtn.classList.toggle('sel', tab === 'global');
+  if (friendsBtn) friendsBtn.classList.toggle('sel', tab === 'friends');
+  
+  renderLeaderboard();
+}
+
 async function renderLeaderboard() {
   const container = document.getElementById('leaderboard-entries');
   if (!container) return;
