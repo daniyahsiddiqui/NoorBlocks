@@ -1,0 +1,66 @@
+{
+  "id": 0,
+  "surahNum": 1,
+  "nameAr": "سُورَةُ الفَاتِحَةِ",
+  "nameEn": "Al-Fātiḥah",
+  "nameTr": "THE OPENING",
+  "meta": "7 ayahs · Makkiyya · Page 1",
+  "ayahs": [
+    {
+      "n": 1,
+      "ar": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+      "tr": "In the name of Allah, the Most Gracious, the Most Merciful",
+      "hint": "Starts with Bismillah...",
+      "phrases": ["بِسْمِ ٱللَّهِ", "ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"],
+      "words": ["بِسْمِ", "ٱللَّهِ", "ٱلرَّحْمَٰنِ", "ٱلرَّحِيمِ"]
+    },
+    {
+      "n": 2,
+      "ar": "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ",
+      "tr": "All praise is for Allah, Lord of all worlds",
+      "hint": "Begins with Al-Hamd...",
+      "phrases": ["ٱلْحَمْدُ لِلَّهِ", "رَبِّ ٱلْعَٰلَمِينَ"],
+      "words": ["ٱلْحَمْدُ", "لِلَّهِ", "رَبِّ", "ٱلْعَٰلَمِينَ"]
+    },
+    {
+      "n": 3,
+      "ar": "ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+      "tr": "The Most Gracious, the Most Merciful",
+      "hint": "Two of Allah's names...",
+      "phrases": ["ٱلرَّحْمَٰنِ", "ٱلرَّحِيمِ"],
+      "words": ["ٱلرَّحْمَٰنِ", "ٱلرَّحِيمِ"]
+    },
+    {
+      "n": 4,
+      "ar": "مَٰلِكِ يَوْمِ ٱلدِّينِ",
+      "tr": "Master of the Day of Judgment",
+      "hint": "Owner of the Day...",
+      "phrases": ["مَٰلِكِ يَوْمِ", "ٱلدِّينِ"],
+      "words": ["مَٰلِكِ", "يَوْمِ", "ٱلدِّينِ"]
+    },
+    {
+      "n": 5,
+      "ar": "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+      "tr": "You alone we worship, and You alone we ask for help",
+      "hint": "You alone we worship...",
+      "phrases": ["إِيَّاكَ نَعْبُدُ", "وَإِيَّاكَ نَسْتَعِينُ"],
+      "words": ["إِيَّاكَ", "نَعْبُدُ", "وَإِيَّاكَ", "نَسْتَعِينُ"]
+    },
+    {
+      "n": 6,
+      "ar": "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ",
+      "tr": "Guide us on the straight path",
+      "hint": "Guide us to the path...",
+      "phrases": ["ٱهْدِنَا", "ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ"],
+      "words": ["ٱهْدِنَا", "ٱلصِّرَٰطَ", "ٱلْمُسْتَقِيمَ"]
+    },
+    {
+      "n": 7,
+      "ar": "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ",
+      "tr": "The path of those You have blessed — not those who anger You, nor those who go astray",
+      "hint": "The path of those You blessed...",
+      "phrases": ["صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ", "غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ", "وَلَا ٱلضَّآلِّينَ"],
+      "words": ["صِرَٰطَ", "ٱلَّذِينَ", "أَنْعَمْتَ", "عَلَيْهِمْ", "غَيْرِ", "ٱلْمَغْضُوبِ", "وَلَا", "ٱلضَّآلِّينَ"]
+    }
+  ]
+}
