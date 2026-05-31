@@ -102,13 +102,19 @@ async function startGame() {
   // Show screen and launch appropriate engine
   showScreen('game');
 
+  const fallZone = document.getElementById('fall-zone');
+  const fbBlock = document.getElementById('fblock');
+  const spdBadge = document.getElementById('speed-badge');
+  
+  if (fallZone) fallZone.style.display = 'block';
+
   if (currentGameMode === 'tetris') {
-    // Show falling zone & instruction label
-    document.getElementById('fall-zone').style.display = 'block';
+    if (fbBlock) fbBlock.style.display = 'block';
+    if (spdBadge) spdBadge.style.display = 'block';
     GameTetris.start();
   } else {
-    // Hide falling zone (Connector has its own grid)
-    document.getElementById('fall-zone').style.display = 'none';
+    if (fbBlock) fbBlock.style.display = 'none';
+    if (spdBadge) spdBadge.style.display = 'none';
     GameConnector.start(surahData);
   }
   
