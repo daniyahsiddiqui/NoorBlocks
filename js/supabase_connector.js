@@ -67,14 +67,25 @@ const db = {
 
   onAuthChange(callback) {
     if (!this.isOnline()) return;
-    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+    supabaseClient.auth.onAuthStateChange((event, session) => {
       if (session?.user) {
-        const { data: profile } = await supabaseClient
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .maybeSingle();
-        callback(session.user, profile);
+        // Defer database query to prevent deadlock or race condition during initial session recovery
+        setTimeout(async () => {
+          try {
+            const { data: profile, error } = await supabaseClient
+              .from('profiles')
+              .select('*')
+              .eq('id', session.user.id)
+              .maybeSingle();
+            if (error) {
+              console.error("Error fetching profile on auth change:", error);
+            }
+            callback(session.user, profile || null);
+          } catch (err) {
+            console.error("Exception fetching profile on auth change:", err);
+            callback(session.user, null);
+          }
+        }, 0);
       } else {
         callback(null, null);
       }
