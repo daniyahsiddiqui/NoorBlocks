@@ -1,1439 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>NoorBlocks</title>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg:        #080E09;
-  --panel:     #0C1810;
-  --gold:      #C8960C;
-  --goldb:     rgba(200,150,12,0.3);
-  --green:     #17784A;
-  --greenl:    #22B06A;
-  --teal:      #0C7A6A;
-  --red:       #B83030;
-  --text:      #F0E8D0;
-  --muted:     #7A6A4A;
-  --dim:       #2A2010;
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;}
-
-/* ── GEO PATTERN ── */
-#geo{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;}
-
-/* ── SCREENS ── */
-.screen{display:none;position:fixed;inset:0;z-index:1;flex-direction:column;align-items:center;overflow-y:auto;}
-.screen.on{display:flex;}
-
-/* ─────────────────────────────────────
-   TITLE
-───────────────────────────────────── */
-#s-title{justify-content:center;padding:28px 20px;gap:22px;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(200,150,12,.07),transparent 70%);}
-.logo-ar{font-family:'Amiri',serif;font-size:44px;color:var(--gold);text-shadow:0 0 40px rgba(200,150,12,.3);text-align:center;}
-.logo-en{font-family:'Cinzel',serif;font-size:24px;letter-spacing:5px;text-align:center;}
-.logo-tag{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;text-align:center;}
-.orn{color:var(--gold);opacity:.5;font-size:18px;letter-spacing:10px;text-align:center;}
-.card{background:rgba(12,24,16,.85);border:.5px solid var(--goldb);border-radius:14px;padding:18px;width:100%;max-width:380px;}
-.card-t{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:center;margin-bottom:14px;}
-.mrow{display:flex;align-items:center;gap:12px;padding:11px 14px;border:.5px solid rgba(200,150,12,.18);border-radius:10px;margin-bottom:7px;cursor:pointer;transition:.18s;}
-.mrow:last-child{margin-bottom:0;}
-.mrow:hover,.mrow.sel{background:rgba(200,150,12,.1);border-color:var(--gold);}
-.mrow .ico{font-size:20px;width:28px;text-align:center;}
-.mrow .inf{flex:1;}
-.mrow .nm{font-size:14px;font-weight:500;}
-.mrow .ds{font-size:11px;color:var(--muted);margin-top:2px;}
-.badge{font-size:10px;padding:2px 8px;border-radius:20px;}
-.bg{background:rgba(26,120,74,.15);color:var(--greenl);border:.5px solid var(--green);}
-.by{background:rgba(200,150,12,.12);color:#EAB020;border:.5px solid var(--gold);}
-.br{background:rgba(184,48,48,.15);color:#E06A6A;border:.5px solid var(--red);}
-.pbtn{width:100%;max-width:380px;padding:14px;background:linear-gradient(135deg,#17603A,#0C7A6A);border:none;border-radius:12px;color:var(--text);font-family:'Cinzel',serif;font-size:15px;font-weight:600;letter-spacing:2px;cursor:pointer;transition:.2s;}
-.pbtn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(23,120,74,.4);}
-.tip{font-size:11px;color:var(--muted);text-align:center;letter-spacing:.3px;max-width:360px;}
-
-.select-wrapper {
-  position: relative;
-  width: 100%;
-}
-#surah-select {
-  width: 100%;
-  padding: 12px;
-  background: rgba(12, 24, 16, 0.85);
-  border: 1px solid var(--goldb);
-  border-radius: 10px;
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%23C8960C' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  padding-right: 35px;
-  transition: .18s;
-  outline: none;
-}
-#surah-select:focus, #surah-select:hover {
-  border-color: var(--gold);
-  background-color: rgba(200, 150, 12, 0.08);
-}
-
-/* ── GAME LAYOUT ── */
-#s-game{flex-direction:column;padding:0;}
-
-#game-wrap{
-  display:flex;
-  flex-direction:column;
-  width:100%;max-width:500px;
-  margin:0 auto;
-  height:100dvh;
-  padding:10px 12px 8px;
-  gap:8px;
-}
-
-/* Header */
-#ghdr{display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
-.surah-lbl{font-family:'Amiri',serif;font-size:20px;color:var(--gold);}
-.surah-sub{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
-.stat{text-align:center;}
-.stat .sv{font-size:22px;font-weight:500;}
-.sv.gd{color:#EAB020;}
-.sv.gr{color:var(--greenl);}
-.stat .sl{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
-#hearts{display:flex;gap:3px;font-size:17px;}
-.h{transition:opacity .3s;}.h.gone{opacity:.18;filter:grayscale(1);}
-
-/* ── MUSHAF PAGE LAYOUT ── */
-#slots-wrap {
-  flex: 1;
-  min-height: 0;
-  background: #09100a; /* Dark velvet emerald green */
-  border: 1.5px solid var(--gold);
-  outline: 1.5px solid rgba(200, 150, 12, 0.35);
-  outline-offset: -5px;
-  border-radius: 14px;
-  padding: 16px 14px;
-  overflow-y: auto;
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.95), 0 10px 30px rgba(0,0,0,0.6);
-  position: relative;
-}
-
-#slots-lbl {
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--gold);
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 12px;
-  opacity: 0.85;
-}
-
-.mushaf-text-flow {
-  direction: rtl;
-  font-family: 'Amiri', serif;
-  font-size: 20px;
-  line-height: 2.6;
-  text-align: justify;
-  text-align-last: center;
-  padding: 0 5px;
-}
-
-.slot {
-  display: inline-block;
-  border: 1.5px dashed rgba(200,150,12,.3);
-  border-radius: 6px;
-  margin: 6px 4px;
-  padding: 2px 10px;
-  vertical-align: middle;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  background: rgba(200,150,12,0.02);
-  position: relative;
-  min-height: 38px;
-  max-width: 100%;
-  word-wrap: break-word;
-}
-
-/* Tiny indicator for slot position/ID */
-.slot::before {
-  content: attr(data-label);
-  position: absolute;
-  top: -11px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 7.5px;
-  color: var(--muted);
-  font-family: 'Inter', sans-serif;
-  opacity: 0.65;
-  pointer-events: none;
-  background: #09100a;
-  padding: 0 3px;
-  line-height: 1;
-}
-
-.slot.filled::before {
-  display: none;
-}
-
-.slot .st {
-  font-family: 'Amiri', serif;
-  font-size: 20px;
-  direction: rtl;
-  color: transparent; /* Invisible when empty, preserves width */
-  user-select: none;
-  pointer-events: none;
-  display: inline-block;
-  max-width: 100%;
-}
-
-.slot .sck {
-  position: absolute;
-  top: -8px;
-  right: -6px;
-  font-size: 8px;
-  opacity: 0;
-  transition: .2s;
-  background: var(--green);
-  border-radius: 50%;
-  width: 13px;
-  height: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  pointer-events: none;
-  box-shadow: 0 0 4px rgba(23,120,74,0.6);
-}
-
-/* Filled */
-.slot.filled {
-  border: 1.5px solid var(--green);
-  background: rgba(23,120,74,.15);
-  box-shadow: 0 0 10px rgba(34,176,106,0.15);
-}
-
-.slot.filled .st {
-  color: var(--text);
-  text-shadow: 0 0 4px rgba(240,232,208,0.3);
-}
-
-.slot.filled .sck {
-  opacity: 1;
-}
-
-/* Hover target while dragging or button targeting */
-.slot.drag-over, .slot.active-target {
-  border-color: var(--gold);
-  background: rgba(200,150,12,.12);
-  box-shadow: 0 0 10px rgba(200,150,12,0.4);
-}
-
-/* Active targeting pulse */
-.slot.active-target {
-  animation: targetpulse 1.5s ease-in-out infinite alternate;
-}
-@keyframes targetpulse {
-  from { box-shadow: 0 0 4px rgba(200,150,12,.2); border-color: rgba(200,150,12,.5); }
-  to { box-shadow: 0 0 12px rgba(200,150,12,.6); border-color: var(--gold); }
-}
-
-/* Wrong flash */
-.slot.wrong-flash {
-  border-color: var(--red);
-  background: rgba(184,48,48,.15);
-  animation: wrongpulse .4s ease-out;
-}
-@keyframes wrongpulse {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
-}
-
-/* Ayah Marker styling */
-.mushaf-ayah-marker {
-  color: var(--gold);
-  font-family: 'Amiri', serif;
-  font-size: 22px;
-  margin: 0 6px;
-  user-select: none;
-  display: inline-block;
-  text-shadow: 0 0 6px rgba(200,150,12,0.4);
-  vertical-align: middle;
-}
-
-/* Surah Banner styling */
-.mushaf-header-banner {
-  border-bottom: 1px solid rgba(200, 150, 12, 0.25);
-  padding: 4px 0;
-  margin-bottom: 10px;
-  text-align: center;
-  user-select: none;
-}
-.mushaf-header-title {
-  font-family: 'Amiri', serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--gold);
-  display: inline-block;
-  text-shadow: 0 0 8px rgba(200,150,12,0.4);
-}
-.mushaf-header-info {
-  font-size: 10px;
-  color: var(--muted);
-  display: inline-block;
-  margin-left: 8px;
-}
-
-/* ── FALL ZONE ── */
-#fall-zone{
-  height:280px;
-  flex-shrink:0;
-  position:relative;
-  overflow:hidden;
-  background:rgba(3,8,5,.6);
-  border:.5px solid rgba(200,150,12,.15);
-  border-radius:12px;
-}
-#fall-lbl{position:absolute;top:8px;left:0;right:0;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:center;pointer-events:none;z-index:0;}
-
-/* ── FALLING BLOCK ── */
-#fblock{
-  position:absolute;
-  left:10%;width:80%;
-  background:rgba(200,150,12,.1);
-  border:1.5px solid var(--gold);
-  border-radius:10px;
-  padding:10px 14px;
-  cursor:pointer;
-  z-index:10;
-  touch-action:none;
-  user-select:none;-webkit-user-select:none;
-  transition:border-color .2s, background .2s;
-}
-#fblock:active{cursor:pointer;}
-#fblock.correct-fx{border-color:var(--greenl)!important;background:rgba(23,120,74,.2)!important;animation:popfx .3s ease-out;}
-#fblock.wrong-fx{border-color:var(--red)!important;background:rgba(184,48,48,.15)!important;animation:shakefx .35s ease-out;}
-@keyframes popfx{0%{transform:scale(.95)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
-@keyframes shakefx{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
-.fb-ar{font-family:'Amiri',serif;font-size:22px;direction:rtl;text-align:center;line-height:1.5;color:var(--text);}
-.fb-tr{font-size:11px;color:var(--muted);text-align:center;margin-top:3px;font-style:italic;}
-.fb-hint{font-size:10px;color:var(--gold);text-align:center;margin-top:2px;opacity:0;transition:.2s;}
-#fblock.wrong-fx .fb-hint{opacity:1;}
-/* Pulsing glow when block is active */
-@keyframes blockglow{0%,100%{box-shadow:0 0 0 0 rgba(200,150,12,.25)}50%{box-shadow:0 0 0 6px rgba(200,150,12,0)}}
-#fblock.alive{animation:blockglow 2s ease-in-out infinite;}
-/* Entry drop */
-@keyframes dropin{from{transform:translateY(-60px);opacity:0}to{transform:translateY(0);opacity:1}}
-#fblock.entering{animation:dropin .35s ease-out forwards;}
-
-/* Pulsing glow when block is playing audio */
-#fblock.playing-audio {
-  border-color: var(--greenl)!important;
-  background: rgba(23,120,74,.2)!important;
-  box-shadow: 0 0 15px rgba(34,176,106,0.6);
-  animation: playpulse 1.5s ease-in-out infinite alternate;
-}
-@keyframes playpulse {
-  from { box-shadow: 0 0 8px rgba(34,176,106,0.3); border-color: rgba(34, 176, 106, 0.5); }
-  to { box-shadow: 0 0 20px rgba(34, 176, 106, 0.8); border-color: var(--greenl); }
-}
-
-/* ── INSTRUCTIONS BAR ── */
-#instbar{
-  flex-shrink:0;
-  background:rgba(200,150,12,.07);
-  border:.5px solid rgba(200,150,12,.18);
-  border-radius:8px;
-  padding:7px 12px;
-  font-size:11px;
-  color:var(--muted);
-  text-align:center;
-  letter-spacing:.3px;
-  min-height:32px;
-}
-
-/* ── CONTROLS ── */
-#ctrls{display:none !important;}
-.cbtn{
-  flex:1;padding:11px 0;
-  background:rgba(12,24,16,.8);
-  border:.5px solid var(--goldb);
-  border-radius:10px;
-  color:var(--text);font-size:17px;
-  cursor:pointer;transition:.15s;
-  font-family:'Inter',sans-serif;
-}
-.cbtn:hover{background:rgba(200,150,12,.1);border-color:var(--gold);}
-.cbtn:active{transform:scale(.95);}
-.cbtn.cplace{flex:1.4;font-size:13px;font-weight:600;letter-spacing:1px;color:var(--gold);border-color:var(--gold);background:rgba(200,150,12,.08);}
-.cbtn.chear{font-size:12px;color:var(--greenl);border-color:rgba(23,120,74,.4);background:rgba(23,120,74,.08);}
-
-/* ── PROGRESS ── */
-#progrow{display:flex;align-items:center;gap:10px;flex-shrink:0;}
-#prog-wrap{flex:1;}
-#prog-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px;}
-#prog-bar{height:4px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden;}
-#prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:4px;transition:width .5s ease;width:0%;}
-#next-box{display:none !important;}
-#next-lbl{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
-#next-ar{font-family:'Amiri',serif;font-size:13px;direction:rtl;color:var(--muted);}
-
-/* ── RESULT ── */
-#s-result{justify-content:center;padding:28px 20px;gap:18px;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(200,150,12,.06),transparent);}
-.res-star{font-size:50px;text-align:center;animation:popfx .5s ease-out;}
-.res-title{font-family:'Cinzel',serif;font-size:22px;font-weight:600;color:#EAB020;text-align:center;}
-.res-sub{font-size:11px;color:var(--muted);text-align:center;letter-spacing:1px;text-transform:uppercase;}
-.stats-row{display:flex;gap:9px;width:100%;max-width:380px;}
-.scard{flex:1;background:rgba(12,24,16,.85);border:.5px solid var(--goldb);border-radius:12px;padding:13px 8px;text-align:center;}
-.scard .sv2{font-size:24px;font-weight:500;color:#EAB020;}
-.scard .sl2{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
-.surah-box{width:100%;max-width:380px;background:rgba(5,12,8,.8);border:.5px solid var(--goldb);border-radius:14px;padding:18px;}
-.surah-box-t{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:center;margin-bottom:12px;}
-#full-surah{direction:rtl;font-family:'Amiri',serif;font-size:19px;line-height:2;color:var(--text);text-align:justify;}
-.an{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border:.5px solid var(--gold);border-radius:50%;font-size:11px;color:var(--gold);font-family:'Inter',sans-serif;vertical-align:middle;margin:0 3px;}
-
-/* ── SCORE FX ── */
-.sfx{position:fixed;font-size:18px;font-weight:600;color:#EAB020;pointer-events:none;z-index:200;animation:sfxup .75s ease-out forwards;}
-@keyframes sfxup{from{transform:translateY(0);opacity:1}to{transform:translateY(-44px);opacity:0}}
-
-/* ── CONFETTI ── */
-#ccanvas{position:fixed;inset:0;pointer-events:none;z-index:99;}
-
-/* ── SPEED LABEL ── */
-#speed-badge{position:absolute;top:8px;right:10px;font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;z-index:5;}
-
-/* ── RESPONSIVE MOBILE STYLES ── */
-@media (max-width: 480px), (max-height: 760px) {
-  #game-wrap {
-    padding: 6px 8px 4px;
-    gap: 4px;
-  }
-  #slots-wrap {
-    padding: 10px 10px;
-  }
-
-  .mushaf-text-flow {
-    font-size: 16px !important;
-    line-height: 2.1 !important;
-  }
-  .slot {
-    min-height: 30px !important;
-    padding: 1px 6px !important;
-    margin: 4px 2px !important;
-  }
-  .slot .st {
-    font-size: 16px !important;
-  }
-  .slot::before {
-    top: -9px !important;
-    font-size: 6.5px !important;
-  }
-  .mushaf-ayah-marker {
-    font-size: 18px !important;
-    margin: 0 3px !important;
-  }
-  #instbar {
-    font-size: 10px !important;
-    padding: 4px 8px !important;
-    min-height: 24px !important;
-  }
-  .cbtn {
-    padding: 8px 0 !important;
-    font-size: 14px !important;
-  }
-  #ghdr {
-    padding-bottom: 2px !important;
-  }
-  .surah-lbl {
-    font-size: 17px !important;
-  }
-  .stat .sv {
-    font-size: 18px !important;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>NoorBlocks - Qur'an Memorization Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
-<canvas id="ccanvas"></canvas>
+  <!-- Confetti Canvas -->
+  <canvas id="ccanvas"></canvas>
 
-<svg id="geo" viewBox="0 0 500 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-  <defs><pattern id="gp" x="0" y="0" width="68" height="78" patternUnits="userSpaceOnUse">
-    <polygon points="34,3 63,19 63,51 34,67 5,51 5,19" fill="none" stroke="#C8960C" stroke-width=".55"/>
-    <polygon points="34,17 50,26 50,46 34,55 18,46 18,26" fill="none" stroke="#C8960C" stroke-width=".3"/>
-  </pattern></defs>
-  <rect width="500" height="900" fill="url(#gp)"/>
-</svg>
+  <!-- Ornate background pattern -->
+  <svg id="geo" viewBox="0 0 500 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="gp" x="0" y="0" width="68" height="78" patternUnits="userSpaceOnUse">
+        <polygon points="34,3 63,19 63,51 34,67 5,51 5,19" fill="none" stroke="#C8960C" stroke-width=".55"/>
+        <polygon points="34,17 50,26 50,46 34,55 18,46 18,26" fill="none" stroke="#C8960C" stroke-width=".3"/>
+      </pattern>
+    </defs>
+    <rect width="500" height="900" fill="url(#gp)"/>
+  </svg>
 
-<!-- ════ TITLE ════ -->
-<div id="s-title" class="screen on">
-  <div class="logo-ar">نوربلوكس</div>
-  <div class="logo-en">NOORBLOCKS</div>
-  <div class="logo-tag">Memorize the Qur'an · one block at a time</div>
-  <div class="orn">❧ ✦ ❧</div>
+  <!-- ════ TITLE / HUB SCREEN ════ -->
+  <div id="s-title" class="screen on">
+    <div class="logo-ar">نوربلوكس</div>
+    <div class="logo-en">NOORBLOCKS</div>
+    <div class="logo-tag">Memorize the Qur'an · interactive games</div>
+    <div class="orn">❧ ✦ ❧</div>
 
-  <div class="card">
-    <div class="card-t">Surah</div>
-    <div class="select-wrapper">
-      <select id="surah-select" onchange="changeSurah(this.value)">
-        <option value="0">1. Al-Fātiḥah (الفاتحة)</option>
-        <option value="1">108. Al-Kawthar (الكوثر)</option>
-        <option value="2">112. Al-Ikhlāṣ (الإخلاص)</option>
-        <option value="3">113. Al-Falaq (الفلق)</option>
-        <option value="4">114. An-Nās (الناس)</option>
-      </select>
+    <!-- Surah Select -->
+    <div class="card">
+      <div class="card-t">Select Surah</div>
+      <div class="select-wrapper">
+        <select id="surah-select" onchange="changeSurah(this.value)">
+          <!-- Loaded dynamically -->
+        </select>
+      </div>
+      <div id="surah-meta" style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center">Loading Surahs...</div>
     </div>
-    <div id="surah-meta" style="font-size:11px;color:var(--muted);margin-top:10px;text-align:center">7 ayahs · Makkiyya · Page 1</div>
+
+    <!-- Mode Selector Cards -->
+    <div class="selection-grid">
+      <!-- Game Mode Selection -->
+      <div class="card">
+        <div class="card-t">Game Mode</div>
+        <div class="game-row">
+          <div class="mrow sel" onclick="pickGame('tetris', this)">
+            <span class="ico">🧱</span>
+            <span class="inf">
+              <div class="nm">NoorBlocks</div>
+              <div class="ds">Classic falling blocks</div>
+            </span>
+          </div>
+          <div class="mrow" onclick="pickGame('connector', this)">
+            <span class="ico">🔗</span>
+            <span class="inf">
+              <div class="nm">Ayah Connector</div>
+              <div class="ds">Link bubbles in order</div>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Difficulty Selection -->
+      <div class="card">
+        <div class="card-t">Difficulty</div>
+        <div class="difficulty-row">
+          <div class="mrow sel" onclick="pickMode('classic', this)">
+            <span class="ico">📖</span>
+            <span class="inf">
+              <div class="nm">Classic</div>
+              <div class="ds">Full Ayah blocks</div>
+            </span>
+            <span class="badge bg">Easy</span>
+          </div>
+          <div class="mrow" onclick="pickMode('phrase', this)">
+            <span class="ico">🔤</span>
+            <span class="inf">
+              <div class="nm">Phrase</div>
+              <div class="ds">Split Ayah chunks</div>
+            </span>
+            <span class="badge by">Med</span>
+          </div>
+          <div class="mrow" onclick="pickMode('word', this)">
+            <span class="ico">🔡</span>
+            <span class="inf">
+              <div class="nm">Word</div>
+              <div class="ds">Single word blocks</div>
+            </span>
+            <span class="badge br">Hard</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="leaderboard-card">
+      <div class="card-t">🏆 High Scores (Offline)</div>
+      <div class="leaderboard-tbl-wrap">
+        <table class="leaderboard-tbl">
+          <thead>
+            <tr>
+              <th style="width:10%;text-align:center">#</th>
+              <th style="width:30%">Name</th>
+              <th style="width:35%">Game (Surah)</th>
+              <th style="width:13%;text-align:right">Score</th>
+              <th style="width:12%;text-align:right">Acc</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-entries">
+            <!-- Loaded dynamically from LocalStorage -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <button class="pbtn" onclick="startGame()">▶ &nbsp; START</button>
+    <div class="tip">Target slots are styled like a Mushaf page · Fill the slots to complete the Surah</div>
   </div>
 
-  <div class="card">
-    <div class="card-t">Difficulty</div>
-    <div class="mrow sel" id="m-classic" onclick="pickMode('classic',this)">
-      <span class="ico">📖</span>
-      <span class="inf"><div class="nm">Classic</div><div class="ds">Full ayah per block — best for beginners</div></span>
-      <span class="badge bg">Easy</span>
-    </div>
-    <div class="mrow" id="m-phrase" onclick="pickMode('phrase',this)">
-      <span class="ico">🔤</span>
-      <span class="inf"><div class="nm">Phrase</div><div class="ds">Each ayah split into 2–3 chunks</div></span>
-      <span class="badge by">Medium</span>
-    </div>
-    <div class="mrow" id="m-word" onclick="pickMode('word',this)">
-      <span class="ico">🔡</span>
-      <span class="inf"><div class="nm">Word</div><div class="ds">One word per block</div></span>
-      <span class="badge br">Hard</span>
-    </div>
-  </div>
+  <!-- ════ GAME SCREEN ════ -->
+  <div id="s-game" class="screen">
+    <div id="game-wrap">
 
-  <button class="pbtn" onclick="startGame()">▶ &nbsp; START</button>
-  <div class="tip">Blocks fall from above · Drag or use ← → to move · Drop into the correct slot before it hits the ground</div>
-</div>
+      <!-- HUD Header -->
+      <div id="ghdr">
+        <div>
+          <div class="surah-lbl" id="g-surah-ar">الفاتحة</div>
+          <div class="surah-sub" id="g-surah-en">Al-Fātiḥah</div>
+        </div>
+        <div id="hearts">
+          <span class="h">❤️</span>
+          <span class="h">❤️</span>
+          <span class="h">❤️</span>
+        </div>
+        <div style="display:flex;gap:14px">
+          <div class="stat">
+            <div class="sv gd" id="g-score">0</div>
+            <div class="sl">Score</div>
+          </div>
+          <div class="stat">
+            <div class="sv gr">
+              <span id="g-placed">0</span>/<span id="g-total">0</span>
+            </div>
+            <div class="sl">Placed</div>
+          </div>
+        </div>
+      </div>
 
-<!-- ════ GAME ════ -->
-<div id="s-game" class="screen">
-<div id="game-wrap">
+      <!-- Interaction Catch Zone -->
+      <div id="fall-zone">
+        <div id="fall-lbl">Interaction Canvas</div>
+        <div id="speed-badge">SPEED: <span id="spd-lbl">●○○</span></div>
+        <!-- Falling block (only active in NoorBlocks Tetris mode) -->
+        <div id="fblock">
+          <div class="fb-ar" id="fb-ar"></div>
+          <div class="fb-tr" id="fb-tr"></div>
+          <div class="fb-hint" id="fb-hint"></div>
+        </div>
+      </div>
 
-  <!-- header -->
-  <div id="ghdr">
-    <div>
-      <div class="surah-lbl" id="g-surah-ar">الفاتحة</div>
-      <div class="surah-sub" id="g-surah-en">Al-Fātiḥah</div>
-    </div>
-    <div id="hearts"><span class="h">❤️</span><span class="h">❤️</span><span class="h">❤️</span></div>
-    <div style="display:flex;gap:14px">
-      <div class="stat"><div class="sv gd" id="g-score">0</div><div class="sl">Score</div></div>
-      <div class="stat"><div class="sv gr"><span id="g-placed">0</span>/<span id="g-total">7</span></div><div class="sl">Ayah</div></div>
-    </div>
-  </div>
+      <!-- Mushaf target slot layout area -->
+      <div id="slots-wrap">
+        <div id="slots-lbl">▼ Mushaf Text flow layout</div>
+        <div id="slots-container"></div>
+      </div>
 
-  <!-- falling zone -->
-  <div id="fall-zone">
-    <div id="fall-lbl">CATCH ZONE — block falls here</div>
-    <div id="speed-badge">SPEED: <span id="spd-lbl">●○○</span></div>
-    <div id="fblock">
-      <div class="fb-ar" id="fb-ar"></div>
-      <div class="fb-tr" id="fb-tr"></div>
-      <div class="fb-hint" id="fb-hint"></div>
-    </div>
-  </div>
+      <!-- Realtime Instructions bar -->
+      <div id="instbar">Click/Tap the correct slot to place the block</div>
 
-  <!-- slots target area -->
-  <div id="slots-wrap">
-    <div id="slots-lbl">▼ Arrange ayahs in order — drop blocks here</div>
-    <div id="slots-container"></div>
-  </div>
+      <!-- Progress bar -->
+      <div id="progrow">
+        <div id="prog-wrap">
+          <div id="prog-labels">
+            <span>Progress</span>
+            <span id="prog-pct">0%</span>
+          </div>
+          <div id="prog-bar">
+            <div id="prog-fill"></div>
+          </div>
+        </div>
+      </div>
 
-  <!-- instruction -->
-  <div id="instbar">👆 Drag the block · or use ← → buttons to choose slot · then ↓ to place</div>
-
-  <!-- controls -->
-  <div id="ctrls">
-    <button class="cbtn" onclick="moveLeft()" title="Move left">←</button>
-    <button class="cbtn cplace" onclick="placeNow()" title="Place block (Space)">↓ Place</button>
-    <button class="cbtn" onclick="moveRight()" title="Move right">→</button>
-    <button class="cbtn chear" onclick="hearBlock(this)">▶ Hear</button>
-  </div>
-
-  <!-- progress -->
-  <div id="progrow">
-    <div id="prog-wrap">
-      <div id="prog-labels"><span>Progress</span><span id="prog-pct">0%</span></div>
-      <div id="prog-bar"><div id="prog-fill"></div></div>
-    </div>
-    <div id="next-box">
-      <div id="next-lbl">Next</div>
-      <div id="next-ar">—</div>
     </div>
   </div>
 
-</div>
-</div>
-
-<!-- ════ RESULT ════ -->
-<div id="s-result" class="screen">
-  <div class="res-star" id="r-star">🌟</div>
-  <div class="res-title" id="r-title">Masha'Allah!</div>
-  <div class="res-sub" id="r-sub">Al-Fatiha Complete</div>
-  <div class="stats-row">
-    <div class="scard"><div class="sv2" id="r-score">0</div><div class="sl2">Score</div></div>
-    <div class="scard"><div class="sv2" id="r-acc">100%</div><div class="sl2">Accuracy</div></div>
-    <div class="scard"><div class="sv2" id="r-time">0s</div><div class="sl2">Time</div></div>
-  </div>
-  <div class="surah-box">
-    <div class="surah-box-t" id="r-surah-box-t">✦ Complete Surah Al-Fātiḥah ✦</div>
-    <div id="full-surah"></div>
-  </div>
-  <button class="pbtn" onclick="restartGame()" style="max-width:380px">↺ &nbsp; Play Again</button>
-  <button class="pbtn" onclick="goTitle()" style="max-width:380px;margin-top:0;background:linear-gradient(135deg,#2C1A08,#5A3A0A)">← &nbsp; Change Mode</button>
-</div>
-
-<script>
-/* ═══════════════════════════════════════
-   SURAH DATABASE
-═══════════════════════════════════════ */
-const SURAHS = [
-  {
-    id: 0,
-    surahNum: 1,
-    nameAr: "سُورَةُ الفَاتِحَةِ",
-    nameEn: "Al-Fātiḥah",
-    nameTr: "THE OPENING",
-    meta: "7 ayahs · Makkiyya · Page 1",
-    ayahs: [
-      { n:1, ar:"بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-        tr:"In the name of Allah, the Most Gracious, the Most Merciful",
-        hint:"Starts with Bismillah...",
-        phrases:["بِسْمِ ٱللَّهِ","ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"],
-        words:["بِسْمِ","ٱللَّهِ","ٱلرَّحْمَٰنِ","ٱلرَّحِيمِ"] },
-      { n:2, ar:"ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ",
-        tr:"All praise is for Allah, Lord of all worlds",
-        hint:"Begins with Al-Hamd...",
-        phrases:["ٱلْحَمْدُ لِلَّهِ","رَبِّ ٱلْعَٰلَمِينَ"],
-        words:["ٱلْحَمْدُ","لِلَّهِ","رَبِّ","ٱلْعَٰلَمِينَ"] },
-      { n:3, ar:"ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
-        tr:"The Most Gracious, the Most Merciful",
-        hint:"Two of Allah's names...",
-        phrases:["ٱلرَّحْمَٰنِ","ٱلرَّحِيمِ"],
-        words:["ٱلرَّحْمَٰنِ","ٱلرَّحِيمِ"] },
-      { n:4, ar:"مَٰلِكِ يَوْمِ ٱلدِّينِ",
-        tr:"Master of the Day of Judgment",
-        hint:"Owner of the Day...",
-        phrases:["مَٰلِكِ يَوْمِ","ٱلدِّينِ"],
-        words:["مَٰلِكِ","يَوْمِ","ٱلدِّينِ"] },
-      { n:5, ar:"إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
-        tr:"You alone we worship, and You alone we ask for help",
-        hint:"You alone we worship...",
-        phrases:["إِيَّاكَ نَعْبُدُ","وَإِيَّاكَ نَسْتَعِينُ"],
-        words:["إِيَّاكَ","نَعْبُدُ","وَإِيَّاكَ","نَسْتَعِينُ"] },
-      { n:6, ar:"ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ",
-        tr:"Guide us on the straight path",
-        hint:"Guide us to the path...",
-        phrases:["ٱهْدِنَا","ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ"],
-        words:["ٱهْدِنَا","ٱلصِّرَٰطَ","ٱلْمُسْتَقِيمَ"] },
-      { n:7, ar:"صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ",
-        tr:"The path of those You have blessed — not those who anger You, nor those who go astray",
-        hint:"The path of those You blessed...",
-        phrases:["صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ","غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ","وَلَا ٱلضَّآلِّينَ"],
-        words:["صِرَٰطَ","ٱلَّذِينَ","أَنْعَمْتَ","عَلَيْهِمْ","غَيْرِ","ٱلْمَغْضُوبِ","وَلَا","ٱلضَّآلِّينَ"] }
-    ]
-  },
-  {
-    id: 1,
-    surahNum: 108,
-    nameAr: "سُورَةُ الكَوْثَرِ",
-    nameEn: "Al-Kawthar",
-    nameTr: "THE ABUNDANCE",
-    meta: "3 ayahs · Makkiyya · Page 600",
-    ayahs: [
-      { n:1, ar:"إِنَّآ أَعْطَيْنَٰكَ ٱلْكَوْثَرَ",
-        tr:"Indeed, We have granted you, [O Muhammad], al-Kawthar",
-        hint:"Indeed, We granted you...",
-        phrases:["إِنَّآ أَعْطَيْنَٰكَ","ٱلْكَوْثَرَ"],
-        words:["إِنَّآ","أَعْطَيْنَٰكَ","ٱلْكَوْثَرَ"] },
-      { n:2, ar:"فَصَلِّ لِرَبِّكَ وَٱنْحَرْ",
-        tr:"So pray to your Lord and sacrifice [to Him alone]",
-        hint:"So pray to your Lord...",
-        phrases:["فَصَلِّ لِرَبِّكَ","وَٱنْحَرْ"],
-        words:["فَصَلِّ","لِرَبِّكَ","وَٱنْحَرْ"] },
-      { n:3, ar:"إِنَّ شَانِئَكَ هُوَ ٱلْأَبْتَرُ",
-        tr:"Indeed, your enemy is the one cut off",
-        hint:"Indeed, your enemy...",
-        phrases:["إِنَّ شَانِئَكَ","هُوَ ٱلْأَبْتَرُ"],
-        words:["إِنَّ","شَانِئَكَ","هُوَ","ٱلْأَبْتَرُ"] }
-    ]
-  },
-  {
-    id: 2,
-    surahNum: 112,
-    nameAr: "سُورَةُ الإِخْلَاصِ",
-    nameEn: "Al-Ikhlāṣ",
-    nameTr: "THE SINCERITY",
-    meta: "4 ayahs · Makkiyya · Page 604",
-    ayahs: [
-      { n:1, ar:"قُلْ هُوَ ٱللَّهُ أَحَدٌ",
-        tr:'Say, "He is Allah, [who is] One"',
-        hint:"Say, He is Allah...",
-        phrases:["قُلْ هُوَ","ٱللَّهُ أَحَدٌ"],
-        words:["قُلْ","هُوَ","ٱللَّهُ","أَحَدٌ"] },
-      { n:2, ar:"ٱللَّهُ ٱلصَّمَدُ",
-        tr:"Allah, the Eternal Refuge",
-        hint:"Allah is Self-Sufficient...",
-        phrases:["ٱللَّهُ ٱلصَّمَدُ"],
-        words:["ٱللَّهُ","ٱلصَّمَدُ"] },
-      { n:3, ar:"لَمْ يَلِدْ وَلَمْ يُولَدْ",
-        tr:"He neither begets nor is born",
-        hint:"He does not beget...",
-        phrases:["لَمْ يَلِدْ","وَلَمْ يُولَدْ"],
-        words:["لَمْ","يَلِدْ","وَلَمْ","يُولَدْ"] },
-      { n:4, ar:"وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ",
-        tr:"And there is none co-equivalent to Him",
-        hint:"None is comparable to Him...",
-        phrases:["وَلَمْ يَكُن لَّهُۥ","كُفُوًا أَحَدٌۢ"],
-        words:["وَلَمْ","يَكُن","لَّهُۥ","كُفُوًا","أَحَدٌۢ"] }
-    ]
-  },
-  {
-    id: 3,
-    surahNum: 113,
-    nameAr: "سُورَةُ الفَلَقِ",
-    nameEn: "Al-Falaq",
-    nameTr: "THE DAYBREAK",
-    meta: "5 ayahs · Madaniyya · Page 604",
-    ayahs: [
-      { n:1, ar:"قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ",
-        tr:'Say, "I seek refuge in the Lord of the daybreak"',
-        hint:"Say, I seek refuge in the Lord of the dawn...",
-        phrases:["قُلْ أَعُوذُ","بِرَبِّ ٱلْفَلَقِ"],
-        words:["قُلْ","أَعُوذُ","بِرَبِّ","ٱلْفَلَقِ"] },
-      { n:2, ar:"مِن شَرِّ مَا خَلَقَ",
-        tr:"From the evil of what He created",
-        hint:"From the evil of what He created...",
-        phrases:["مِنَ شَرِّ","مَا خَلَقَ"],
-        words:["مِن","شَرِّ","مَا","خَلَقَ"] },
-      { n:3, ar:"وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ",
-        tr:"And from the evil of darkness when it settles",
-        hint:"And from the evil of darkness...",
-        phrases:["وَمِن شَرِّ غَاسِقٍ","إِذَا وَقَبَ"],
-        words:["وَمِن","شَرِّ","غَاسِقٍ","إِذَا","وَقَبَ"] },
-      { n:4, ar:"وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ",
-        tr:"And from the evil of the blowers in knots",
-        hint:"And from the evil of blowers...",
-        phrases:["وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ","فِى ٱلْعُقَدِ"],
-        words:["وَمِن","شَرِّ","ٱلنَّفَّٰثَٰتِ","فِى","ٱلْعُقَدِ"] },
-      { n:5, ar:"وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ",
-        tr:"And from the evil of an envier when he envies",
-        hint:"And from the evil of an envier...",
-        phrases:["وَمِن شَرِّ حَاسِدٍ","إِذَا حَسَدَ"],
-        words:["وَمِن","شَرِّ","حَاسِدٍ","إِذَا","حَسَدَ"] }
-    ]
-  },
-  {
-    id: 4,
-    surahNum: 114,
-    nameAr: "سُورَةُ النَّاسِ",
-    nameEn: "An-Nās",
-    nameTr: "MANKIND",
-    meta: "6 ayahs · Madaniyya · Page 604",
-    ayahs: [
-      { n:1, ar:"قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ",
-        tr:'Say, "I seek refuge in the Lord of mankind"',
-        hint:"Say, I seek refuge in the Lord of people...",
-        phrases:["قُلْ أَعُوذُ","بِرَبِّ ٱلنَّاسِ"],
-        words:["قُلْ","أَعُوذُ","بِرَبِّ","ٱلنَّاسِ"] },
-      { n:2, ar:"مَلِكِ ٱلنَّاسِ",
-        tr:"The Sovereign of mankind",
-        hint:"The King of mankind...",
-        phrases:["مَلِكِ ٱلنَّاسِ"],
-        words:["مَلِكِ","ٱلنَّاسِ"] },
-      { n:3, ar:"إِلَٰهِ ٱلنَّاسِ",
-        tr:"The God of mankind",
-        hint:"The God of mankind...",
-        phrases:["إِلَٰهِ ٱلنَّاسِ"],
-        words:["إِلَٰهِ","ٱلنَّاسِ"] },
-      { n:4, ar:"مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ",
-        tr:"From the evil of the retreating whisperer",
-        hint:"From the evil of the whisperer...",
-        phrases:["مِن شَرِّ ٱلْوَسْوَاسِ","ٱلْخَنَّاسِ"],
-        words:["مِن","شَرِّ","ٱلْوَسْوَاسِ","ٱلْخَنَّاسِ"] },
-      { n:5, ar:"ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ",
-        tr:"Who whispers [evil] into the breasts of mankind",
-        hint:"Who whispers in people's chests...",
-        phrases:["ٱلَّذِى يُوَسْوِسُ","فِى صُدُورِ ٱلنَّاسِ"],
-        words:["ٱلَّذِى","يُوَسْوِسُ","فِى","صُدُورِ","ٱلنَّاسِ"] },
-      { n:6, ar:"مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ",
-        tr:"From among jinn and mankind",
-        hint:"From among jinn and mankind...",
-        phrases:["مِنَ ٱلْجِنَّةِ","وَٱلنَّاسِ"],
-        words:["مِنَ","ٱلْجِنَّةِ","وَٱلنَّاسِ"] }
-    ]
-  }
-];
-
-/* ═══════════════════════════════════════
-   STATE
-═══════════════════════════════════════ */
-let mode = 'classic';
-let currentSurahIdx = 0; // index in SURAHS
-let queue = [];        // ordered list of {ayahIdx,partIdx,ar,tr,hint,slotIdx}
-let slotCount = 0;
-let filledSlots = new Set();
-let curBlockQIdx = 0;  // which block from queue we're showing (shuffled order)
-let shuffledOrder = [];
-
-let lives = 3;
-let score = 0;
-let errors = 0;
-let placed = 0;
-let startTs = 0;
-let currentPlayingAudio = null;
-
-/* Fall physics */
-let fallY = 0;          // px from top of fall-zone
-let fallSpeed = 0;      // px per frame
-let fallRAF = null;
-let blockH = 60;        // estimated block height
-let zoneH = 100;        // fall zone height — set in startFall
-let blockFrozen = false;
-let currentTargetSlot = 0; // 0-indexed: which slot the player is targeting
-
-
-
-/* ═══════════════════════════════════════
-   SURAH SELECT EVENT
-═══════════════════════════════════════ */
-function changeSurah(val) {
-  currentSurahIdx = parseInt(val);
-  const surah = SURAHS[currentSurahIdx];
-  document.getElementById('surah-meta').textContent = surah.meta;
-}
-
-/* ═══════════════════════════════════════
-   MODE SELECT
-═══════════════════════════════════════ */
-function pickMode(m, el) {
-  mode = m;
-  document.querySelectorAll('.mrow').forEach(r => r.classList.remove('sel'));
-  el.classList.add('sel');
-}
-
-/* ═══════════════════════════════════════
-   BUILD QUEUE
-═══════════════════════════════════════ */
-function buildQueue() {
-  queue = [];
-  const surah = SURAHS[currentSurahIdx];
-  const surahNum = surah.surahNum;
-  const ayahs = surah.ayahs;
-  ayahs.forEach((a, ai) => {
-    const parts = mode === 'classic' ? [a.ar]
-                : mode === 'phrase'  ? a.phrases
-                :                     a.words;
-    parts.forEach((txt, pi) => {
-      queue.push({ ayahIdx: ai, partIdx: pi, parts: parts.length,
-                   ar: txt, tr: (mode==='classic'?a.tr:`[${a.n}] `+a.tr),
-                   hint: a.hint, slotIdx: queue.length,
-                   surahNum: surahNum, verseNum: a.n, wordNum: pi + 1 });
-    });
-  });
-  slotCount = queue.length;
-  // Shuffle display order
-  shuffledOrder = [...queue.keys()];
-  for (let i = shuffledOrder.length-1; i > 0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [shuffledOrder[i],shuffledOrder[j]] = [shuffledOrder[j],shuffledOrder[i]];
-  }
-}
-
-/* ═══════════════════════════════════════
-   BUILD SLOTS UI
-═══════════════════════════════════════ */
-function buildSlotsUI() {
-  const c = document.getElementById('slots-container');
-  c.innerHTML = '';
-
-  const surah = SURAHS[currentSurahIdx];
-
-  // Add Surah Header Banner
-  const header = document.createElement('div');
-  header.className = 'mushaf-header-banner';
-  header.innerHTML = `
-    <span class="mushaf-header-title">${surah.nameAr}</span>
-    <span class="mushaf-header-info">(${surah.meta})</span>
-  `;
-  c.appendChild(header);
-
-  // Add flowing text container
-  const textFlow = document.createElement('div');
-  textFlow.className = 'mushaf-text-flow';
-
-  queue.forEach((b, i) => {
-    const d = document.createElement('div');
-    d.className = 'slot';
-    d.id = 'slot-'+i;
-    d.dataset.idx = i;
+  <!-- ════ RESULT SCREEN ════ -->
+  <div id="s-result" class="screen">
+    <div class="res-star" id="r-star">🌟</div>
+    <div class="res-title" id="r-title">Masha'Allah!</div>
+    <div class="res-sub" id="r-sub">Complete</div>
     
-    // Label for the tiny indicator
-    const labelText = mode === 'classic' ? `${i+1}` : `${b.ayahIdx+1}.${b.partIdx+1}`;
-    d.setAttribute('data-label', labelText);
+    <div class="stats-row">
+      <div class="scard"><div class="sv2" id="r-score">0</div><div class="sl2">Score</div></div>
+      <div class="scard"><div class="sv2" id="r-acc">100%</div><div class="sl2">Accuracy</div></div>
+      <div class="scard"><div class="sv2" id="r-time">0s</div><div class="sl2">Time</div></div>
+    </div>
 
-    // Preload Arabic text as transparent inside span.st to reserve exact visual width
-    d.innerHTML = `<span class="st">${b.ar}</span><span class="sck">✓</span>`;
+    <!-- Leaderboard Entry Form -->
+    <div class="leaderboard-input-row">
+      <input type="text" id="player-name-input" class="leaderboard-input" placeholder="Enter name for Leaderboard" maxlength="12">
+      <button id="leaderboard-sub-btn" class="leaderboard-sub-btn" onclick="submitLeaderboard()">Submit</button>
+    </div>
 
-    // Click-to-place event
-    d.addEventListener('click', () => {
-      if (!blockFrozen) {
-        currentTargetSlot = i;
-        highlightTargetSlot(i);
-        tryPlaceInSlot(i);
-      }
-    });
+    <!-- Complete Surah view -->
+    <div class="surah-box">
+      <div class="surah-box-t" id="r-surah-box-t">✦ Complete Surah ✦</div>
+      <div id="full-surah"></div>
+    </div>
 
-    textFlow.appendChild(d);
+    <button class="pbtn" onclick="restartGame()">↺ &nbsp; Play Again</button>
+    <button class="pbtn" onclick="goTitle()" style="margin-top:0;background:linear-gradient(135deg,#2C1A08,#5A3A0A)">← &nbsp; Hub Menu</button>
+  </div>
 
-    // If last part of the ayah, append the beautiful ayah marker
-    if (b.partIdx === b.parts - 1) {
-      const marker = document.createElement('span');
-      marker.className = 'mushaf-ayah-marker';
-      marker.innerHTML = `﴿${b.ayahIdx+1}﴾`;
-      textFlow.appendChild(marker);
-    }
-  });
+  <!-- Core Scripts & Modules -->
+  <script src="js/database.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/game_tetris.js"></script>
+  <script src="js/game_connector.js"></script>
 
-  c.appendChild(textFlow);
-  document.getElementById('g-total').textContent = slotCount;
-}
-
-
-
-/* ═══════════════════════════════════════
-   START GAME
-═══════════════════════════════════════ */
-function startGame() {
-  stopPlayingAudio();
-  buildQueue();
-  buildSlotsUI();
-  lives = 3; score = 0; errors = 0; placed = 0;
-  filledSlots = new Set();
-  curBlockQIdx = 0;
-  startTs = Date.now();
-  updateHUD();
-  updateLives();
-
-  // Update game screen Surah headers
-  const surah = SURAHS[currentSurahIdx];
-  document.getElementById('g-surah-ar').textContent = surah.nameAr.replace('سُورَةُ ', '');
-  document.getElementById('g-surah-en').textContent = surah.nameEn;
-
-  showScreen('game');
-  setTimeout(() => {
-    loadNextBlock();
-  }, 100);
-}
-
-/* ═══════════════════════════════════════
-   LOAD BLOCK
-═══════════════════════════════════════ */
-function loadNextBlock() {
-  stopPlayingAudio();
-  if (curBlockQIdx >= shuffledOrder.length) { gameComplete(); return; }
-  const block = queue[shuffledOrder[curBlockQIdx]];
-  blockFrozen = false;
-  currentTargetSlot = getFirstEmptySlot();
-
-  document.getElementById('fb-ar').textContent = block.ar;
-  document.getElementById('fb-tr').textContent = block.tr;
-  document.getElementById('fb-hint').textContent = '💡 ' + block.hint;
-
-  const fb = document.getElementById('fblock');
-  fb.className = 'entering alive';
-  fb.style.top = '0px';
-  fb.style.left = '10%';
-  fb.style.width = '80%';
-
-  // Next preview
-  const nextIdx = shuffledOrder[curBlockQIdx+1];
-  const next = nextIdx !== undefined ? queue[nextIdx] : null;
-  document.getElementById('next-ar').textContent = next ? (next.ar.length > 14 ? next.ar.slice(0,13)+'…' : next.ar) : '—';
-
-  // Highlight target slot
-  highlightTargetSlot(currentTargetSlot);
-  updateInstruction();
-
-  setTimeout(() => startFall(), 400);
-}
-
-function getFirstEmptySlot() {
-  for (let i = 0; i < slotCount; i++) {
-    if (!filledSlots.has(i)) return i;
-  }
-  return 0;
-}
-
-/* ═══════════════════════════════════════
-   HIGHLIGHT TARGET
-═══════════════════════════════════════ */
-function highlightTargetSlot(idx) {
-  // Clear all target highlights
-  document.querySelectorAll('.slot').forEach(s => {
-    s.classList.remove('active-target');
-  });
-  // Highlight the targeted slot in gold
-  const sl = document.getElementById('slot-'+idx);
-  if (sl && !filledSlots.has(idx)) {
-    sl.classList.add('active-target');
-    sl.scrollIntoView({ block:'nearest', behavior:'smooth' });
-  }
-}
-
-function updateInstruction() {
-  const block = queue[shuffledOrder[curBlockQIdx]];
-  const slotLabel = mode === 'classic' ? `Ayah ${currentTargetSlot+1}`
-    : `Slot ${currentTargetSlot+1}`;
-  document.getElementById('instbar').textContent =
-    `Targeting: ${slotLabel} · Click/Tap the correct slot to place the block · Click the block to hear it`;
-}
-
-/* ═══════════════════════════════════════
-   FALL PHYSICS
-═══════════════════════════════════════ */
-function startFall() {
-  if (blockFrozen) return;
-  const zone = document.getElementById('fall-zone');
-  zoneH = zone.clientHeight;
-  const fb = document.getElementById('fblock');
-  blockH = fb.offsetHeight || 60;
-
-  fallY = 0;
-  const speedMap = { classic: 0.15, phrase: 0.2, word: 0.25 };
-  fallSpeed = speedMap[mode] || 0.15;
-
-  // Speed badge
-  const spd = mode === 'classic' ? '●○○' : mode === 'phrase' ? '●●○' : '●●●';
-  document.getElementById('spd-lbl').textContent = spd;
-
-  if (fallRAF) cancelAnimationFrame(fallRAF);
-  fallLoop();
-}
-
-function fallLoop() {
-  if (blockFrozen) return;
-  const fb = document.getElementById('fblock');
-  if (!fb) {
-    fallRAF = requestAnimationFrame(fallLoop);
-    return;
-  }
-  fallY += fallSpeed;
-  const maxY = zoneH - blockH - 4;
-  if (fallY >= maxY) {
-    fallY = maxY;
-    fb.style.top = fallY + 'px';
-    // Hit the ground without placement
-    groundHit();
-    return;
-  }
-  fb.style.top = fallY + 'px';
-  fallRAF = requestAnimationFrame(fallLoop);
-}
-
-function groundHit() {
-  stopPlayingAudio();
-  blockFrozen = true;
-  const fb = document.getElementById('fblock');
-  // Flash red — missed
-  fb.className = 'wrong-fx';
-  document.getElementById('fb-hint').style.opacity = '1';
-  playTone('wrong');
-  errors++;
-  lives = Math.max(0, lives-1);
-  updateLives();
-  document.getElementById('instbar').textContent = '⏱ Too slow! Block hit the ground. -1 life';
-
-  setTimeout(() => {
-    fb.className = 'alive';
-    document.getElementById('fb-hint').style.opacity = '0';
-    if (lives <= 0) { gameOver(); return; }
-    // Block goes back to top, same block
-    fb.style.top = '0px';
-    blockFrozen = false;
-    fallY = 0;
-    fallSpeed = Math.min(fallSpeed * 1.03, 0.8); // slight speed up on miss
-    startFall();
-  }, 900);
-}
-
-/* ═══════════════════════════════════════
-   PLACEMENT
-═══════════════════════════════════════ */
-
-
-function tryPlaceInSlot(slotIdx) {
-  if (blockFrozen) return;
-
-  const curQueueEntry = shuffledOrder[curBlockQIdx];
-  const block = queue[curQueueEntry];
-  const correctSlot = block.slotIdx;
-
-  if (slotIdx === correctSlot && !filledSlots.has(slotIdx)) {
-    // ✅ CORRECT
-    correctPlacement(block, slotIdx);
-  } else if (filledSlots.has(slotIdx)) {
-    // Slot already filled
-    document.getElementById('instbar').textContent = '⚠️ That slot is already filled — choose another';
-  } else {
-    // ❌ WRONG
-    wrongPlacement(block, slotIdx, correctSlot);
-  }
-}
-
-function correctPlacement(block, slotIdx) {
-  stopPlayingAudio();
-  blockFrozen = true;
-  if (fallRAF) cancelAnimationFrame(fallRAF);
-
-  const fb = document.getElementById('fblock');
-  fb.className = 'correct-fx';
-  playTone('correct');
-
-  // Fill slot
-  const sl = document.getElementById('slot-'+slotIdx);
-  sl.querySelector('.st').textContent = block.ar;
-  sl.classList.add('filled');
-  sl.classList.remove('active-target');
-  filledSlots.add(slotIdx);
-
-  const basePts = mode === 'classic' ? 50 : mode === 'phrase' ? 30 : 15;
-  const speedBonusMax = mode === 'classic' ? 50 : mode === 'phrase' ? 30 : 15;
-
-  const zone = document.getElementById('fall-zone');
-  const zoneHeight = zone.clientHeight;
-  const blockHeight = fb.offsetHeight || 60;
-  const maxY = zoneHeight - blockHeight - 4;
-
-  const ratio = maxY > 0 ? Math.max(0, Math.min(1, fallY / maxY)) : 1;
-  const bonus = Math.round(speedBonusMax * (1 - ratio));
-  const pts = basePts + bonus;
-
-  score += pts;
-  placed++;
-  spawnScoreFX('+'+pts, fb);
-  updateHUD();
-
-  document.getElementById('instbar').textContent = `✅ Correct! +${pts} points (Speed Bonus: +${bonus})`;
-
-  setTimeout(() => {
-    curBlockQIdx++;
-    fb.style.top = '0px';
-    // Clear all highlights
-    document.querySelectorAll('.slot').forEach(s => {
-      s.classList.remove('drag-over', 'active-target');
-    });
-    loadNextBlock();
-  }, 500);
-}
-
-function wrongPlacement(block, triedSlot, correctSlot) {
-  stopPlayingAudio();
-  blockFrozen = true;
-  if (fallRAF) cancelAnimationFrame(fallRAF);
-
-  const fb = document.getElementById('fblock');
-  fb.className = 'wrong-fx';
-  document.getElementById('fb-hint').style.opacity = '1';
-  playTone('wrong');
-
-  // Flash tried slot
-  const tried = document.getElementById('slot-'+triedSlot);
-  tried?.classList.add('wrong-flash');
-  setTimeout(() => tried?.classList.remove('wrong-flash'), 500);
-
-  errors++;
-  lives = Math.max(0, lives-1);
-  updateLives();
-
-  const hintSlot = mode === 'classic' ? `Ayah ${correctSlot+1}` : `Slot ${correctSlot+1}`;
-  document.getElementById('instbar').textContent = `❌ Wrong slot! It belongs in ${hintSlot} — try again`;
-
-  setTimeout(() => {
-    fb.className = 'alive';
-    document.getElementById('fb-hint').style.opacity = '0';
-    if (lives <= 0) { gameOver(); return; }
-    fb.style.top = '0px';
-    fallY = 0;
-    blockFrozen = false;
-    // Keep same block, highlight its correct slot
-    currentTargetSlot = correctSlot;
-    highlightTargetSlot(currentTargetSlot);
-    updateInstruction();
-    startFall();
-  }, 1000);
-}
-
-
-
-/* ═══════════════════════════════════════
-   CLICK BLOCK TO HEAR IT
-═══════════════════════════════════════ */
-(function setupControls() {
-  const fb = document.getElementById('fblock');
-  fb.addEventListener('click', (e) => {
-    e.stopPropagation();
-    hearBlock();
-  });
-})();
-
-/* ═══════════════════════════════════════
-   HUD
-═══════════════════════════════════════ */
-function updateHUD() {
-  document.getElementById('g-score').textContent = score;
-  document.getElementById('g-placed').textContent = placed;
-  const pct = Math.round((placed/slotCount)*100);
-  document.getElementById('prog-pct').textContent = pct+'%';
-  document.getElementById('prog-fill').style.width = pct+'%';
-}
-
-function updateLives() {
-  const hs = document.querySelectorAll('#hearts .h');
-  hs.forEach((h, idx) => {
-    if (idx < lives) {
-      h.classList.remove('gone');
-    } else {
-      h.classList.add('gone');
-    }
-  });
-}
-
-/* ═══════════════════════════════════════
-   AUDIO (Web Audio tones)
-═══════════════════════════════════════ */
-let actx;
-function getActx() { return actx || (actx = new(window.AudioContext||window.webkitAudioContext)()); }
-function playTone(type) {
-  try {
-    const c = getActx();
-    if (type==='correct') {
-      [[523,0],[659,.1],[784,.2]].forEach(([f,t])=>{
-        const o=c.createOscillator(),g=c.createGain();
-        o.connect(g);g.connect(c.destination);
-        o.frequency.value=f;
-        g.gain.setValueAtTime(.12,c.currentTime+t);
-        g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+.35);
-        o.start(c.currentTime+t);o.stop(c.currentTime+t+.35);
-      });
-    } else if (type==='wrong') {
-      const o=c.createOscillator(),g=c.createGain();
-      o.type='sawtooth';o.connect(g);g.connect(c.destination);
-      o.frequency.setValueAtTime(200,c.currentTime);
-      o.frequency.linearRampToValueAtTime(130,c.currentTime+.3);
-      g.gain.setValueAtTime(.08,c.currentTime);
-      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.3);
-      o.start();o.stop(c.currentTime+.3);
-    } else if (type==='complete') {
-      [523,659,784,1047].forEach((f,i)=>{
-        const o=c.createOscillator(),g=c.createGain();
-        o.connect(g);g.connect(c.destination);
-        o.frequency.value=f;
-        g.gain.setValueAtTime(.12,c.currentTime+i*.13);
-        g.gain.exponentialRampToValueAtTime(.001,c.currentTime+i*.13+.4);
-        o.start(c.currentTime+i*.13);o.stop(c.currentTime+i*.13+.4);
-      });
-    }
-  } catch(e) {}
-}
-
-function stopPlayingAudio() {
-  if (currentPlayingAudio) {
-    try {
-      currentPlayingAudio.pause();
-    } catch(e) {}
-    currentPlayingAudio = null;
-  }
-  const fb = document.getElementById('fblock');
-  if (fb) {
-    fb.classList.remove('playing-audio');
-  }
-}
-
-function padZero(num, size) {
-  let s = num + "";
-  while (s.length < size) s = "0" + s;
-  return s;
-}
-
-function playAudioFile(url) {
-  // Cancel any currently playing audio
-  stopPlayingAudio();
-  
-  const fb = document.getElementById('fblock');
-  if (fb) {
-    fb.classList.add('playing-audio');
-  }
-  
-  document.getElementById('instbar').textContent = '🔊 Loading recitation...';
-  
-  const audio = new Audio(url);
-  currentPlayingAudio = audio;
-  
-  audio.addEventListener('play', () => {
-    document.getElementById('instbar').textContent = '🔊 Playing recitation...';
-  });
-  
-  audio.addEventListener('ended', () => {
-    if (fb) fb.classList.remove('playing-audio');
-    if (currentPlayingAudio === audio) {
-      currentPlayingAudio = null;
-    }
-    updateInstruction();
-  });
-  
-  audio.addEventListener('error', (e) => {
-    console.error("Audio playback error:", e);
-    if (fb) fb.classList.remove('playing-audio');
-    if (currentPlayingAudio === audio) {
-      currentPlayingAudio = null;
-    }
-    document.getElementById('instbar').textContent = '⚠️ Audio unavailable. Playing chime instead.';
-    playTone('correct');
-    setTimeout(() => {
-      updateInstruction();
-    }, 1500);
-  });
-  
-  audio.play().catch(err => {
-    console.warn("Audio play rejected (interaction required?):", err);
-    if (fb) fb.classList.remove('playing-audio');
-    if (currentPlayingAudio === audio) {
-      currentPlayingAudio = null;
-    }
-    document.getElementById('instbar').textContent = '⚠️ Tap block again to play audio.';
-    setTimeout(() => {
-      updateInstruction();
-    }, 2000);
-  });
-}
-
-function hearBlock() {
-  if (curBlockQIdx < shuffledOrder.length) {
-    const block = queue[shuffledOrder[curBlockQIdx]];
-    const surahNumPadded = padZero(block.surahNum, 3);
-    const verseNumPadded = padZero(block.verseNum, 3);
-    
-    let url = "";
-    if (mode === 'word') {
-      const wordNumPadded = padZero(block.wordNum, 3);
-      url = `https://audio.qurancdn.com/wbw/${surahNumPadded}_${verseNumPadded}_${wordNumPadded}.mp3`;
-    } else {
-      url = `https://everyayah.com/data/Alafasy_128kbps/${surahNumPadded}${verseNumPadded}.mp3`;
-    }
-    
-    playAudioFile(url);
-  }
-}
-
-/* ═══════════════════════════════════════
-   SCORE FX
-═══════════════════════════════════════ */
-function spawnScoreFX(txt, refEl) {
-  const r = refEl.getBoundingClientRect();
-  const d = document.createElement('div');
-  d.className = 'sfx'; d.textContent = txt;
-  d.style.left = (r.left+r.width/2-18)+'px';
-  d.style.top  = (r.top)+'px';
-  document.body.appendChild(d);
-  setTimeout(()=>d.remove(), 800);
-}
-
-/* ═══════════════════════════════════════
-   CONFETTI
-═══════════════════════════════════════ */
-function confetti() {
-  const cv = document.getElementById('ccanvas');
-  cv.width = innerWidth; cv.height = innerHeight;
-  const ctx = cv.getContext('2d');
-  const P = Array.from({length:90},()=>({
-    x:Math.random()*cv.width, y:Math.random()*cv.height-cv.height,
-    r:Math.random()*5+3, d:Math.random()*80,
-    c:['#C8960C','#17784A','#EAB020','#0E8A7A','#F0E8D0'][Math.floor(Math.random()*5)],
-    t:0, ti:(Math.random()*.08)+.04
-  }));
-  let a=0,f=0;
-  (function draw(){
-    ctx.clearRect(0,0,cv.width,cv.height); a+=.01; f++;
-    P.forEach(p=>{
-      p.ti&&(p.t+=p.ti);
-      p.y+=(Math.cos(a+p.d)+1.3+p.r/2)*1.4;
-      p.x+=Math.sin(a)*1.2;
-      const tlt=Math.sin(p.t)*12;
-      ctx.beginPath(); ctx.lineWidth=p.r/2; ctx.strokeStyle=p.c;
-      ctx.moveTo(p.x+tlt+p.r/4,p.y); ctx.lineTo(p.x+tlt,p.y+tlt+p.r/4);
-      ctx.stroke();
-    });
-    if(f<220) requestAnimationFrame(draw);
-    else ctx.clearRect(0,0,cv.width,cv.height);
-  })();
-}
-
-/* ═══════════════════════════════════════
-   END STATES
-═══════════════════════════════════════ */
-function gameComplete() {
-  stopPlayingAudio();
-  if (fallRAF) cancelAnimationFrame(fallRAF);
-  const elapsed = Math.round((Date.now()-startTs)/1000);
-  const acc = Math.round((placed/(placed+errors))*100);
-  playTone('complete'); confetti();
-  
-  const surah = SURAHS[currentSurahIdx];
-  document.getElementById('r-sub').textContent = `${surah.nameEn} Complete`;
-  document.getElementById('r-score').textContent = score;
-  document.getElementById('r-acc').textContent   = acc+'%';
-  document.getElementById('r-time').textContent  = elapsed+'s';
-  document.getElementById('r-star').textContent  = acc>=90?'🌟🌟🌟':acc>=70?'⭐⭐':'⭐';
-  document.getElementById('r-title').textContent = acc>=90?"Masha'Allah! Perfect!":acc>=70?"Well Done!":"Keep Practicing!";
-  
-  document.getElementById('r-surah-box-t').textContent = `✦ Complete Surah ${surah.nameEn} ✦`;
-  document.getElementById('full-surah').innerHTML = surah.ayahs.map(a=>`${a.ar} <span class="an">${a.n}</span> `).join('');
-  showScreen('result');
-}
-
-function gameOver() {
-  stopPlayingAudio();
-  if (fallRAF) cancelAnimationFrame(fallRAF);
-  const surah = SURAHS[currentSurahIdx];
-  document.getElementById('r-star').textContent = '💔';
-  document.getElementById('r-title').textContent = 'Keep Practicing!';
-  document.getElementById('r-sub').textContent = "You ran out of hearts — you've got this!";
-  document.getElementById('r-score').textContent = score;
-  document.getElementById('r-acc').textContent = '—';
-  document.getElementById('r-time').textContent = Math.round((Date.now()-startTs)/1000)+'s';
-  
-  document.getElementById('r-surah-box-t').textContent = `✦ Complete Surah ${surah.nameEn} ✦`;
-  document.getElementById('full-surah').innerHTML = surah.ayahs.map(a=>`${a.ar} <span class="an">${a.n}</span> `).join('');
-  showScreen('result');
-}
-
-function restartGame() { startGame(); }
-function goTitle() { stopPlayingAudio(); if(fallRAF) cancelAnimationFrame(fallRAF); showScreen('title'); }
-
-/* ═══════════════════════════════════════
-   SCREEN
-═══════════════════════════════════════ */
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
-  document.getElementById('s-'+name).classList.add('on');
-}
-
-/* ═══════════════════════════════════════
-   KEYBOARD
-═══════════════════════════════════════ */
-document.addEventListener('keydown', e => {
-  if (!document.getElementById('s-game').classList.contains('on')) return;
-  if (e.key.toLowerCase()==='h') hearBlock();
-});
-</script>
 </body>
 </html>
