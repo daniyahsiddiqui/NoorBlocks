@@ -981,6 +981,13 @@ async function handleAcceptFriend(friendshipId, btnElement) {
 // ═══════════════════════════════════════
 //    MULTIPLAYER LOBBY ROOMS HELPERS
 // ═══════════════════════════════════════
+function clearLobbyPoll() {
+  if (window.lobbyPollInterval) {
+    clearInterval(window.lobbyPollInterval);
+    window.lobbyPollInterval = null;
+  }
+}
+
 async function handleCreateRoom() {
   const surah = Database.surahIndex[currentSurahIdx];
   const startAyah = parseInt(document.getElementById('range-start').value) || 1;
@@ -1020,6 +1027,8 @@ function enterLobbyView() {
     window.lobbyResultsInterval = null;
   }
 
+  clearLobbyPoll();
+
   showScreen('lobby');
   document.getElementById('lobby-code').textContent = activeRoom.invite_code;
   
@@ -1028,6 +1037,11 @@ function enterLobbyView() {
   document.getElementById('lobby-surah-info').textContent = `${surah ? surah.nameEn : 'Surah'} · Ayahs ${activeRoom.range_start}-${activeRoom.range_end} · ${activeRoom.difficulty.toUpperCase()} · ${activeRoom.game_mode.toUpperCase()}`;
 
   setupRoomRealtime();
+
+  refreshLobbyParticipants();
+
+  // Poll lobby participants list every 3 seconds to guarantee real-time updates for hosts & clients
+  window.lobbyPollInterval = setInterval(refreshLobbyParticipants, 3000);
 }
 
 function setupRoomRealtime() {
@@ -1098,6 +1112,7 @@ function copyInviteLink() {
 }
 
 async function handleLeaveRoom() {
+  clearLobbyPoll();
   if (activeRoom) {
     await db.updateParticipantStatus(activeRoom.id, 'invited');
     if (activeRoom.host_id === currentUser.id) {
@@ -1133,6 +1148,7 @@ function onGameStartBroadcastReceived(payload) {
 }
 
 function launchRoomGame() {
+  clearLobbyPoll();
   document.getElementById('range-start').value = activeRoom.range_start;
   document.getElementById('range-end').value = activeRoom.range_end;
   
