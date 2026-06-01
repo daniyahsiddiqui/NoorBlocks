@@ -204,33 +204,23 @@ function populateRangeSelectors(surahData) {
   // Helper function to update the end selections based on selected startAyah
   const updateEndSelector = () => {
     const startVal = parseInt(startSel.value) || 1;
-    const startAyahObj = surahData.ayahs[startVal - 1];
-    const startPage = (startAyahObj && startAyahObj.words[0]) ? startAyahObj.words[0].page : 0;
     
     // Save current selection of end select if valid
     const prevEndVal = parseInt(endSel.value);
     
     endSel.innerHTML = '';
     
-    // We only allow selecting end values that:
+    // Allow selecting end values that:
     // 1. are >= startVal
-    // 2. belong to the same page as the startVal Ayah
-    for (let i = startVal; i <= total; i++) {
-      const currentAyahObj = surahData.ayahs[i - 1];
-      const currentPage = (currentAyahObj && currentAyahObj.words[0]) ? currentAyahObj.words[0].page : 0;
-      
-      if (currentPage === startPage) {
-        const optEnd = document.createElement('option');
-        optEnd.value = i;
-        optEnd.textContent = i;
-        endSel.appendChild(optEnd);
-      } else {
-        // If we encounter a different page, we stop since the range must be contiguous on the same page!
-        break;
-      }
+    // 2. limit range to a maximum of 30 ayahs to ensure smooth gameplay performance
+    for (let i = startVal; i <= Math.min(total, startVal + 29); i++) {
+      const optEnd = document.createElement('option');
+      optEnd.value = i;
+      optEnd.textContent = i;
+      endSel.appendChild(optEnd);
     }
     
-    // Restore selection or default to the last option on the same page
+    // Restore selection or default to the last option (the whole surah or max range)
     if (prevEndVal >= startVal && endSel.querySelector(`option[value="${prevEndVal}"]`)) {
       endSel.value = prevEndVal;
     } else {
@@ -612,16 +602,46 @@ function gameComplete() {
     // Query periodically to show final rankings
     window.lobbyResultsInterval = setInterval(renderLobbyResultsRankings, 3000);
   } else {
-    document.querySelector('.leaderboard-input-row').style.display = 'flex';
     resultsBox.style.display = 'none';
+    const autoMsg = document.getElementById('leaderboard-autosubmit-msg');
+    
+    if (currentUser) {
+      document.querySelector('.leaderboard-input-row').style.display = 'none';
+      if (autoMsg) {
+        autoMsg.style.display = 'block';
+        const displayUsername = currentUserProfile ? (currentUserProfile.display_name || currentUserProfile.username) : currentUser.email.split('@')[0];
+        autoMsg.textContent = `⏳ Submitting score for ${displayUsername}...`;
+      }
+      
+      // Auto-submit score asynchronously to local storage & Supabase
+      (async () => {
+        const username = currentUserProfile ? currentUserProfile.username : currentUser.email.split('@')[0];
+        saveScore(username, score, acc + '%');
+        if (db.isOnline()) {
+          const surah = Database.surahIndex[currentSurahIdx];
+          const result = await db.uploadScore(surah.surahNum, mode, currentGameMode, score, acc);
+          if (result && result.error) {
+            console.error("Auto-submit failed:", result.error);
+            if (autoMsg) autoMsg.textContent = `❌ Auto-submit failed: ${result.error.message}`;
+          } else {
+            if (autoMsg) autoMsg.textContent = `✓ Score auto-submitted to leaderboards as ${username}!`;
+          }
+        } else {
+          if (autoMsg) autoMsg.textContent = `✓ Saved to Local High Scores!`;
+        }
+      })();
+    } else {
+      document.querySelector('.leaderboard-input-row').style.display = 'flex';
+      if (autoMsg) autoMsg.style.display = 'none';
 
-    if (nameInput) {
-      nameInput.value = currentUserProfile ? currentUserProfile.username : '';
-      nameInput.disabled = false;
-    }
-    if (subBtn) {
-      subBtn.disabled = false;
-      subBtn.textContent = 'Submit';
+      if (nameInput) {
+        nameInput.value = '';
+        nameInput.disabled = false;
+      }
+      if (subBtn) {
+        subBtn.disabled = false;
+        subBtn.textContent = 'Submit';
+      }
     }
   }
 
@@ -672,13 +692,12 @@ function gameOver() {
 
     window.lobbyResultsInterval = setInterval(renderLobbyResultsRankings, 3000);
   } else {
-    document.querySelector('.leaderboard-input-row').style.display = 'flex';
+    document.querySelector('.leaderboard-input-row').style.display = 'none';
     resultsBox.style.display = 'none';
-
-    if (nameInput) nameInput.disabled = true;
-    if (subBtn) {
-      subBtn.disabled = true;
-      subBtn.textContent = 'Locked';
+    const autoMsg = document.getElementById('leaderboard-autosubmit-msg');
+    if (autoMsg) {
+      autoMsg.style.display = 'block';
+      autoMsg.textContent = "💔 Match failed (out of hearts) — score not submitted.";
     }
   }
 

@@ -50,9 +50,14 @@ const GameConnector = {
     const startAyah = parseInt(document.getElementById('range-start').value) || 1;
     const endAyah = parseInt(document.getElementById('range-end').value) || surah.ayahs.length;
 
-    // Find the page of the startAyah to filter slot rendering
-    const startAyahObj = surah.ayahs.find(a => a.n === startAyah);
-    const activePage = (startAyahObj && startAyahObj.words[0]) ? startAyahObj.words[0].page : 0;
+    // Find the pages spanned by the selected range
+    const activePages = new Set();
+    for (let i = startAyah; i <= endAyah; i++) {
+      const ayahObj = surah.ayahs[i - 1];
+      if (ayahObj && ayahObj.words[0]) {
+        activePages.add(ayahObj.words[0].page);
+      }
+    }
 
     surah.ayahs.forEach((a) => {
       let wordIdx = 0;
@@ -78,8 +83,8 @@ const GameConnector = {
           wordIdx += phraseWordsCount;
         }
 
-        // Only add elements to the map if they belong to the active page
-        if (pageNum === activePage) {
+        // Only add elements to the map if they belong to pages in the active range
+        if (activePages.has(pageNum)) {
           const key = `${pageNum}_${lineNum}`;
           if (!linesMap[key]) {
             linesMap[key] = [];
@@ -108,8 +113,8 @@ const GameConnector = {
       const mLine = lastWord ? lastWord.line : 0;
       const mKey = `${mPage}_${mLine}`;
 
-      // Only render markers for the active page
-      if (mPage === activePage) {
+      // Only render markers if they belong to pages in the active range
+      if (activePages.has(mPage)) {
         if (!linesMap[mKey]) {
           linesMap[mKey] = [];
           linesOrder.push(mKey);
