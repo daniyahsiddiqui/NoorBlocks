@@ -759,6 +759,19 @@ function confetti() {
 }
 
 // ═══════════════════════════════════════
+//    SETTINGS MODAL HELPERS
+// ═══════════════════════════════════════
+function openSettingsModal() {
+  const modal = document.getElementById('modal-settings');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeSettingsModal() {
+  const modal = document.getElementById('modal-settings');
+  if (modal) modal.style.display = 'none';
+}
+
+// ═══════════════════════════════════════
 //    AUTH & SOCIAL MODALS HELPERS
 // ═══════════════════════════════════════
 function openAuthModal() {
@@ -988,7 +1001,7 @@ function enterLobbyView() {
     window.lobbyResultsInterval = null;
   }
 
-  showScreen('s-lobby');
+  showScreen('lobby');
   document.getElementById('lobby-code').textContent = activeRoom.invite_code;
   
   // Set Surah info

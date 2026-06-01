@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>NoorBlocks - Qur'an Memorization Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css?v=5.0.2">
+  <link rel="stylesheet" href="css/main.css?v=5.0.3">
 </head>
 <body>
 
@@ -41,14 +41,8 @@
     <div class="logo-tag">Memorize the Qur'an · interactive games</div>
     <div class="orn">❧ ✦ ❧</div>
 
-    <!-- Theme Toggle -->
-    <div class="theme-toggle-row" style="display:flex;justify-content:center;gap:12px;margin:5px 0 10px;">
-      <button id="theme-btn-classic" class="mrow sel" onclick="setTheme('classic')" style="margin:0;padding:8px 16px;font-size:12px;font-weight:600;box-shadow:none;border-radius:10px;cursor:pointer;">🏛️ Classic</button>
-      <button id="theme-btn-kids" class="mrow" onclick="setTheme('kids')" style="margin:0;padding:8px 16px;font-size:12px;font-weight:600;box-shadow:none;border-radius:10px;cursor:pointer;">🎈 NoorKids</button>
-    </div>
-
     <!-- Surah Select -->
-    <div class="card">
+    <div class="card" style="width: 100%; max-width: 380px;">
       <div class="card-t">Select Surah</div>
       <div class="select-wrapper">
         <select id="surah-select" onchange="changeSurah(this.value)">
@@ -56,77 +50,6 @@
         </select>
       </div>
       <div id="surah-meta" style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center">Loading Surahs...</div>
-
-      <!-- Verse Range Selector -->
-      <div class="range-row" style="display:flex;gap:10px;margin-top:10px;">
-        <div style="flex:1;">
-          <div class="card-t" style="margin-bottom:4px;text-align:left;">From Ayah</div>
-          <div class="select-wrapper">
-            <select id="range-start"></select>
-          </div>
-        </div>
-        <div style="flex:1;">
-          <div class="card-t" style="margin-bottom:4px;text-align:left;">To Ayah</div>
-          <div class="select-wrapper">
-            <select id="range-end"></select>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Mode Selector Cards -->
-    <div class="selection-grid">
-      <!-- Game Mode Selection -->
-      <div class="card">
-        <div class="card-t">Game Mode</div>
-        <div class="game-row">
-          <div class="mrow sel" onclick="pickGame('tetris', this)">
-            <span class="ico">🧱</span>
-            <span class="inf">
-              <div class="nm">NoorBlocks</div>
-              <div class="ds">Classic falling blocks</div>
-            </span>
-          </div>
-          <div class="mrow" onclick="pickGame('connector', this)">
-            <span class="ico">🔗</span>
-            <span class="inf">
-              <div class="nm">Ayah Connector</div>
-              <div class="ds">Link bubbles in order</div>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Difficulty Selection -->
-      <div class="card">
-        <div class="card-t">Difficulty</div>
-        <div class="difficulty-row">
-          <div class="mrow sel" onclick="pickMode('classic', this)">
-            <span class="ico">📖</span>
-            <span class="inf">
-              <div class="nm">Classic</div>
-              <div class="ds">Full Ayah blocks</div>
-            </span>
-            <span class="badge bg">Easy</span>
-          </div>
-          <div class="mrow" onclick="pickMode('phrase', this)">
-            <span class="ico">🔤</span>
-            <span class="inf">
-              <div class="nm">Phrase</div>
-              <div class="ds">Split Ayah chunks</div>
-            </span>
-            <span class="badge by">Med</span>
-          </div>
-          <div class="mrow" onclick="pickMode('word', this)">
-            <span class="ico">🔡</span>
-            <span class="inf">
-              <div class="nm">Word</div>
-              <div class="ds">Single word blocks</div>
-            </span>
-            <span class="badge br">Hard</span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Multiplayer Lobbies -->
@@ -173,7 +96,10 @@
       </div>
     </div>
 
-    <button class="pbtn" onclick="startGame()">▶ &nbsp; START</button>
+    <div style="display: flex; gap: 8px; width: 100%; max-width: 380px; margin-top: 10px;">
+      <button class="pbtn" onclick="startGame()" style="flex: 3; margin: 0; width: auto; max-width: none;">▶ &nbsp; START</button>
+      <button class="mrow" onclick="openSettingsModal()" style="flex: 1; margin: 0; padding: 12px; font-size: 16px; display: flex; align-items: center; justify-content: center; border-radius: 12px; cursor: pointer; box-shadow: none; border-color: var(--gold);">⚙️</button>
+    </div>
     <div class="tip">Target slots are styled like a Mushaf page · Fill the slots to complete the Surah</div>
   </div>
 
@@ -314,6 +240,90 @@
     </div>
   </div>
 
+  <!-- ════ SETTINGS MODAL ════ -->
+  <div id="modal-settings" class="modal-overlay" style="display: none;">
+    <div class="modal-card card" style="max-width: 420px; max-height: 85dvh; overflow-y: auto;">
+      <div class="modal-close" onclick="closeSettingsModal()">✕</div>
+      <div class="card-t" style="border-bottom: 1.5px solid rgba(200,150,12,0.2); padding-bottom: 6px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+        <span>⚙️</span> Game Settings
+      </div>
+
+      <!-- Theme Toggle -->
+      <div class="card-t" style="font-size: 12px; margin-bottom: 6px; text-align: left;">Interface Theme</div>
+      <div class="theme-toggle-row" style="display:flex;justify-content:center;gap:12px;margin:5px 0 15px;">
+        <button id="theme-btn-classic" class="mrow sel" onclick="setTheme('classic')" style="margin:0;padding:8px 16px;font-size:12px;font-weight:600;box-shadow:none;border-radius:10px;cursor:pointer;">🏛️ Classic</button>
+        <button id="theme-btn-kids" class="mrow" onclick="setTheme('kids')" style="margin:0;padding:8px 16px;font-size:12px;font-weight:600;box-shadow:none;border-radius:10px;cursor:pointer;">🎈 NoorKids</button>
+      </div>
+
+      <!-- Verse Range Selector -->
+      <div class="card-t" style="font-size: 12px; margin-bottom: 6px; text-align: left;">Verse Range</div>
+      <div class="range-row" style="display:flex;gap:10px;margin-bottom:15px;">
+        <div style="flex:1;">
+          <div class="card-t" style="margin-bottom:4px;text-align:left;font-size:10px;color:var(--muted);">From Ayah</div>
+          <div class="select-wrapper">
+            <select id="range-start"></select>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div class="card-t" style="margin-bottom:4px;text-align:left;font-size:10px;color:var(--muted);">To Ayah</div>
+          <div class="select-wrapper">
+            <select id="range-end"></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Mode Selection -->
+      <div class="card-t" style="font-size: 12px; margin-bottom: 6px; text-align: left;">Game Mode</div>
+      <div class="game-row" style="margin-bottom: 15px;">
+        <div class="mrow sel" onclick="pickGame('tetris', this)" style="margin-bottom: 8px;">
+          <span class="ico">🧱</span>
+          <span class="inf">
+            <div class="nm" style="font-size: 12px;">NoorBlocks</div>
+            <div class="ds" style="font-size: 10px;">Classic falling blocks</div>
+          </span>
+        </div>
+        <div class="mrow" onclick="pickGame('connector', this)">
+          <span class="ico">🔗</span>
+          <span class="inf">
+            <div class="nm" style="font-size: 12px;">Ayah Connector</div>
+            <div class="ds" style="font-size: 10px;">Link bubbles in order</div>
+          </span>
+        </div>
+      </div>
+
+      <!-- Difficulty Selection -->
+      <div class="card-t" style="font-size: 12px; margin-bottom: 6px; text-align: left;">Difficulty Level</div>
+      <div class="difficulty-row" style="display: flex; flex-direction: column; gap: 8px;">
+        <div class="mrow sel" onclick="pickMode('classic', this)">
+          <span class="ico">📖</span>
+          <span class="inf">
+            <div class="nm" style="font-size: 12px;">Classic</div>
+            <div class="ds" style="font-size: 10px;">Full Ayah blocks</div>
+          </span>
+          <span class="badge bg" style="font-size: 9px; padding: 2px 6px;">Easy</span>
+        </div>
+        <div class="mrow" onclick="pickMode('phrase', this)">
+          <span class="ico">🔤</span>
+          <span class="inf">
+            <div class="nm" style="font-size: 12px;">Phrase</div>
+            <div class="ds" style="font-size: 10px;">Split Ayah chunks</div>
+          </span>
+          <span class="badge by" style="font-size: 9px; padding: 2px 6px;">Med</span>
+        </div>
+        <div class="mrow" onclick="pickMode('word', this)">
+          <span class="ico">🔡</span>
+          <span class="inf">
+            <div class="nm" style="font-size: 12px;">Word</div>
+            <div class="ds" style="font-size: 10px;">Single word blocks</div>
+          </span>
+          <span class="badge br" style="font-size: 9px; padding: 2px 6px;">Hard</span>
+        </div>
+      </div>
+      
+      <button class="pbtn" onclick="closeSettingsModal()" style="width: 100%; margin-top: 20px;">Save & Close</button>
+    </div>
+  </div>
+
   <!-- ════ AUTH MODAL ════ -->
   <div id="modal-auth" class="modal-overlay" style="display: none;">
     <div class="modal-card card">
@@ -399,13 +409,13 @@
 
   <!-- Core Scripts & Modules -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js?v=5.0.2"></script>
-  <script src="js/supabase_connector.js?v=5.0.2"></script>
-  <script src="js/database.js?v=5.0.2"></script>
-  <script src="js/audio.js?v=5.0.2"></script>
-  <script src="js/core.js?v=5.0.2"></script>
-  <script src="js/game_tetris.js?v=5.0.2"></script>
-  <script src="js/game_connector.js?v=5.0.2"></script>
+  <script src="js/config.js?v=5.0.3"></script>
+  <script src="js/supabase_connector.js?v=5.0.3"></script>
+  <script src="js/database.js?v=5.0.3"></script>
+  <script src="js/audio.js?v=5.0.3"></script>
+  <script src="js/core.js?v=5.0.3"></script>
+  <script src="js/game_tetris.js?v=5.0.3"></script>
+  <script src="js/game_connector.js?v=5.0.3"></script>
 
 </body>
 </html>
