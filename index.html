@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>NoorBlocks - Qur'an Memorization Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css?v=5.0.5">
+  <link rel="stylesheet" href="css/main.css?v=5.0.6">
 </head>
 <body>
 
@@ -27,12 +27,12 @@
   <div id="s-title" class="screen on">
     
     <!-- Auth Status Top Bar -->
-    <div id="auth-bar" style="position: absolute; top: 12px; right: 12px; display: flex; gap: 8px; z-index: 10;">
+    <div id="auth-bar" style="display: flex; justify-content: flex-end; align-items: center; width: 100%; max-width: 380px; padding: 0 8px; margin: 10px auto 5px; z-index: 10;">
       <button id="auth-btn-login" class="mrow" onclick="openAuthModal()" style="margin:0; padding:6px 12px; font-size:11px; font-weight:600; cursor:pointer; display: none;">🔑 Log In</button>
-      <div id="auth-user-badge" style="display: none; align-items: center; gap: 8px; background: rgba(200, 150, 12, 0.08); padding: 4px 10px; border-radius: 20px; border: 1.5px solid var(--gold);">
+      <div id="auth-user-badge" style="display: none; align-items: center; gap: 8px; background: rgba(200, 150, 12, 0.08); padding: 4px 10px; border-radius: 20px; border: 1.5px solid var(--gold); flex-wrap: wrap; justify-content: center;">
         <span id="auth-user-name" style="font-size: 11px; font-weight: 600; color: var(--gold);"></span>
         <button id="social-btn" class="mrow" onclick="openSocialModal()" style="margin:0; padding:4px 8px; font-size:10px; font-weight:600; cursor:pointer; background: var(--gold); color: #1c1b18; box-shadow: none;">👥 Friends</button>
-        <button id="auth-btn-logout" class="mrow" onclick="handleLogout()" style="margin:0; padding:4px 8px; font-size:10px; font-weight:600; cursor:pointer; background: transparent; border: 1px solid var(--muted); color: var(--muted); box-shadow: none;">🚪</button>
+        <button id="auth-btn-logout" class="mrow" onclick="handleLogout()" title="Log Out" style="margin:0; padding:4px 8px; font-size:10px; font-weight:600; cursor:pointer; background: transparent; border: 1px solid rgba(220,53,69,0.4); color: #dc3545; box-shadow: none;">🚪 Log Out</button>
       </div>
     </div>
 
@@ -410,13 +410,13 @@
 
   <!-- Core Scripts & Modules -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js?v=5.0.5"></script>
-  <script src="js/supabase_connector.js?v=5.0.5"></script>
-  <script src="js/database.js?v=5.0.5"></script>
-  <script src="js/audio.js?v=5.0.5"></script>
-  <script src="js/core.js?v=5.0.5"></script>
-  <script src="js/game_tetris.js?v=5.0.5"></script>
-  <script src="js/game_connector.js?v=5.0.5"></script>
+  <script src="js/config.js?v=5.0.6"></script>
+  <script src="js/supabase_connector.js?v=5.0.6"></script>
+  <script src="js/database.js?v=5.0.6"></script>
+  <script src="js/audio.js?v=5.0.6"></script>
+  <script src="js/core.js?v=5.0.6"></script>
+  <script src="js/game_tetris.js?v=5.0.6"></script>
+  <script src="js/game_connector.js?v=5.0.6"></script>
 
 </body>
 </html>

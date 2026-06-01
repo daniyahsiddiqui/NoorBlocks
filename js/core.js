@@ -850,6 +850,9 @@ async function handleAuthSubmit(event, action) {
 }
 
 async function handleLogout() {
+  if (!confirm("Are you sure you want to log out of your account?")) {
+    return;
+  }
   await db.logout();
   activeRoom = null;
   if (activeRoomChannel) {
