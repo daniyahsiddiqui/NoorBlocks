@@ -52,6 +52,27 @@
       <div id="surah-meta" style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center">Loading Surahs...</div>
     </div>
 
+    <!-- Game Mode Selection -->
+    <div class="card" style="width: 100%; max-width: 380px; margin-top: 10px;">
+      <div class="card-t">Select Game Type</div>
+      <div class="game-row">
+        <div id="game-btn-tetris" class="mrow sel" onclick="pickGame('tetris', this)" style="margin-bottom: 8px;">
+          <span class="ico">🧱</span>
+          <span class="inf">
+            <div class="nm">NoorBlocks</div>
+            <div class="ds">Classic falling blocks</div>
+          </span>
+        </div>
+        <div id="game-btn-connector" class="mrow" onclick="pickGame('connector', this)">
+          <span class="ico">🔗</span>
+          <span class="inf">
+            <div class="nm">Ayah Connector</div>
+            <div class="ds">Link bubbles in order</div>
+          </span>
+        </div>
+      </div>
+    </div>
+
     <!-- Multiplayer Lobbies -->
     <div id="multiplayer-card" class="card" style="display: none; width: 100%; max-width: 380px; margin-top: 10px;">
       <div class="card-t">⚡ Real-time Multiplayer (Max 8 Players)</div>
@@ -68,37 +89,10 @@
       </div>
     </div>
 
-    <!-- Leaderboard -->
-    <div class="leaderboard-card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-        <div class="card-t" id="leaderboard-title-text" style="margin-bottom: 0;">🏆 High Scores</div>
-        <div id="leaderboard-tabs" style="display: none; gap: 4px;">
-          <button id="tab-leaderboard-local" class="mrow sel" onclick="setLeaderboardTab('local')" style="margin:0; padding:4px 8px; font-size:9px; font-weight:600; box-shadow:none; border-radius:6px; cursor:pointer;">Local</button>
-          <button id="tab-leaderboard-global" class="mrow" onclick="setLeaderboardTab('global')" style="margin:0; padding:4px 8px; font-size:9px; font-weight:600; box-shadow:none; border-radius:6px; cursor:pointer;">Global</button>
-          <button id="tab-leaderboard-friends" class="mrow" onclick="setLeaderboardTab('friends')" style="margin:0; padding:4px 8px; font-size:9px; font-weight:600; box-shadow:none; border-radius:6px; cursor:pointer;">Friends</button>
-        </div>
-      </div>
-      <div class="leaderboard-tbl-wrap">
-        <table class="leaderboard-tbl">
-          <thead>
-            <tr>
-              <th style="width:10%;text-align:center">#</th>
-              <th style="width:30%">Name</th>
-              <th style="width:35%">Game (Surah)</th>
-              <th style="width:13%;text-align:right">Score</th>
-              <th style="width:12%;text-align:right">Acc</th>
-            </tr>
-          </thead>
-          <tbody id="leaderboard-entries">
-            <!-- Loaded dynamically from LocalStorage -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div style="display: flex; gap: 8px; width: 100%; max-width: 380px; margin-top: 10px;">
-      <button class="pbtn" onclick="startGame()" style="flex: 3; margin: 0; width: auto; max-width: none;">▶ &nbsp; START</button>
-      <button class="mrow" onclick="openSettingsModal()" style="flex: 1; margin: 0; padding: 12px; font-size: 16px; display: flex; align-items: center; justify-content: center; border-radius: 12px; cursor: pointer; box-shadow: none; border-color: var(--gold);">⚙️</button>
+    <button class="pbtn" onclick="startGame()" style="width: 100%; max-width: 380px; margin: 15px 0 5px;">▶ &nbsp; START GAME</button>
+    <div style="display: flex; gap: 8px; width: 100%; max-width: 380px; margin-top: 5px; margin-bottom: 10px;">
+      <button class="mrow" onclick="openSettingsModal()" style="flex: 1; margin: 0; padding: 10px; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; border-radius: 10px; cursor: pointer; box-shadow: none; border-color: var(--gold);">⚙️ Settings</button>
+      <button class="mrow" onclick="openLeaderboardModal()" style="flex: 1; margin: 0; padding: 10px; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; border-radius: 10px; cursor: pointer; box-shadow: none; border-color: var(--gold);">🏆 High Scores</button>
     </div>
     <div class="tip">Target slots are styled like a Mushaf page · Fill the slots to complete the Surah</div>
   </div>
@@ -273,25 +267,6 @@
         </div>
       </div>
 
-      <!-- Game Mode Selection -->
-      <div class="card-t" style="font-size: 12px; margin-bottom: 6px; text-align: left;">Game Mode</div>
-      <div class="game-row" style="margin-bottom: 15px;">
-        <div class="mrow sel" onclick="pickGame('tetris', this)" style="margin-bottom: 8px;">
-          <span class="ico">🧱</span>
-          <span class="inf">
-            <div class="nm" style="font-size: 12px;">NoorBlocks</div>
-            <div class="ds" style="font-size: 10px;">Classic falling blocks</div>
-          </span>
-        </div>
-        <div class="mrow" onclick="pickGame('connector', this)">
-          <span class="ico">🔗</span>
-          <span class="inf">
-            <div class="nm" style="font-size: 12px;">Ayah Connector</div>
-            <div class="ds" style="font-size: 10px;">Link bubbles in order</div>
-          </span>
-        </div>
-      </div>
-
       <!-- Difficulty Selection -->
       <div class="card-t" style="font-size: 12px; margin-bottom: 6px; text-align: left;">Difficulty Level</div>
       <div class="difficulty-row" style="display: flex; flex-direction: column; gap: 8px;">
@@ -322,6 +297,37 @@
       </div>
       
       <button class="pbtn" onclick="closeSettingsModal()" style="width: 100%; margin-top: 20px;">Save & Close</button>
+    </div>
+  </div>
+
+  <!-- ════ LEADERBOARD MODAL ════ -->
+  <div id="modal-leaderboard" class="modal-overlay" style="display: none;">
+    <div class="modal-card card" style="max-width: 480px; max-height: 85dvh; display: flex; flex-direction: column;">
+      <div class="modal-close" onclick="closeLeaderboardModal()">✕</div>
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid rgba(200,150,12,0.2); padding-bottom: 6px; margin-bottom: 12px;">
+        <div class="card-t" id="leaderboard-title-text" style="margin-bottom: 0;">🏆 High Scores</div>
+        <div id="leaderboard-tabs" style="display: none; gap: 4px;">
+          <button id="tab-leaderboard-local" class="mrow sel" onclick="setLeaderboardTab('local')" style="margin:0; padding:4px 8px; font-size:9px; font-weight:600; box-shadow:none; border-radius:6px; cursor:pointer;">Local</button>
+          <button id="tab-leaderboard-global" class="mrow" onclick="setLeaderboardTab('global')" style="margin:0; padding:4px 8px; font-size:9px; font-weight:600; box-shadow:none; border-radius:6px; cursor:pointer;">Global</button>
+          <button id="tab-leaderboard-friends" class="mrow" onclick="setLeaderboardTab('friends')" style="margin:0; padding:4px 8px; font-size:9px; font-weight:600; box-shadow:none; border-radius:6px; cursor:pointer;">Friends</button>
+        </div>
+      </div>
+      <div class="leaderboard-tbl-wrap" style="flex: 1; overflow-y: auto;">
+        <table class="leaderboard-tbl">
+          <thead>
+            <tr>
+              <th style="width:10%;text-align:center">#</th>
+              <th style="width:30%">Name</th>
+              <th style="width:35%">Game (Surah)</th>
+              <th style="width:13%;text-align:right">Score</th>
+              <th style="width:12%;text-align:right">Acc</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-entries">
+            <!-- Loaded dynamically from LocalStorage -->
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 

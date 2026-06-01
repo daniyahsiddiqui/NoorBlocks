@@ -790,6 +790,17 @@ function closeSettingsModal() {
   if (modal) modal.style.display = 'none';
 }
 
+function openLeaderboardModal() {
+  const modal = document.getElementById('modal-leaderboard');
+  if (modal) modal.style.display = 'flex';
+  renderLeaderboard();
+}
+
+function closeLeaderboardModal() {
+  const modal = document.getElementById('modal-leaderboard');
+  if (modal) modal.style.display = 'none';
+}
+
 // ═══════════════════════════════════════
 //    AUTH & SOCIAL MODALS HELPERS
 // ═══════════════════════════════════════
